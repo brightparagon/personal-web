@@ -1,2 +1,4 @@
 # personal-web
 design and build a web application using MEAN stack
+
+# motive(necessity): I usally use facebook and evernote to store articles which I could refer to later when needed. But facebook shows articles in my timeline as one scroll page, which makes it difficult to navigate to the exact article that I want to find. And evernote is not a blog, is a literally note application in which I cannot arrange articles and writings the way I want it to be. So I came to the conclusion that it would be useful to have my own website of which design and strucutre I can make myself. So, this project is to build my personal website(blog) to control and manage wiritings of my own, music info(like youtube links), articles about physics, biology, philosophy and computer related fields(my interests), postings about life, travelling and so on.
