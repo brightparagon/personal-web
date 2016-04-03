@@ -1,0 +1,23 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "a blog to manage articles made with MEAN stack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brightmo/personal-web.git"
+  },
+  "keywords": [
+    "mean",
+    "stack"
+  ],
+  "author": "brightmo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brightmo/personal-web/issues"
+  },
+  "homepage": "https://github.com/brightmo/personal-web#readme"
+}
