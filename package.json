@@ -4,7 +4,8 @@
   "description": "a blog to manage articles made with MEAN stack",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "mocha test"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,20 @@
   "bugs": {
     "url": "https://github.com/brightmo/personal-web/issues"
   },
-  "homepage": "https://github.com/brightmo/personal-web#readme"
+  "homepage": "https://github.com/brightmo/personal-web#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "errorhandler": "^1.4.3",
+    "express": "^4.13.4",
+    "jade": "^1.11.0",
+    "mongoose": "^4.4.11",
+    "morgan": "^1.7.0",
+    "stylus": "^0.54.2"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.4.5",
+    "superagent": "^1.8.3"
+  }
 }
