@@ -44,9 +44,7 @@ app.use(express.static(path.join(__dirname, 'public'))); //정적파일 활용
 
 // Pages and routes
 app.get('/', routes.index);
-// app.get('/login', routes.user.login);
-// app.post('/login', routes.user.authenticate);
-// app.get('/logout', routes.user.logout); //if you use everyauth, this /logout route is overwriting by everyauth automatically, therefore we use custom/additional handleLogout
+app.get('/login', routes.test.login);
 // app.get('/admin', authorize, routes.article.admin);
 // app.get('/post', authorize, routes.article.post);
 // app.post('/post', authorize, routes.article.postArticle);
