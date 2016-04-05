@@ -6,7 +6,7 @@ I usally use facebook and evernote to store articles which I could refer to late
 
 -*add later about how inconvinient it was to find posts in those sites -> becomes necessity -> story*
 
--*how to find what I want and navigate in this web? -> well-organized category & with a function like hashtag(#) in every posts*
+-*how to find what I want and navigate in this web? -> well-organized category & with a function like hashtag(#) in every post*
 
 
 * Development Environment
