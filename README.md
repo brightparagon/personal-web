@@ -9,13 +9,13 @@ I usally use facebook and evernote to store articles which I could refer to late
 -*how to find what I want and navigate in this web? -> well-organized category & with a function like hashtag(#) in every post*
 
 
-* Development Environment
+* #####Development Environment
  - OS X El Capitan 10.11.4(64bit)
  - Sublime Text3
  - Terminal
  - Browser to test with: Chrome
 
-* Development Stack
+* #####Development Stack
  - Server end: Node.js & Express.js
  - Front end: Angular.js
  - Database: MongoDB with Mongoose
