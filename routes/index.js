@@ -1,5 +1,5 @@
 exports.test = require('./test'); //app.get('/', routes.index); 에서 / index.js로 고정하고
-								  //app.post('/login', routes.user.authenticate); 이런 경우엔 
+								  //app.post('/login', routes.user.authenticate); 이런 경우엔
 								  // index.js에서 user.js를 export.user = requre(./user);를 써서 익스포트를 해줘야
 								  //routes.user.authenticate가 잡힌다
 
@@ -12,5 +12,5 @@ exports.index = function(req, res){
   //   if (error) return next(error);
   //   res.render('index', { articles: articles});
   // });
-  res.render('index', {msg: 'Welcome to my first personal web site made of MEAN Stack!'});
+  res.render('index.html');
 };

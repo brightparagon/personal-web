@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/brightmo/personal-web#readme",
   "dependencies": {
+    "angular": "^1.5.3",
+    "angular-route": "^1.5.3",
     "body-parser": "^1.15.0",
     "cookie-parser": "^1.4.1",
     "errorhandler": "^1.4.3",
