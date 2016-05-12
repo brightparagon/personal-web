@@ -1,11 +1,10 @@
 var express = require('express'),
-  // routes = require('./routes'),
-  http = require('http'),
-  path = require('path');
-  // mongoose = require('mongoose'),
-  // models = require('./models');
-  // dbUrl = process.env.MONGOHQ_URL || 'mongodb://@localhost:27017/blog',  --> 27017/blog 에서 blog는 디비 이름?
-  // db = mongoose.connect(dbUrl, {safe: true});
+  routes = require('./routes'),
+  path = require('path'),
+  mongoose = require('mongoose'),
+  models = require('./models'),
+  dbUrl = process.env.MONGOHQ_URL || 'mongodb://@localhost:27017/personalblog',
+  db = mongoose.connect(dbUrl, {safe: true});
 
 // var session = require('express-session'), //express-session은 세션 관련 모듈 --> 더 찾아볼 것
 //   logger = require('morgan'), //morgan은 log를 남기는 기능을 제공하는 모듈
@@ -45,6 +44,11 @@ app.use(express.static(path.join(__dirname, 'public'))); //정적파일 활용
 //   app.use(errorHandler());
 // }
 
+//앞으로 해야할 것(이 파일에서)
+//앵귤러에서 온 요청 처리할 라우트 설정
+//./routes 폴더에 각 라우트.js 만들기
+//각 라우트.js 에서 몽고디비로 데이터 가져온 후 다시 앵귤러로 보내기
+
 // Pages and routes
 // app.get('/', routes.index);
 // app.get('/login', routes.test.login);
@@ -67,6 +71,7 @@ app.use(express.static(path.join(__dirname, 'public'))); //정적파일 활용
 app.listen(app.get('port'), function() {
   console.info('Express server listening on port ' + app.get('port'));
 });
+
 // var server = http.createServer(app);
 // var boot = function () {
 //   server.listen(app.get('port'), function(){
