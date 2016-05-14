@@ -2,14 +2,14 @@
   "name": "blog",
   "version": "1.0.0",
   "description": "a blog to manage articles made with MEAN stack",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "test": "mocha test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brightmo/personal-web.git"
+    "url": "git+https://github.com/brightlaw/personal-web.git"
   },
   "keywords": [
     "mean",
@@ -17,12 +17,12 @@
     "blog",
     "test"
   ],
-  "author": "brightmo",
+  "author": "brightlaw",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brightmo/personal-web/issues"
+    "url": "https://github.com/brightlaw/personal-web/issues"
   },
-  "homepage": "https://github.com/brightmo/personal-web#readme",
+  "homepage": "https://github.com/brightlaw/personal-web#readme",
   "dependencies": {
     "angular": "^1.5.3",
     "angular-route": "^1.5.3",
