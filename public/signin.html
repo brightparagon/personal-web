@@ -2,17 +2,21 @@
   <h2>Sign in</h2>
   <br>
   <p>
-    <input type="text" name="email" placeholder="email">
+    <input type="text" ng-model="email" placeholder="email">
   </p>
   <p>
-    <input type="password" name="password" placeholder="password">
+    <input type="password" ng-model="password" placeholder="password">
   </p>
   <br>
   <p>
-    <input type="submit" name="signin" value="Sign in">
+    <!-- <input type="submit" name="signin" value="Sign in"> -->
+    <button type="button" ng-click="signin()">Sign in</button>
   </p>
   <p>
-    <a href="" ng-click="save()">Or Sign up</a>
+    <a href="" ng-click="signup()">Or Sign up</a>
     <!-- <input type="submit" name="signup" value="Or Sign up" ng-click="save()"> -->
   </p>
+  <!-- <br>
+  <h2>email: {{ user.email }}</h2>
+  <h2>password: {{ user.password }}</h2> -->
 </div>
