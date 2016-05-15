@@ -1,5 +1,4 @@
 var express = require('express'),
-  routes = require('./routes'),
   path = require('path'),
   favicon = require('serve-favicon');
 
@@ -16,11 +15,11 @@ var session = require('express-session'), //express-session은 세션 관련 모
 var app = express();
 app.locals.appTitle = "personal-web";
 
-app.use(function(req, res, next) { //몽고디비 유효성 검사
-  if(!modes.User) return next(new Error("No models."));
-  req.models = models;
-  return next();
-});
+// app.use(function(req, res, next) { //몽고디비 유효성 검사
+//   if(!models.User) return next(new Error("No models."));
+//   req.models = models;
+//   return next();
+// });
 
 // All environments
 app.set('port', process.env.PORT || 3000);
@@ -30,7 +29,8 @@ app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser('3CCC4ACD-6ED1-4844-9217-82131BDCB239'));
+app.use(session({secret: '2C44774A-D649-4D44-9535-46E296EF984F'}));
 // app.use(methodOverride());
 // app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 // app.use(require('angular').middleware(__dirname + 'node_modules'));
@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public'))); //정적파일 활용
 // Application Routes
 app.use(users);
 
-Development only
+// Development only
 if (app.get('env') === 'development') {
   app.use(errorHandler());
 }
