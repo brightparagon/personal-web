@@ -30,9 +30,12 @@
     "cookie-parser": "^1.4.1",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "favicon": "0.0.2",
     "jade": "^1.11.0",
     "mongoose": "^4.4.11",
     "morgan": "^1.7.0",
+    "serve-favicon": "^2.3.0",
     "stylus": "^0.54.2"
   },
   "devDependencies": {
