@@ -10,16 +10,10 @@ var session = require('express-session'), //express-session은 세션 관련 모
   errorHandler = require('errorhandler'),
   cookieParser = require('cookie-parser'), // cookie-parser와 body-parser의 역할?
   bodyParser = require('body-parser');
-  // methodOverride = require('method-override'); // 오버라이드에 필요한 모듈인가? 자바스크립트엔 오버라이드 개념이 없어서 모듈을 이용?
+  methodOverride = require('method-override'); // 오버라이드에 필요한 모듈인가? 자바스크립트엔 오버라이드 개념이 없어서 모듈을 이용?
 
 var app = express();
 app.locals.appTitle = "personal-web";
-
-// app.use(function(req, res, next) { //몽고디비 유효성 검사
-//   if(!models.User) return next(new Error("No models."));
-//   req.models = models;
-//   return next();
-// });
 
 // All environments
 app.set('port', process.env.PORT || 3000);
@@ -31,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser('3CCC4ACD-6ED1-4844-9217-82131BDCB239'));
 app.use(session({secret: '2C44774A-D649-4D44-9535-46E296EF984F'}));
-// app.use(methodOverride());
+app.use(methodOverride());
 // app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 // app.use(require('angular').middleware(__dirname + 'node_modules'));
 //이 위에 미들웨어는 체크 해봐야 함
