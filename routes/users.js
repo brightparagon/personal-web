@@ -34,13 +34,16 @@ router.get('/users/:userId', function(req, res, next) {
 
 // 유저 추가 라우팅
 router.post('/users', function (req, res, next) {
-  var user = new User(req.body.user);
-  user.save(function(error, results) {
-    if(error || !results) {
-      return next(error);
-    }
+  User.create(req.body, function(error, results) {
+    if(error) return next(error);
     res.json(results);
-  })
+  });
+  // if (!req.body.user) return next(new Error('No user payload.'));
+  // var user = req.body.user;
+  // req.models.User.create(user, function(error, userResponse) {
+  //   if (error) return next(error);
+  //   res.send(userResponse);
+  // });
 });
 
 // 특정 유저 업데이트 라우팅

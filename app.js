@@ -1,6 +1,7 @@
 var express = require('express'),
   path = require('path'),
-  favicon = require('serve-favicon');
+  favicon = require('serve-favicon'),
+  models = require('./models');
 
 require('./lib/connection'); //Mongodb 연결
 var users = require('./routes/users'); //routes for users
@@ -9,11 +10,18 @@ var session = require('express-session'), //express-session은 세션 관련 모
   logger = require('morgan'), //morgan은 log를 남기는 기능을 제공하는 모듈
   errorHandler = require('errorhandler'),
   cookieParser = require('cookie-parser'), // cookie-parser와 body-parser의 역할?
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
   methodOverride = require('method-override'); // 오버라이드에 필요한 모듈인가? 자바스크립트엔 오버라이드 개념이 없어서 모듈을 이용?
 
 var app = express();
 app.locals.appTitle = "personal-web";
+
+// Mongoose models check
+app.use(function(req, res, next) {
+  if (!models.User) return next(new Error("No models."))
+  req.models = models;
+  return next();
+});
 
 // All environments
 app.set('port', process.env.PORT || 3000);
