@@ -30,7 +30,7 @@ app.factory('userService', ['$resource', function($resource) {
 }]);
 
 app.controller('NewpageCtrl', function($scope) {
-	//컨트롤러 테스트용
+	//for a test
 	$scope.x = 1;
 	$scope.test = function() {
 		$scope.x++;
@@ -38,15 +38,16 @@ app.controller('NewpageCtrl', function($scope) {
 });
 
 app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService', function($scope, $location, $routeParams, userService) {
-	//mongodb 연결 뒤 user 저장
-	//세션 유지는 어떻게 하나?
+	//how to maintain a session of user?
 	//세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등)
 
 	$scope.signup = function() {
+		//can this part be out of this function?
 		var userInstance = {
 			email: $scope.user.email,
 			password: $scope.user.password
 		};
+		//
 		var newUser = new userService(userInstance);
 		newUser.$save(function() {
 			$scope.user.email = '';

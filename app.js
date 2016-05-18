@@ -3,15 +3,15 @@ var express = require('express'),
   favicon = require('serve-favicon'),
   models = require('./models');
 
-require('./lib/connection'); //Mongodb 연결
-var users = require('./routes/users'); //routes for users
+require('./lib/connection'); // Mongodb connection
+var users = require('./routes/users'); // routes for users
 
-var session = require('express-session'), //express-session은 세션 관련 모듈 --> 더 찾아볼 것
-  logger = require('morgan'), //morgan은 log를 남기는 기능을 제공하는 모듈
+var session = require('express-session'), // find more info about it
+  logger = require('morgan'), // leaving log message
   errorHandler = require('errorhandler'),
-  cookieParser = require('cookie-parser'), // cookie-parser와 body-parser의 역할?
+  cookieParser = require('cookie-parser'), // roles of cookie-parser & body-parser?
   bodyParser = require('body-parser'),
-  methodOverride = require('method-override'); // 오버라이드에 필요한 모듈인가? 자바스크립트엔 오버라이드 개념이 없어서 모듈을 이용?
+  methodOverride = require('method-override'); // simulate delete & post method(?)
 
 var app = express();
 app.locals.appTitle = "personal-web";
@@ -19,7 +19,7 @@ app.locals.appTitle = "personal-web";
 // Mongoose models check
 app.use(function(req, res, next) {
   if (!models.User) return next(new Error("No models."))
-  req.models = models;
+  // req.models = models;
   return next();
 });
 
@@ -36,10 +36,10 @@ app.use(session({secret: '2C44774A-D649-4D44-9535-46E296EF984F'}));
 app.use(methodOverride());
 // app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 // app.use(require('angular').middleware(__dirname + 'node_modules'));
-//이 위에 미들웨어는 체크 해봐야 함
-app.use(express.static(path.join(__dirname, 'public'))); //정적파일 활용
+// 이 위에 미들웨어는 체크 해봐야 함
+app.use(express.static(path.join(__dirname, 'public'))); // 정적파일 활용
 // app.use('/scripts', express.static(path.join(__dirname, 'node_modules')));
-//바로 위 미들웨어 동작하지 않는 것 같다;;
+// 바로 위 미들웨어 동작하지 않는 것 같다;;
 
 // Application Routes
 app.use(users);
@@ -48,11 +48,6 @@ app.use(users);
 if (app.get('env') === 'development') {
   app.use(errorHandler());
 }
-
-//앞으로 해야할 것(이 파일에서)
-//앵귤러에서 온 요청 처리할 라우트 설정
-//./routes 폴더에 각 라우트.js 만들기
-//각 라우트.js 에서 몽고디비로 데이터 가져온 후 다시 앵귤러로 보내기
 
 app.listen(app.get('port'), function() {
   console.info('Express server listening on port ' + app.get('port'));

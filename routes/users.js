@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var router = express.Router();
 
-// 모든 유저 반환 라우팅
+// routing for returning all the users
 router.get('/users/users', function(req, res, next) {
   User.find().sort('name.last').exec(function(error, results) {
     if(error) {
@@ -13,7 +13,7 @@ router.get('/users/users', function(req, res, next) {
   });
 });
 
-// 특정 유저 반환 라우팅
+// routing for returning a certain user
 router.get('/users/:userId', function(req, res, next) {
   // url 경로에서 :userId 의 이름은 정하기 나름
   User.findOne({
@@ -22,35 +22,27 @@ router.get('/users/:userId', function(req, res, next) {
     if(error) {
       return next(error);
     }
-    // 유효한 사용자를 찾지 못하면 404를 전송한다
     // if(!results) {
     //   res.send(404);
     // }
 
-    // 유효한 데이터로 응답한다
     res.json(results);
   });
 });
 
-// 유저 추가 라우팅
+// routing for adding an user
 router.post('/users', function (req, res, next) {
   User.create(req.body, function(error, results) {
     if(error) return next(error);
     res.json(results);
   });
-  // if (!req.body.user) return next(new Error('No user payload.'));
-  // var user = req.body.user;
-  // req.models.User.create(user, function(error, userResponse) {
-  //   if (error) return next(error);
-  //   res.send(userResponse);
-  // });
 });
 
-// 특정 유저 업데이트 라우팅
+// routing for updating an user
 router.put('/users/:userId', function(req, res, next) {
   // 다음 행을 제거하면 몽구스가 오류를 던진다
   // 몽고DB ID를 갱신하려 시도하기 때문이다
-  delete req.body._id; //이 행의 역할 정확히 조사하기
+  delete req.body._id; // what is this for?
 
   User.update({
     id: req.params.userId
