@@ -14,10 +14,14 @@ router.get('/users/users', function(req, res, next) {
 });
 
 // routing for returning a certain user
+// login
 router.get('/users/:userId', function(req, res, next) {
   // url 경로에서 :userId 의 이름은 정하기 나름
+  // /users의 users가 곧 mongodb의 collection이 되는 것인가
+
   User.findOne({
     id: req.params.userId
+    // /users/:userId 에서 넘어오는 userId는 어디서 오는 것인가?
   }).exec(function(error, results) {
     if(error) {
       return next(error);

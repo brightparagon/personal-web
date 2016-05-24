@@ -6,33 +6,32 @@ var express = require('express'),
 require('./lib/connection'); // Mongodb connection
 var users = require('./routes/users'); // routes for users
 
-var session = require('express-session'), // find more info about it
+var session = require('express-session'),
   logger = require('morgan'), // leaving log message
   errorHandler = require('errorhandler'),
-  cookieParser = require('cookie-parser'), // roles of cookie-parser & body-parser?
+  cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
+  crypto = require('crypto'),
   methodOverride = require('method-override'); // simulate delete & post method(?)
+
+function hashPW(password) { // encrpyting the password
+  return crypto.createHash('sha256').update(password).
+    digest('base64').toString();
+}
 
 var app = express();
 app.locals.appTitle = "personal-web";
 
-// Mongoose models check
-app.use(function(req, res, next) {
-  if (!models.User) return next(new Error("No models."))
-  // req.models = models;
-  return next();
-});
-
 // All environments
 app.set('port', process.env.PORT || 3000);
 // app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade'); //jade는 나중에 쓰도록 하자(프로젝트를 많이 이해한 뒤에)
+// app.set('view engine', 'jade'); // jade -> later
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser('3CCC4ACD-6ED1-4844-9217-82131BDCB239'));
-app.use(session({secret: '2C44774A-D649-4D44-9535-46E296EF984F'}));
+app.use(cookieParser());
+app.use(session());
 app.use(methodOverride());
 // app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 // app.use(require('angular').middleware(__dirname + 'node_modules'));
