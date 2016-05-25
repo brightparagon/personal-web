@@ -25,7 +25,10 @@ app.factory('userService', ['$resource', function($resource) {
 		},
     update: {
       method: 'PUT'
-    }
+    },
+		get: {
+			method: 'GET'
+		}
   });
 }]);
 
@@ -42,15 +45,21 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 
 	$scope.signin = function() {
 		// 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
-	};
 
-	$scope.signup = function() {
-		//can this part be out of this function?
 		var userInstance = {
 			email: $scope.user.email,
 			password: $scope.user.password
 		};
-		//
+		var newUser = new userService(userInstance);
+
+		newUser.get();
+	};
+
+	$scope.signup = function() {
+		var userInstance = {
+			email: $scope.user.email,
+			password: $scope.user.password
+		};
 		var newUser = new userService(userInstance);
 		newUser.$save(function() {
 			$scope.user.email = '';

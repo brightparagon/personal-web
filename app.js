@@ -11,13 +11,7 @@ var session = require('express-session'),
   errorHandler = require('errorhandler'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
-  crypto = require('crypto'),
   methodOverride = require('method-override'); // simulate delete & post method(?)
-
-function hashPW(password) { // encrpyting the password
-  return crypto.createHash('sha256').update(password).
-    digest('base64').toString();
-}
 
 var app = express();
 app.locals.appTitle = "personal-web";
@@ -31,7 +25,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(session());
+app.use(session({secret: 'individual'}));
 app.use(methodOverride());
 // app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 // app.use(require('angular').middleware(__dirname + 'node_modules'));
