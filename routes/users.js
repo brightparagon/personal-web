@@ -32,20 +32,19 @@ router.get('/users/users', function(req, res, next) {
 // login
 router.get('/users', function(req, res, next) {
   // url 경로에서 :userId 의 이름은 정하기 나름
-  // /users의 users가 곧 mongodb의 collection이 되는 것인가
   // /users/:userId 에서 넘어오는 userId는 어디서 오는 것인가?
+  // 몽구스의 _id와 userId는 서로 다른 것인가?
 
-  User.findOne({
-    email: req.body.email,
-    password: decryptPassword(req.body.password)
-  }).exec(function(error, user) {
+  User.findOne({ //여기서 막혔다
+    email: req.body.email
+  }, function(error, user) {
     if(error) return next(error);
-    // if(!user) return //user 못찾았을 때 무엇을 반환해서 처리할까
-    req.session.user = user;
+    console.log(user.email);
+    res.json(user);
   });
 });
 
-// routing for adding an user
+// sign up
 router.post('/users', function (req, res, next) {
   var user = {
     email: req.body.email,
@@ -69,8 +68,7 @@ router.put('/users/:userId', function(req, res, next) {
     if (error || !results) {
       return next(error);
     }
-    res.send(200);
-    // res.send(response); //200 ? why not send response?
+    res.send(response);
   });
 });
 

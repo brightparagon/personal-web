@@ -25,6 +25,7 @@
   "homepage": "https://github.com/brightlaw/personal-web#readme",
   "dependencies": {
     "angular": "^1.5.3",
+    "angular-cookies": "^1.5.5",
     "angular-route": "^1.5.3",
     "body-parser": "^1.15.0",
     "cookie-parser": "^1.4.1",

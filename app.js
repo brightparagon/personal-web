@@ -6,8 +6,8 @@ var express = require('express'),
 require('./lib/connection'); // Mongodb connection
 var users = require('./routes/users'); // routes for users
 
-var session = require('express-session'),
-  logger = require('morgan'), // leaving log message
+var logger = require('morgan'), // leaving log message
+  // session = require('express-session'), // --> replaced by ngCookies
   errorHandler = require('errorhandler'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
@@ -25,7 +25,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(session({secret: 'individual'}));
+// app.use(session({secret: 'individual'}));
 app.use(methodOverride());
 // app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 // app.use(require('angular').middleware(__dirname + 'node_modules'));
