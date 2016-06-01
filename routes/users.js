@@ -28,9 +28,8 @@ router.get('/users/users', function(req, res, next) {
   });
 });
 
-// routing for returning a certain user
 // login
-router.get('/users', function(req, res, next) {
+router.get('/users/:userId', function(req, res, next) {
   // url 경로에서 :userId 의 이름은 정하기 나름
   // /users/:userId 에서 넘어오는 userId는 어디서 오는 것인가?
   // 몽구스의 _id와 userId는 서로 다른 것인가?
@@ -50,7 +49,7 @@ router.post('/users', function (req, res, next) {
     email: req.body.email,
     password: encryptPassword(req.body.password)
   };
-  User.create(user, function(error, user) {
+  User.create(function(error, user) {
     if(error) return next(error);
     res.json(user);
   });

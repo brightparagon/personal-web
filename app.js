@@ -1,7 +1,6 @@
 var express = require('express'),
   path = require('path'),
-  favicon = require('serve-favicon'),
-  models = require('./models');
+  favicon = require('serve-favicon');
 
 require('./lib/connection'); // Mongodb connection
 var users = require('./routes/users'); // routes for users

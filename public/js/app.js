@@ -46,20 +46,22 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 	$scope.signin = function() {
 		// 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
 
-		userService.get({email: $scope.user.email}, function(user) {
+		userService.get({
+			email: $scope.user.email
+		}, function(user) {
 			console.log('Found ' + user.email);
 			$location.url('/');
 		})
 	};
 
-	$scope.signup = function() {
+	$scope.signup = function() { //mongodb에서 user.find()가 안된다
 		var userInstance = {
 			email: $scope.user.email,
 			password: $scope.user.password
 		};
 		var newUser = new userService(userInstance);
 		newUser.$save(function(user) {
-			// console.log(user.email); // users.js(server side)의 res.json(user)
+			console.log(user.email); // users.js(server side)의 res.json(user)
 			$scope.user.email = '';
 			$scope.user.password = '';
 			$location.url('/');
