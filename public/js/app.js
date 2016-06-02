@@ -19,7 +19,7 @@ app.config(['$routeProvider', function($routeProvider) {
 }]);
 
 app.factory('userService', ['$resource', function($resource) {
-  return $resource('/users/:userId', {}, {
+  return $resource('/users/:userEmail', {}, {
 		save: { // action 이름은 사용자 정의
 			method: 'POST'
 		},
@@ -54,12 +54,12 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 		})
 	};
 
-	$scope.signup = function() { //mongodb에서 user.find()가 안된다
+	$scope.signup = function() {
 		var userInstance = {
 			email: $scope.user.email,
 			password: $scope.user.password
 		};
-		var newUser = new userService(userInstance);
+		var newUser = new userService(userInstance); //userService = $resource
 		newUser.$save(function(user) {
 			console.log(user.email); // users.js(server side)의 res.json(user)
 			$scope.user.email = '';

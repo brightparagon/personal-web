@@ -45,11 +45,11 @@ router.get('/users/:userId', function(req, res, next) {
 
 // sign up
 router.post('/users', function (req, res, next) {
-  var user = {
+  var user = new User({
     email: req.body.email,
     password: encryptPassword(req.body.password)
-  };
-  User.create(function(error, user) {
+  });
+  user.save(function(error, user) {
     if(error) return next(error);
     res.json(user);
   });

@@ -18,6 +18,6 @@ var UserSchema = new Schema({
   //   type: String,
   //   default: 'images/user.png'
   // }
-}, {collection: 'user'});
+});
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema, 'users');
