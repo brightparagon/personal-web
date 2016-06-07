@@ -51,7 +51,7 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 		}, function(user) {
 			console.log('Found ' + user.email);
 			$location.url('/');
-		})
+		});
 	};
 
 	$scope.signup = function() {
@@ -61,7 +61,7 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 		};
 		var newUser = new userService(userInstance); //userService = $resource
 		newUser.$save(function(user) {
-			console.log(user.email); // users.js(server side)의 res.json(user)
+			// console.log(user.email); // users.js(server side)의 res.json(user)
 			$scope.user.email = '';
 			$scope.user.password = '';
 			$location.url('/');
