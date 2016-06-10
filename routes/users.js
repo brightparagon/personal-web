@@ -29,14 +29,11 @@ router.get('/users/users', function(req, res, next) {
 });
 
 // login
-router.get('/users/:userId', function(req, res, next) {
+router.get('/users/:email', function(req, res, next) {
   // url 경로에서 :userId 의 이름은 정하기 나름
   // /users/:userId 에서 넘어오는 userId는 어디서 오는 것인가?
 
-  var userToFind = new User({
-    email: req.body.email,
-  });
-  userToFind.findOne({ // 고쳐야함
+  User.findOne({
     email: req.body.email
   }, function(error, user) {
     if(error) return next(error);

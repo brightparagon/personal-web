@@ -19,8 +19,8 @@ app.config(['$routeProvider', function($routeProvider) {
 }]);
 
 app.factory('userService', ['$resource', function($resource) {
-  return $resource('/users/:userEmail', {}, {
-		save: { // action 이름은 사용자 정의
+  return $resource('/users/:email', {}, {
+		save: {
 			method: 'POST'
 		},
     update: {
@@ -33,7 +33,6 @@ app.factory('userService', ['$resource', function($resource) {
 }]);
 
 app.controller('NewpageCtrl', function($scope) {
-	//for a test
 	$scope.x = 1;
 	$scope.test = function() {
 		$scope.x++;
@@ -41,7 +40,7 @@ app.controller('NewpageCtrl', function($scope) {
 });
 
 app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService', function($scope, $location, $routeParams, userService) {
-	//세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등)
+	//세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등) -> ngShow or ngHide ?
 
 	$scope.signin = function() {
 		// 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
