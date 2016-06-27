@@ -1,16 +1,18 @@
 var express = require('express'),
   path = require('path'),
-  favicon = require('serve-favicon');
+  favicon = require('serve-favicon'),
+  logger = require('morgan'), // leaving log message
+  // session = require('express-session'),
+  errorHandler = require('errorhandler'),
+  cookieParser = require('cookie-parser'),
+  bodyParser = require('body-parser'),
+  methodOverride = require('method-override'), // simulate delete & post method(?)
+  passport = require('passport'); // passport authentication
 
 require('./lib/connection'); // Mongodb connection
 var users = require('./routes/users'); // routes for users
 
-var logger = require('morgan'), // leaving log message
-  // session = require('express-session'), // --> replaced by ngCookies
-  errorHandler = require('errorhandler'),
-  cookieParser = require('cookie-parser'),
-  bodyParser = require('body-parser'),
-  methodOverride = require('method-override'); // simulate delete & post method(?)
+require('./config/passport');
 
 var app = express();
 app.locals.appTitle = "personal-web";
@@ -32,6 +34,9 @@ app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public'))); // 정적파일 활용
 // app.use('/scripts', express.static(path.join(__dirname, 'node_modules')));
 // 바로 위 미들웨어 동작하지 않는 것 같다;;
+
+app.use(passport.initialize()); // passport middleware
+app.use('/', users); // route 폴더에 index.js가 필요해보인다
 
 // Application Routes
 app.use(users);

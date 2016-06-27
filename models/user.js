@@ -44,7 +44,7 @@ UserSchema.methods.generateJwt = function() {
     email: this.email,
     exp: parseInt(expiry.getTime() / 1000), // exp 프로퍼티는 유효기간(expiry)
   }, 'shhhhh');
-  // 'shhhhh'는 임의의 secret key인가?
+  // 'shhhhh'는 임의의 secret key인가?(사용자가 정의?)
   // 서버에서 환경변수로 설정하는 방법은?(코드에 secret key를 넣지 말아야하므로)
 };
 
