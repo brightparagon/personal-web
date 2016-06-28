@@ -32,14 +32,22 @@ app.use(methodOverride());
 // app.use(require('angular').middleware(__dirname + 'node_modules'));
 // 이 위에 미들웨어는 체크 해봐야 함
 app.use(express.static(path.join(__dirname, 'public'))); // 정적파일 활용
-// app.use('/scripts', express.static(path.join(__dirname, 'node_modules')));
+// app.use('/scripts', express.static(path.jsoin(__dirname, 'node_modules')));
 // 바로 위 미들웨어 동작하지 않는 것 같다;;
 
 app.use(passport.initialize()); // passport middleware
-app.use('/', users); // route 폴더에 index.js가 필요해보인다
 
+// route 부분 통일해서 수정해야함
+app.use('/api', users); // route 폴더에 index.js가 필요해보인다
 // Application Routes
 app.use(users);
+
+app.use(function (error, req, res, next) {
+  if (error.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message" : error.name + ": " + error.message});
+  }
+});
 
 // Development only
 if (app.get('env') === 'development') {

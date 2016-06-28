@@ -40,7 +40,8 @@ app.controller('NewpageCtrl', function($scope) {
 });
 
 app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService', function($scope, $location, $routeParams, userService) {
-	//세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등) -> ngShow or ngHide ?
+	// 세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등) -> ngShow or ngHide ?
+	// 정합성 검사는 여기서 한다
 
 	$scope.signin = function() {
 		// 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)

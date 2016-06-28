@@ -10,7 +10,8 @@ var UserSchema = new Schema({
   // },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: { // 추후에 수정(삭제해야함 -> setPassword() 활용)
     type: String,

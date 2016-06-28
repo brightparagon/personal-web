@@ -1,22 +1,29 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
+var passport = require('passport');
+var jwt = require('express-jwt');
 var User = mongoose.model('User');
 var router = express.Router();
-var key = 'myKey';
 
-function encryptPassword(password) {
-  var cipher = crypto.createCipher('aes192', key);
-  cipher.update(password, 'utf8', 'base64');
-  var encryptedPassword = cipher.final('base64');
-  return encryptedPassword;
-}
+var auth = jwt({ // 이 함수를 특정 유저만이 접근해야 하는 라우터에서 사용하면 된다
+  secret: 'shhhhh',
+  userProperty: 'payload' //키, 밸류 이름이 어떻게 정해지고 사용되는지 알아야함
+});
 
-function decryptPassword(password) {
-  return crypto.createDecipher('aes192', key)
-                .update(password, 'base64', 'utf8')
-                .final('utf8');
-}
+// crypto를 스키마에서 사용했으므로 여기선 필요없다
+// var key = 'myKey';
+// function encryptPassword(password) {
+//   var cipher = crypto.createCipher('aes192', key);
+//   cipher.update(password, 'utf8', 'base64');
+//   var encryptedPassword = cipher.final('base64');
+//   return encryptedPassword;
+// }
+// function decryptPassword(password) {
+//   return crypto.createDecipher('aes192', key)
+//                 .update(password, 'base64', 'utf8')
+//                 .final('utf8');
+// }
 
 // returning all the users
 router.get('/users/users', function(req, res, next) {
@@ -29,34 +36,64 @@ router.get('/users/users', function(req, res, next) {
 });
 
 // login
-router.get('/users/:email', function(req, res, next) {
+router.get('/users/:email', function(req, res, next) { // url 경로 수정해야함 -> /api
   // url 경로에서 :userId 의 이름은 정하기 나름
-  // /users/:userId 에서 넘어오는 userId는 어디서 오는 것인가?
+  // /users/:userId 에서 userId는 ObjectId인가? 아니면 사용자 정의 property인가?
 
-  User.findOne({
-    email: req.body.email
-  }, function(error, user) {
-    if(error) return next(error);
-    res.json(user);
-  });
+  // User.findOne({
+  //   email: req.body.email // 우선은 email(현재로선 unique)로 단일 row 검색
+  // }, function(error, user) {
+  //   if(error) return next(error);
+  //   res.json(user);
+  // });
+
+  passport.authenticate('local', function(error, user, info){
+    var token;
+
+    // If Passport throws/catches an error
+    if (error) {
+      res.status(404).json(error);
+      return;
+    }
+
+    // If a user is found
+    if(user){
+      token = user.generateJwt();
+      res.status(200);
+      res.json({
+        "token" : token
+      });
+    } else {
+      // If user is not found
+      res.status(401).json(info);
+    }
+  })(req, res);
 });
 
 // sign up
 router.post('/users', function (req, res, next) {
-  // 여기서도 정합성 검사를 해야한다.
-  // 같은 이메일이 존재하면 저장을 하지 말아야 한다.
 
-  var user = new User({
-    email: req.body.email,
-    password: encryptPassword(req.body.password)
-  });
-  user.save(function(error, user) {
+  // var user = new User({ // 기존 방식
+  //   email: req.body.email,
+  //   password: encryptPassword(req.body.password)
+  // });
+  var user = new User(); // 새로운 방식
+  user.email = req.body.email;
+  user.setPassword(req.body.password);
+
+  user.save(function(error, user) { // 저장 후 user를 callback으로 다시 받아야할 필요가 있는가?
     if(error) return next(error);
-    res.json(user);
+    var token;
+    token = user.generateJwt();
+    res.status(200);
+    res.json({
+      "token" : token
+    });
+    // res.json(user);
   });
 });
 
-// routing for updating an user
+// update
 router.put('/users/:userId', function(req, res, next) {
   // 다음 행을 제거하면 몽구스가 오류를 던진다
   // 몽고DB ID를 갱신하려 시도하기 때문이다
