@@ -33,7 +33,6 @@
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "express-jwt": "^3.4.0",
-    "express-session": "^1.13.0",
     "favicon": "0.0.2",
     "jade": "^1.11.0",
     "jsonwebtoken": "^7.0.1",
