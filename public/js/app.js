@@ -13,13 +13,17 @@ app.config(['$routeProvider', function($routeProvider) {
 			templateUrl: 'signin.html',
 			controller: 'SignCtrl'
 		})
+		.when('/secretpage', {
+			templateUrl: 'secretpage.html',
+			controller: 'UserCtrl'
+		})
 		.otherwise({
 			redirectTo: '/'
 		});
 }]);
 
 app.factory('userService', ['$resource', function($resource) {
-  return $resource('/users/:email', {}, {
+  return $resource('/users/:email', {}, { //// /api 경로로 수정
 		save: {
 			method: 'POST'
 		},
@@ -84,20 +88,10 @@ app.controller('NewpageCtrl', function($scope) {
 	};
 });
 
-app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService', function($scope, $location, $routeParams, userService) {
+app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService',
+ 'authentication', function($scope, $location, $routeParams, userService, authentication) {
 	// 세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등) -> ngShow or ngHide ?
 	// 정합성 검사는 여기서 한다
-
-	$scope.signin = function() {
-		// 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
-
-		userService.get({
-			email: $scope.user.email
-		}, function(user) {
-			console.log('Found ' + user.email);
-			$location.url('/');
-		});
-	};
 
 	$scope.signup = function() {
 		var userInstance = {
@@ -107,11 +101,33 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 		var newUser = new userService(userInstance); //userService = $resource
 		newUser.$save(function(user) {
 			// console.log(user.email); // users.js(server side)의 res.json(user)
+
+			authentication.saveToken(user.token); // save token of a user
+
 			$scope.user.email = '';
 			$scope.user.password = '';
 			$location.url('/');
 		});
 	};
+
+	$scope.signin = function() {
+		// 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
+
+		userService.get({
+			email: $scope.user.email
+		}, function(user) {
+			console.log('Found ' + user.email);
+
+			authentication.saveToken(user.token);
+
+			$location.url('/');
+		});
+	};
+
+	$scope.logout = function() {
+		// 추가적인 로직이 필요할 수도 있다
+		$window.localStorage.removeItem('mean-token');
+	}
 }]);
 
 // function _handleError(response) {

@@ -28,11 +28,25 @@ var auth = jwt({ // 이 함수를 특정 유저만이 접근해야 하는 라우
 // returning all the users
 router.get('/users/users', function(req, res, next) {
   User.find().sort('name.last').exec(function(error, results) {
-    if(error) {
-      return next(error);
-    }
+    if(error) return next(error);
     res.json(results);
   });
+});
+
+// secret page
+router.get('/api/users', function(req, res, next) { // url 경로 수정
+  if (!req.payload._id) {
+    res.status(401).json({
+      "message" : "UnauthorizedError: private profile"
+    });
+  } else {
+    User
+      .findById(req.payload._id) // _id --> ObjectId?
+      .exec(function(error, user) {
+        if(error) return next(error);
+        res.status(200).json(user);
+      });
+  }
 });
 
 // login
