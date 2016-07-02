@@ -11,9 +11,14 @@ app.config(['$routeProvider', function($routeProvider) {
 			controller: 'NewpageCtrl',
 			controllerAs: 'vm'
 		})
+		.when('/signup', {
+			templateUrl: 'signup.html',
+			controller: 'SignUpCtrl',
+			controllerAs: 'vm'
+		})
 		.when('/signin', {
 			templateUrl: 'signin.html',
-			controller: 'SignCtrl',
+			controller: 'SignInCtrl',
 			controllerAs: 'vm'
 		})
 		.when('/secretpage', {
@@ -92,8 +97,33 @@ app.controller('NewpageCtrl', function($scope) {
 	};
 });
 
-app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService',
- 'authentication', function($scope, $location, $routeParams, userService, authentication) {
+app.controller('SignInCtrl', ['$scope', '$location', '$routeParams', 'userService',
+	'authentication', function($scope, $location, $routeParams, userService, authentication) {
+	 var vm = this;
+
+	 vm.credentials = {
+		 email : "",
+		 password : ""
+	 };
+
+	 vm.onSubmit = function() {
+		 // 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
+
+		 //Passport(서버측)과 어떻게 연결시킬지 고민 후 수정
+ 		userService.get({
+ 			email: $scope.user.email
+ 		}, function(user) {
+ 			console.log('Found ' + user.email);
+
+ 			authentication.saveToken(user.token);
+
+ 			$location.url('/');
+ 		});
+	 }
+	}])
+
+app.controller('SignUpCtrl',  ['$scope', '$location', '$routeParams', 'userService',
+	'authentication', function($scope, $location, $routeParams, userService, authentication) {
 	// 세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등) -> ngShow or ngHide ?
 	// 정합성 검사는 여기서 한다
 
@@ -110,25 +140,18 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 		newUser.$save(function(user) {
 			// console.log(user.email); // users.js(server side)의 res.json(user)
 
-			authentication.saveToken(user.token); // save a token of a user
+			authentication
+				.saveToken(user.token) // save a token of a user
+				.error(function(err) {
+					alert(err);
+				})
+				.then(function() {
+					$location.path('secretpage');
+				});
 
-			$location.url('/');
+			// $location.url('/');
 		});
 	}
-
-	$scope.signin = function() {
-		// 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
-
-		userService.get({
-			email: $scope.user.email
-		}, function(user) {
-			console.log('Found ' + user.email);
-
-			authentication.saveToken(user.token);
-
-			$location.url('/');
-		});
-	};
 
 	$scope.logout = function() {
 		// 추가적인 로직이 필요할 수도 있다
