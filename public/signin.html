@@ -1,18 +1,21 @@
 <div>
   <h2>Sign in</h2>
   <br>
-  <p>
-    <input type="text" ng-model="user.email" placeholder="email">
-  </p>
-  <p>
-    <input type="password" ng-model="user.password" placeholder="password">
-  </p>
-  <br>
-  <p>
-    <!-- <input type="submit" name="signin" value="Sign in"> -->
-    <button type="button" ng-click="signin()">Sign in</button>
-  </p>
-  <p>
-    <input type="button" value="Or sign up" ng-click="signup()">
-  </p>
+  <div class="container">
+    <form ng-submit="vm.onSubmit()">
+      <div class="form-group">
+        <label for="name">Full name</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter your name" ng-model="vm.credentials.name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="vm.credentials.email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" ng-model="vm.credentials.password">
+      </div>
+      <button type="submit" class="btn btn-default">Register!</button>
+    </form>
+  </div>
 </div>

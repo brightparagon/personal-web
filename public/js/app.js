@@ -1,21 +1,25 @@
-var app = angular.module('blogapp', ['ngRoute', 'ngResource', 'ngCookies']);
+var app = angular.module('blogapp', ['ngRoute', 'ngResource']);
 
 app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
 		.when('/', {
-			templateUrl: 'home.html'
+			templateUrl: 'home.html',
+			controllerAs: 'vm'
 		})
 		.when('/newpage', {
 			templateUrl: 'newpage.html',
-			controller: 'NewpageCtrl'
+			controller: 'NewpageCtrl',
+			controllerAs: 'vm'
 		})
 		.when('/signin', {
 			templateUrl: 'signin.html',
-			controller: 'SignCtrl'
+			controller: 'SignCtrl',
+			controllerAs: 'vm'
 		})
 		.when('/secretpage', {
 			templateUrl: 'secretpage.html',
-			controller: 'UserCtrl'
+			controller: 'UserCtrl',
+			controllerAs: 'vm'
 		})
 		.otherwise({
 			redirectTo: '/'
@@ -23,7 +27,7 @@ app.config(['$routeProvider', function($routeProvider) {
 }]);
 
 app.factory('userService', ['$resource', function($resource) {
-  return $resource('/users/:email', {}, { //// /api 경로로 수정
+  return $resource('/api/users/:email', {}, {
 		save: {
 			method: 'POST'
 		},
@@ -93,22 +97,24 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 	// 세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등) -> ngShow or ngHide ?
 	// 정합성 검사는 여기서 한다
 
-	$scope.signup = function() {
-		var userInstance = {
-			email: $scope.user.email,
-			password: $scope.user.password
-		};
-		var newUser = new userService(userInstance); //userService = $resource
+	var vm = this;
+
+	vm.credentials = {
+		name : "",
+		email : "",
+		password : ""
+	};
+
+	vm.onSubmit = function() {
+		var newUser = new userService(vm.credentials);
 		newUser.$save(function(user) {
 			// console.log(user.email); // users.js(server side)의 res.json(user)
 
-			authentication.saveToken(user.token); // save token of a user
+			authentication.saveToken(user.token); // save a token of a user
 
-			$scope.user.email = '';
-			$scope.user.password = '';
 			$location.url('/');
 		});
-	};
+	}
 
 	$scope.signin = function() {
 		// 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
@@ -127,6 +133,8 @@ app.controller('SignCtrl',  ['$scope', '$location', '$routeParams', 'userService
 	$scope.logout = function() {
 		// 추가적인 로직이 필요할 수도 있다
 		$window.localStorage.removeItem('mean-token');
+		// 주입된 authentication에 $window가 있으면 작동될 것이고
+		// 작동이 안되면 authentication service 로직에 logout 라우팅을 추가 해야된다
 	}
 }]);
 

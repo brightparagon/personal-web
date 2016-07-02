@@ -2,7 +2,6 @@ var express = require('express'),
   path = require('path'),
   favicon = require('serve-favicon'),
   logger = require('morgan'), // leaving log message
-  // session = require('express-session'),
   errorHandler = require('errorhandler'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),

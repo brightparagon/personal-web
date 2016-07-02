@@ -6,27 +6,14 @@ var jwt = require('express-jwt');
 var User = mongoose.model('User');
 var router = express.Router();
 
-var auth = jwt({ // 이 함수를 특정 유저만이 접근해야 하는 라우터에서 사용하면 된다
+// 이 함수를 특정 유저만이 접근해야 하는 라우터에서 사용하면 된다
+var auth = jwt({
   secret: 'shhhhh',
   userProperty: 'payload' //키, 밸류 이름이 어떻게 정해지고 사용되는지 알아야함
 });
 
-// crypto를 스키마에서 사용했으므로 여기선 필요없다
-// var key = 'myKey';
-// function encryptPassword(password) {
-//   var cipher = crypto.createCipher('aes192', key);
-//   cipher.update(password, 'utf8', 'base64');
-//   var encryptedPassword = cipher.final('base64');
-//   return encryptedPassword;
-// }
-// function decryptPassword(password) {
-//   return crypto.createDecipher('aes192', key)
-//                 .update(password, 'base64', 'utf8')
-//                 .final('utf8');
-// }
-
 // returning all the users
-router.get('/users/users', function(req, res, next) {
+router.get('/api/users/users', function(req, res, next) {
   User.find().sort('name.last').exec(function(error, results) {
     if(error) return next(error);
     res.json(results);
@@ -34,7 +21,7 @@ router.get('/users/users', function(req, res, next) {
 });
 
 // secret page
-router.get('/api/users', function(req, res, next) { // url 경로 수정
+router.get('/api/users/:email', function(req, res, next) { // url 경로 수정
   if (!req.payload._id) {
     res.status(401).json({
       "message" : "UnauthorizedError: private profile"
@@ -50,7 +37,7 @@ router.get('/api/users', function(req, res, next) { // url 경로 수정
 });
 
 // login
-router.get('/users/:email', function(req, res, next) { // url 경로 수정해야함 -> /api
+router.get('/api/users/:email', function(req, res, next) {
   // url 경로에서 :userId 의 이름은 정하기 나름
   // /users/:userId 에서 userId는 ObjectId인가? 아니면 사용자 정의 property인가?
 
@@ -61,6 +48,8 @@ router.get('/users/:email', function(req, res, next) { // url 경로 수정해�
   //   res.json(user);
   // });
 
+  // user를 어떻게 넘겨줄 것인가?
+  // passport 작동 방식 how?
   passport.authenticate('local', function(error, user, info){
     var token;
 
@@ -85,7 +74,7 @@ router.get('/users/:email', function(req, res, next) { // url 경로 수정해�
 });
 
 // sign up
-router.post('/users', function (req, res, next) {
+router.post('/api/users', function (req, res, next) {
 
   // var user = new User({ // 기존 방식
   //   email: req.body.email,
@@ -108,7 +97,7 @@ router.post('/users', function (req, res, next) {
 });
 
 // update
-router.put('/users/:userId', function(req, res, next) {
+router.put('/api/users/:userId', function(req, res, next) {
   // 다음 행을 제거하면 몽구스가 오류를 던진다
   // 몽고DB ID를 갱신하려 시도하기 때문이다
   delete req.body._id;
