@@ -6,10 +6,10 @@ var jwt = require('express-jwt');
 var User = mongoose.model('User');
 var router = express.Router();
 
-// 이 함수를 특정 유저만이 접근해야 하는 라우터에서 사용하면 된다
+// used as a parameter to a function that needs authorization
 var auth = jwt({
   secret: 'shhhhh',
-  userProperty: 'payload' //키, 밸류 이름이 어떻게 정해지고 사용되는지 알아야함
+  userProperty: 'payload' // need to find how key & value is set and used
 });
 
 // returning all the users
@@ -21,7 +21,7 @@ router.get('/api/users/users', function(req, res, next) {
 });
 
 // secret page
-router.get('/api/users/:email', function(req, res, next) { // url 경로 수정
+router.get('/api/users/secretpage', auth, function(req, res, next) {
   if (!req.payload._id) {
     res.status(401).json({
       "message" : "UnauthorizedError: private profile"
@@ -37,20 +37,18 @@ router.get('/api/users/:email', function(req, res, next) { // url 경로 수정
 });
 
 // login
-router.get('/api/users/:email', function(req, res, next) {
+router.get('/api/users', function(req, res, next) {
   // url 경로에서 :userId 의 이름은 정하기 나름
   // /users/:userId 에서 userId는 ObjectId인가? 아니면 사용자 정의 property인가?
 
   // User.findOne({
-  //   email: req.body.email // 우선은 email(현재로선 unique)로 단일 row 검색
+  //   email: req.body.email // find a user by email address(unique as now)
   // }, function(error, user) {
   //   if(error) return next(error);
   //   res.json(user);
   // });
 
-  // user를 어떻게 넘겨줄 것인가?
-  // passport 작동 방식 how?
-  passport.authenticate('local', function(error, user, info){
+  passport.authenticate('local', function(error, user, info){ // this user passed by passport
     var token;
 
     // If Passport throws/catches an error
@@ -71,20 +69,23 @@ router.get('/api/users/:email', function(req, res, next) {
       res.status(401).json(info);
     }
   })(req, res);
+
+  // how this passport.authenticate() work? -> see api doc of passport module
 });
 
 // sign up
 router.post('/api/users', function (req, res, next) {
 
-  // var user = new User({ // 기존 방식
+  // var user = new User({ // previous way
   //   email: req.body.email,
   //   password: encryptPassword(req.body.password)
   // });
-  var user = new User(); // 새로운 방식
+
+  var user = new User(); // new way
   user.email = req.body.email;
   user.setPassword(req.body.password);
 
-  user.save(function(error, user) { // 저장 후 user를 callback으로 다시 받아야할 필요가 있는가?
+  user.save(function(error, user) {
     if(error) return next(error);
     var token;
     token = user.generateJwt();
@@ -92,7 +93,6 @@ router.post('/api/users', function (req, res, next) {
     res.json({
       "token" : token
     });
-    // res.json(user);
   });
 });
 

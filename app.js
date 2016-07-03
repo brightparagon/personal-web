@@ -1,7 +1,7 @@
 var express = require('express'),
   path = require('path'),
   favicon = require('serve-favicon'),
-  logger = require('morgan'), // leaving log message
+  logger = require('morgan'), // leave log message
   errorHandler = require('errorhandler'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
@@ -30,9 +30,9 @@ app.use(methodOverride());
 // app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 // app.use(require('angular').middleware(__dirname + 'node_modules'));
 // 이 위에 미들웨어는 체크 해봐야 함
-app.use(express.static(path.join(__dirname, 'public'))); // 정적파일 활용
+app.use(express.static(path.join(__dirname, 'public'))); // use static files
 // app.use('/scripts', express.static(path.jsoin(__dirname, 'node_modules')));
-// 바로 위 미들웨어 동작하지 않는 것 같다;;
+// it above doesn't work
 
 app.use(passport.initialize()); // passport middleware
 

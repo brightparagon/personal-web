@@ -5,6 +5,7 @@ app.config(['$routeProvider', function($routeProvider) {
 		.when('/', {
 			templateUrl: 'home.html',
 			controllerAs: 'vm'
+			// this vm is used by angular.js as the object in html
 		})
 		.when('/newpage', {
 			templateUrl: 'newpage.html',
@@ -23,7 +24,7 @@ app.config(['$routeProvider', function($routeProvider) {
 		})
 		.when('/secretpage', {
 			templateUrl: 'secretpage.html',
-			controller: 'UserCtrl',
+			controller: 'secretCtrl',
 			controllerAs: 'vm'
 		})
 		.otherwise({
@@ -31,8 +32,18 @@ app.config(['$routeProvider', function($routeProvider) {
 		});
 }]);
 
+app.directive('navigation', function navigation() {
+	return {
+		restrict: 'EA',
+		templateUrl: 'navigation.html',
+		controller: 'navigationCtrl as navvm'
+	};
+});
+
 app.factory('userService', ['$resource', function($resource) {
   return $resource('/api/users/:email', {}, {
+		// can :email be ignored? like /api/users/secret ?
+
 		save: {
 			method: 'POST'
 		},
@@ -43,6 +54,21 @@ app.factory('userService', ['$resource', function($resource) {
 			method: 'GET'
 		}
   });
+}]);
+
+app.service('getData', ['$resource', 'authentication', // can use userService instead of $resouce
+	function($resource, authentication) {
+	var getProfile = function () {
+	  return $resource.get('/api/users/profile', {
+	    headers: {
+	      Authorization: 'Bearer '+ authentication.getToken()
+	    } // how this "headers" works?
+	  });
+  };
+
+  return {
+    getProfile : getProfile
+  };
 }]);
 
 app.service('authentication', ['$http', '$window', function($http, $window) {
@@ -90,6 +116,27 @@ app.service('authentication', ['$http', '$window', function($http, $window) {
   };
 }]);
 
+app.controller('navigationCtrl', ['$location', 'authentication',
+	function($location, authentication) {
+		var vm = this;
+	  vm.isLoggedIn = authentication.isLoggedIn();
+	  vm.currentUser = authentication.currentUser();
+}]);
+
+app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
+	var vm = this;
+
+  vm.user = {};
+
+  getData.getProfile()
+  	.success(function(data) {
+      vm.user = data;
+    })
+    .error(function(err) {
+      console.log(err);
+    });
+}]);
+
 app.controller('NewpageCtrl', function($scope) {
 	$scope.x = 1;
 	$scope.test = function() {
@@ -107,26 +154,26 @@ app.controller('SignInCtrl', ['$scope', '$location', '$routeParams', 'userServic
 	 };
 
 	 vm.onSubmit = function() {
-		 // 폼 모두 입력 했는지 검사(빈칸, 이메일 정합성 등)
+		 // need to check whether all forms are written
 
-		 //Passport(서버측)과 어떻게 연결시킬지 고민 후 수정
- 		userService.get({
- 			email: $scope.user.email
- 		}, function(user) {
- 			console.log('Found ' + user.email);
-
- 			authentication.saveToken(user.token);
-
- 			$location.url('/');
- 		});
-	 }
-	}])
+		 // need modification after understanding how to connect with passport(server-side)
+		 userService.get(vm.credentials, function(data) {
+			 authentication
+			 	.saveToken(data.token)
+				.error(function(err) {
+					alert(err);
+				})
+				.then(function() {
+					$location.path('/secretpage');
+					// how to move to /secretpage ? both html & route
+					// is it interrelated with $resource?
+				});
+		 });
+	 };
+}]);
 
 app.controller('SignUpCtrl',  ['$scope', '$location', '$routeParams', 'userService',
 	'authentication', function($scope, $location, $routeParams, userService, authentication) {
-	// 세션에 따라 home.html 버튼 다르게 보이기(로그인/글쓰기 버튼 등등) -> ngShow or ngHide ?
-	// 정합성 검사는 여기서 한다
-
 	var vm = this;
 
 	vm.credentials = {
@@ -136,29 +183,39 @@ app.controller('SignUpCtrl',  ['$scope', '$location', '$routeParams', 'userServi
 	};
 
 	vm.onSubmit = function() {
+		// need to check whether all forms are written
+
 		var newUser = new userService(vm.credentials);
-		newUser.$save(function(user) {
+		newUser.$save(function(data) {
 			// console.log(user.email); // users.js(server side)의 res.json(user)
 
 			authentication
-				.saveToken(user.token) // save a token of a user
+				.saveToken(data.token) // save a token of a user
 				.error(function(err) {
 					alert(err);
 				})
 				.then(function() {
-					$location.path('secretpage');
+					// $location.path('secretpage'); // does it work? -> check
+					$location.path('/secretpage');
 				});
-
-			// $location.url('/');
 		});
-	}
+	};
 
 	$scope.logout = function() {
-		// 추가적인 로직이 필요할 수도 있다
+		// mayby additional logic is needed
 		$window.localStorage.removeItem('mean-token');
 		// 주입된 authentication에 $window가 있으면 작동될 것이고
 		// 작동이 안되면 authentication service 로직에 logout 라우팅을 추가 해야된다
-	}
+	};
+}]);
+
+app.run(['$rootScope', '$location', 'authentication',
+	function($rootScope, $location, authentication) {
+	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+	  if ($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
+	  	$location.path('/');
+    }
+  });
 }]);
 
 // function _handleError(response) {
