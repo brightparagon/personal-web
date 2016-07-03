@@ -30,6 +30,7 @@ UserSchema.methods.setPassword = function(password){
   this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 
   // this.salt와 this.hash가 어떻게 스키마의 프로퍼티를 지칭하는가?
+  // could be related to javascript's 'this'
 };
 
 UserSchema.methods.validPassword = function(password) {

@@ -5,21 +5,21 @@ app.config(['$routeProvider', function($routeProvider) {
 		.when('/', {
 			templateUrl: 'home.html',
 			controllerAs: 'vm'
-			// this vm is used by angular.js as the object in html
+			// this vm is used by angular.js as the object in html to controll data
 		})
 		.when('/newpage', {
 			templateUrl: 'newpage.html',
-			controller: 'NewpageCtrl',
+			controller: 'newpageCtrl',
 			controllerAs: 'vm'
 		})
 		.when('/signup', {
 			templateUrl: 'signup.html',
-			controller: 'SignUpCtrl',
+			controller: 'signUpCtrl',
 			controllerAs: 'vm'
 		})
 		.when('/signin', {
 			templateUrl: 'signin.html',
-			controller: 'SignInCtrl',
+			controller: 'signInCtrl',
 			controllerAs: 'vm'
 		})
 		.when('/secretpage', {
@@ -41,7 +41,7 @@ app.directive('navigation', function navigation() {
 });
 
 app.factory('userService', ['$resource', function($resource) {
-  return $resource('/api/users/:email', {}, {
+  return $resource('/api/users/', {}, { // url part maybe needs fixing
 		// can :email be ignored? like /api/users/secret ?
 
 		save: {
@@ -59,7 +59,7 @@ app.factory('userService', ['$resource', function($resource) {
 app.service('getData', ['$resource', 'authentication', // can use userService instead of $resouce
 	function($resource, authentication) {
 	var getProfile = function () {
-	  return $resource.get('/api/users/profile', {
+	  return $resource.get('/api/users/secretpage', {
 	    headers: {
 	      Authorization: 'Bearer '+ authentication.getToken()
 	    } // how this "headers" works?
@@ -125,29 +125,26 @@ app.controller('navigationCtrl', ['$location', 'authentication',
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
 	var vm = this;
-
   vm.user = {};
-
   getData.getProfile()
   	.success(function(data) {
       vm.user = data;
     })
     .error(function(err) {
-      console.log(err);
+      alert(err);
     });
 }]);
 
-app.controller('NewpageCtrl', function($scope) {
+app.controller('newpageCtrl', function($scope) {
 	$scope.x = 1;
 	$scope.test = function() {
 		$scope.x++;
 	};
 });
 
-app.controller('SignInCtrl', ['$scope', '$location', '$routeParams', 'userService',
+app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userService',
 	'authentication', function($scope, $location, $routeParams, userService, authentication) {
 	 var vm = this;
-
 	 vm.credentials = {
 		 email : "",
 		 password : ""
@@ -172,10 +169,9 @@ app.controller('SignInCtrl', ['$scope', '$location', '$routeParams', 'userServic
 	 };
 }]);
 
-app.controller('SignUpCtrl',  ['$scope', '$location', '$routeParams', 'userService',
+app.controller('signUpCtrl',  ['$scope', '$location', '$routeParams', 'userService',
 	'authentication', function($scope, $location, $routeParams, userService, authentication) {
 	var vm = this;
-
 	vm.credentials = {
 		name : "",
 		email : "",
@@ -185,6 +181,8 @@ app.controller('SignUpCtrl',  ['$scope', '$location', '$routeParams', 'userServi
 	vm.onSubmit = function() {
 		// need to check whether all forms are written
 
+		// till here working
+		
 		var newUser = new userService(vm.credentials);
 		newUser.$save(function(data) {
 			// console.log(user.email); // users.js(server side)의 res.json(user)
