@@ -82,6 +82,7 @@ router.post('/api/users', function (req, res, next) {
   // });
 
   var user = new User(); // new way
+  user.name = req.body.name;
   user.email = req.body.email;
   user.setPassword(req.body.password);
 

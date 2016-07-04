@@ -40,37 +40,6 @@ app.directive('navigation', function navigation() {
 	};
 });
 
-app.factory('userService', ['$resource', function($resource) {
-  return $resource('/api/users/', {}, { // url part maybe needs fixing
-		// can :email be ignored? like /api/users/secret ?
-
-		save: {
-			method: 'POST'
-		},
-    update: {
-      method: 'PUT'
-    },
-		get: {
-			method: 'GET'
-		}
-  });
-}]);
-
-app.service('getData', ['$resource', 'authentication', // can use userService instead of $resouce
-	function($resource, authentication) {
-	var getProfile = function () {
-	  return $resource.get('/api/users/secretpage', {
-	    headers: {
-	      Authorization: 'Bearer '+ authentication.getToken()
-	    } // how this "headers" works?
-	  });
-  };
-
-  return {
-    getProfile : getProfile
-  };
-}]);
-
 app.service('authentication', ['$http', '$window', function($http, $window) {
 	var saveToken = function(token) {
 		$window.localStorage['user-token'] = token;
@@ -116,6 +85,37 @@ app.service('authentication', ['$http', '$window', function($http, $window) {
   };
 }]);
 
+app.factory('userService', ['$resource', function($resource) {
+  return $resource('/api/users/', {}, { // url part maybe needs fixing
+		// can :email be ignored? like /api/users/secret ?
+
+		save: {
+			method: 'POST'
+		},
+    update: {
+      method: 'PUT'
+    },
+		get: {
+			method: 'GET'
+		}
+  });
+}]);
+
+app.service('getData', ['$resource', 'authentication', // can use userService instead of $resouce
+	function($resource, authentication) {
+	var getProfile = function () {
+	  return $resource.get('/api/users/secretpage', {
+	    headers: {
+	      Authorization: 'Bearer '+ authentication.getToken()
+	    } // how this "headers" works?
+	  });
+  };
+
+  return {
+    getProfile : getProfile
+  };
+}]);
+
 app.controller('navigationCtrl', ['$location', 'authentication',
 	function($location, authentication) {
 		var vm = this;
@@ -149,7 +149,6 @@ app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userServic
 		 email : "",
 		 password : ""
 	 };
-
 	 vm.onSubmit = function() {
 		 // need to check whether all forms are written
 
@@ -169,21 +168,19 @@ app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userServic
 	 };
 }]);
 
-app.controller('signUpCtrl',  ['$scope', '$location', '$routeParams', 'userService',
-	'authentication', function($scope, $location, $routeParams, userService, authentication) {
+app.controller('signUpCtrl',  ['$scope', '$location', '$resource',
+	'authentication', function($scope, $location, $resource, authentication) {
 	var vm = this;
 	vm.credentials = {
 		name : "",
 		email : "",
 		password : ""
 	};
-
-	vm.onSubmit = function() {
+	vm.onSubmit = function() { // 여기서부터 수정
 		// need to check whether all forms are written
 
-		// till here working
-		
-		var newUser = new userService(vm.credentials);
+		// var newUser = new userService(vm.credentials);
+		var newUser = $resource('/api/users', vm.credentials);
 		newUser.$save(function(data) {
 			// console.log(user.email); // users.js(server side)의 res.json(user)
 
@@ -194,7 +191,7 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$routeParams', 'userServi
 				})
 				.then(function() {
 					// $location.path('secretpage'); // does it work? -> check
-					$location.path('/secretpage');
+					$location.url('/api/users/secretpage');
 				});
 		});
 	};

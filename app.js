@@ -39,7 +39,7 @@ app.use(passport.initialize()); // passport middleware
 // route 부분 통일해서 수정해야함
 app.use('/api', users); // route 폴더에 index.js가 필요해보인다
 // Application Routes
-app.use(users);
+// app.use(users);
 
 app.use(function (error, req, res, next) {
   if (error.name === 'UnauthorizedError') {
