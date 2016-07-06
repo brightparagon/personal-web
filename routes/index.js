@@ -8,16 +8,12 @@ var auth = jwt({
   userProperty: 'payload'
 });
 
-// Fix after this
 // users.js -> divides functions into individual js files
 
 var ctrlUser = require('./users');
 
-// profile
-router.get('/profile', auth, ctrlProfile.profileRead);
-
-// authentication
-router.post('/register', ctrlAuth.register);
-router.post('/login', ctrlAuth.login);
+router.post('/signup', ctrlUser.signup);
+router.post('/login', ctrlUser.login);
+router.get('/profile', auth, ctrlUser.profileRead);
 
 module.exports = router;

@@ -2,10 +2,6 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
-///////////////////////////////////////////////////////////////////////////
-// rewrite functions
-///////////////////////////////////////////////////////////////////////////
-
 // return all users
 module.exports.getUsers = function(req, res, next) {
   User.find().sort('name.last').exec(function(error, results) {
@@ -85,10 +81,8 @@ module.exports.signup = function(req, res, next) {
     });
   });
 };
-///////////////////////////////////////////////////////////////////////////
 
-// update
-router.put('/api/users/:userId', function(req, res, next) {
+module.exports.userModify = function(req, res, next) {
   // 다음 행을 제거하면 몽구스가 오류를 던진다
   // 몽고DB ID를 갱신하려 시도하기 때문이다
   delete req.body._id;
@@ -101,6 +95,4 @@ router.put('/api/users/:userId', function(req, res, next) {
     }
     res.send(response);
   });
-});
-
-module.exports = router;
+};

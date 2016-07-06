@@ -9,9 +9,10 @@ var express = require('express'),
   passport = require('passport'); // passport authentication
 
 require('./lib/connection'); // Mongodb connection
-var users = require('./routes/users'); // routes for users
-
 require('./config/passport');
+
+// bring in the routes for the API
+var routesApi = require('./routes/index');
 
 var app = express();
 app.locals.appTitle = "personal-web";
@@ -37,10 +38,8 @@ app.use(express.static(path.join(__dirname, 'public'))); // use static files
 // passport middleware
 app.use(passport.initialize());
 
-// route 부분 통일해서 수정해야함
-app.use('/api', users); // route 폴더에 index.js가 필요해보인다
-// Application Routes
-// app.use(users);
+// route
+app.use('/api', routesApi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
