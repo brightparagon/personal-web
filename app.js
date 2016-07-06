@@ -32,15 +32,24 @@ app.use(methodOverride());
 // 이 위에 미들웨어는 체크 해봐야 함
 app.use(express.static(path.join(__dirname, 'public'))); // use static files
 // app.use('/scripts', express.static(path.jsoin(__dirname, 'node_modules')));
-// it above doesn't work
+// it doesn't work
 
-app.use(passport.initialize()); // passport middleware
+// passport middleware
+app.use(passport.initialize());
 
 // route 부분 통일해서 수정해야함
 app.use('/api', users); // route 폴더에 index.js가 필요해보인다
 // Application Routes
 // app.use(users);
 
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// error handler for the unauthorized access
 app.use(function (error, req, res, next) {
   if (error.name === 'UnauthorizedError') {
     res.status(401);
@@ -48,10 +57,21 @@ app.use(function (error, req, res, next) {
   }
 });
 
-// Development only
+// development error handler
+// print stacktrace
 if (app.get('env') === 'development') {
   app.use(errorHandler());
 }
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
 
 app.listen(app.get('port'), function() {
   console.info('Express server listening on port ' + app.get('port'));

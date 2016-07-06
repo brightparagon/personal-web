@@ -4,11 +4,10 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 passport.use(new LocalStrategy({
-    // usernameField : 'email' // usernameField need to be modified
-    emailField : 'email'
+    usernameField : 'email'
   },
-  function(email, password, done) {
-    User.findOne({ email: email }, function (err, user) { // property email could be a problem
+  function(username, password, done) {
+    User.findOne({ email: username }, function (err, user) {
       if (err) { return done(err); }
       // Return if user not found in database
       if (!user) {
@@ -23,7 +22,8 @@ passport.use(new LocalStrategy({
         });
       }
       // If credentials are correct, return the user object
-      return done(null, user); // the first param(null) is an error object 
+      return done(null, user);
+      // the first param(null) is an error object
     });
   }
 ));
