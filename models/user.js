@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 var Schema = mongoose.Schema;
-var UserSchema = new Schema({
+var userSchema = new Schema({
   // id: {
   //   type: String,
   //   required: true,
@@ -25,7 +25,7 @@ var UserSchema = new Schema({
   // }
 });
 
-UserSchema.methods.setPassword = function(password){
+userSchema.methods.setPassword = function(password){
   this.salt = crypto.randomBytes(16).toString('hex');
   this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 
@@ -33,23 +33,24 @@ UserSchema.methods.setPassword = function(password){
   // could be related to javascript's 'this'
 };
 
-UserSchema.methods.validPassword = function(password) {
+userSchema.methods.validPassword = function(password) {
   var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
   return this.hash === hash;
 };
 
-UserSchema.methods.generateJwt = function() {
+userSchema.methods.generateJwt = function() {
   var expiry = new Date();
-  expiry.setDate(expiry.getDate() + 7); // 유효기간은 유저 생성 후 일주일
+  expiry.setDate(expiry.getDate() + 7); // lasts a week
 
   return jwt.sign({
     _id: this._id, // ObjectId ?
     email: this.email,
-    exp: parseInt(expiry.getTime() / 1000), // exp 프로퍼티는 유효기간(expiry)
+    name: this.name,
+    exp: parseInt(expiry.getTime() / 1000) // expiry
   }, 'shhhhh');
 
   // 'shhhhh'는 임의의 secret key인가?(사용자가 정의?)
   // 서버에서 환경변수로 설정하는 방법은?(코드에 secret key를 넣지 말아야하므로)
 };
 
-module.exports = mongoose.model('User', UserSchema, 'users');
+module.exports = mongoose.model('User', userSchema, 'users');

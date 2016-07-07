@@ -17,12 +17,18 @@ module.exports.profileRead = function(req, res, next) {
       "message" : "UnauthorizedError: private profile"
     });
   } else {
-    User
-      .findById(req.payload._id) // _id --> ObjectId?
-      .exec(function(error, user) {
-        if(error) return next(error);
-        res.status(200).json(user);
-      });
+    // User
+    //   .findById(req.payload._id) // _id --> ObjectId?
+    //   .exec(function(error, user) {
+    //     if(error) return next(error);
+    //     res.status(200).json(user);
+    //   });
+    User.findOne({
+      email: req.payload.email
+    }, function(error, user) {
+      if(error) return next(error);
+      res.json(user);
+    });
   }
 };
 

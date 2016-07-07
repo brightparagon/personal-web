@@ -14,6 +14,6 @@ var ctrlUser = require('./users');
 
 router.post('/signup', ctrlUser.signup);
 router.post('/login', ctrlUser.login);
-router.get('/profile', auth, ctrlUser.profileRead);
+router.get('/secretpage', auth, ctrlUser.profileRead);
 
 module.exports = router;

@@ -104,7 +104,7 @@ app.factory('userService', ['$resource', function($resource) {
 app.service('getData', ['$resource', 'authentication', // can use userService instead of $resouce
 	function($resource, authentication) {
 	var getProfile = function () {
-	  return $resource.get('/api/users/secretpage', {
+	  return $resource.get('/api/secretpage', {
 	    headers: {
 	      Authorization: 'Bearer '+ authentication.getToken()
 	    } // how this "headers" works?
@@ -160,7 +160,7 @@ app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userServic
 					alert(err);
 				})
 				.then(function() {
-					$location.path('/secretpage');
+					$location.path('secretpage');
 					// how to move to /secretpage ? both html & route
 					// is it interrelated with $resource?
 				});
@@ -176,11 +176,12 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource',
 		email : "",
 		password : ""
 	};
-	vm.onSubmit = function() { // 여기서부터 수정
+	vm.onSubmit = function() {
 		// need to check whether all forms are written
 
+		console.log('submit');
 		// var newUser = new userService(vm.credentials);
-		var newUser = $resource('/api/users', vm.credentials);
+		var newUser = $resource('/api/signup', vm.credentials);
 		newUser.$save(function(data) {
 			// console.log(user.email); // users.js(server side)의 res.json(user)
 
@@ -190,8 +191,8 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource',
 					alert(err);
 				})
 				.then(function() {
-					// $location.path('secretpage'); // does it work? -> check
-					$location.url('/api/users/secretpage');
+					$location.path('secretpage');
+					// $location.url('/api/users/secretpage');
 				});
 		});
 	};
