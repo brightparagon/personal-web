@@ -42,24 +42,30 @@ app.use(passport.initialize());
 app.use('/api', routesApi);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 // error handler for the unauthorized access
-app.use(function (error, req, res, next) {
-  if (error.name === 'UnauthorizedError') {
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
     res.status(401);
-    res.json({"message" : error.name + ": " + error.message});
+    res.json({"message" : err.name + ": " + err.message});
   }
 });
 
 // development error handler
 // print stacktrace
 if (app.get('env') === 'development') {
-  app.use(errorHandler());
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
 }
 
 // production error handler

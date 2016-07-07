@@ -46,7 +46,7 @@ userSchema.methods.generateJwt = function() {
     _id: this._id, // ObjectId ?
     email: this.email,
     name: this.name,
-    exp: parseInt(expiry.getTime() / 1000) // expiry
+    exp: parseInt(expiry.getTime() / 1000), // expiry
   }, 'shhhhh');
 
   // 'shhhhh'는 임의의 secret key인가?(사용자가 정의?)

@@ -86,7 +86,7 @@ app.service('authentication', ['$http', '$window', function($http, $window) {
 }]);
 
 app.factory('userService', ['$resource', function($resource) {
-  return $resource('/api/users/', {}, { // url part maybe needs fixing
+  return $resource('/api', {}, { // url part maybe needs fixing
 		// can :email be ignored? like /api/users/secret ?
 
 		save: {
@@ -101,10 +101,11 @@ app.factory('userService', ['$resource', function($resource) {
   });
 }]);
 
+// fix here
 app.service('getData', ['$resource', 'authentication', // can use userService instead of $resouce
 	function($resource, authentication) {
 	var getProfile = function () {
-	  return $resource.get('/api/secretpage', {
+	  return $resource('/api/secretpage', { // header might be a problem
 	    headers: {
 	      Authorization: 'Bearer '+ authentication.getToken()
 	    } // how this "headers" works?
@@ -180,9 +181,10 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource',
 		// need to check whether all forms are written
 
 		console.log('submit');
+
 		// var newUser = new userService(vm.credentials);
-		var newUser = $resource('/api/signup', vm.credentials);
-		newUser.$save(function(data) {
+		var newUser = $resource('/api/signup');
+		newUser.$save(vm.credentials, function(data) {
 			// console.log(user.email); // users.js(server side)의 res.json(user)
 
 			authentication
@@ -213,8 +215,3 @@ app.run(['$rootScope', '$location', 'authentication',
     }
   });
 }]);
-
-// function _handleError(response) {
-//   // TODO: 여기서 뭔가를 수행한다. 대부분 오류 페이지로 리디렉트한다.
-//   console.log('%c ' + response, 'color:red');
-// };

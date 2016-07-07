@@ -4,7 +4,7 @@ var User = mongoose.model('User');
 
 // return all users
 module.exports.getUsers = function(req, res, next) {
-  User.find().sort('name.last').exec(function(error, results) {
+  User.find().sort('name').exec(function(error, results) {
     if(error) return next(error);
     res.json(results);
   });
@@ -17,18 +17,18 @@ module.exports.profileRead = function(req, res, next) {
       "message" : "UnauthorizedError: private profile"
     });
   } else {
-    // User
-    //   .findById(req.payload._id) // _id --> ObjectId?
-    //   .exec(function(error, user) {
-    //     if(error) return next(error);
-    //     res.status(200).json(user);
-    //   });
-    User.findOne({
-      email: req.payload.email
-    }, function(error, user) {
-      if(error) return next(error);
-      res.json(user);
-    });
+    User
+      .findById(req.payload._id) // _id --> ObjectId?
+      .exec(function(error, user) {
+        if(error) return next(error);
+        res.status(200).json(user);
+      });
+    // User.findOne({
+    //   email: req.payload.email
+    // }, function(error, user) {
+    //   if(error) return next(error);
+    //   res.json(user);
+    // });
   }
 };
 
@@ -41,7 +41,7 @@ module.exports.login = function(req, res, next) {
   //   res.json(user);
   // });
 
-  passport.authenticate('local', function(error, user, info){ // this user passed by passport
+  passport.authenticate('local', function(error, user, info){
     var token;
 
     // If Passport throws/catches an error
@@ -88,17 +88,17 @@ module.exports.signup = function(req, res, next) {
   });
 };
 
-module.exports.userModify = function(req, res, next) {
-  // 다음 행을 제거하면 몽구스가 오류를 던진다
-  // 몽고DB ID를 갱신하려 시도하기 때문이다
-  delete req.body._id;
-
-  User.update({
-    id: req.params.userId
-  }, req.body, function(error, numberAffected, response) {
-    if (error || !results) {
-      return next(error);
-    }
-    res.send(response);
-  });
-};
+// module.exports.userModify = function(req, res, next) {
+//   // 다음 행을 제거하면 몽구스가 오류를 던진다
+//   // 몽고DB ID를 갱신하려 시도하기 때문이다
+//   delete req.body._id;
+//
+//   User.update({
+//     id: req.params.userId
+//   }, req.body, function(error, numberAffected, response) {
+//     if (error || !results) {
+//       return next(error);
+//     }
+//     res.send(response);
+//   });
+// };
