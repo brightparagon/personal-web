@@ -87,8 +87,6 @@ app.service('authentication', ['$http', '$window', function($http, $window) {
 
 app.factory('userService', ['$resource', function($resource) {
   return $resource('/api', {}, { // url part maybe needs fixing
-		// can :email be ignored? like /api/users/secret ?
-
 		save: {
 			method: 'POST'
 		},
@@ -102,23 +100,21 @@ app.factory('userService', ['$resource', function($resource) {
 }]);
 
 // fix here
-app.service('getData', ['$resource', 'authentication', // can use userService instead of $resouce
-	function($resource, authentication) {
-	var getProfile = function () {
-	  return $resource('/api/secretpage', { // header might be a problem
-	    headers: {
-	      Authorization: 'Bearer '+ authentication.getToken()
-	    } // how this "headers" works?
-	  });
-  };
+app.service('getData', ['$http', 'authentication', function($http, authentication) {
+	var getProfile = function() {
+		return $http.get('/api/secretpage', {
+		  headers: {
+		    Authorization: 'Bearer '+ authentication.getToken()
+		  }
+		});
+	};
 
   return {
     getProfile : getProfile
   };
 }]);
 
-app.controller('navigationCtrl', ['$location', 'authentication',
-	function($location, authentication) {
+app.controller('navigationCtrl', ['$location', 'authentication', function($location, authentication) {
 		var vm = this;
 	  vm.isLoggedIn = authentication.isLoggedIn();
 	  vm.currentUser = authentication.currentUser();
@@ -143,8 +139,7 @@ app.controller('newpageCtrl', function($scope) {
 	};
 });
 
-app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userService',
-	'authentication', function($scope, $location, $routeParams, userService, authentication) {
+app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userService', 'authentication', function($scope, $location, $routeParams, userService, authentication) {
 	 var vm = this;
 	 vm.credentials = {
 		 email : "",
@@ -169,34 +164,42 @@ app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userServic
 	 };
 }]);
 
-app.controller('signUpCtrl',  ['$scope', '$location', '$resource',
-	'authentication', function($scope, $location, $resource, authentication) {
+app.controller('signUpCtrl',  ['$scope', '$location', '$resource', 'authentication', function($scope, $location, $resource, authentication) {
 	var vm = this;
 	vm.credentials = {
 		name : "",
 		email : "",
 		password : ""
 	};
+
 	vm.onSubmit = function() {
 		// need to check whether all forms are written
 
 		console.log('submit');
 
-		// var newUser = new userService(vm.credentials);
-		var newUser = $resource('/api/signup');
-		newUser.$save(vm.credentials, function(data) {
-			// console.log(user.email); // users.js(server side)의 res.json(user)
+		var User = $resource('/api/signup');
+		var newUser = new User(vm.credentials);
 
-			authentication
-				.saveToken(data.token) // save a token of a user
-				.error(function(err) {
-					alert(err);
-				})
-				.then(function() {
-					$location.path('secretpage');
-					// $location.url('/api/users/secretpage');
-				});
+		newUser.$save(function(data) {
+			authentication.saveToken(data.token);
+			$location.path('secretpage');
 		});
+
+		// var newUser = new userService(vm.credentials);
+		// var newUser = $resource('/api/signup');
+		// newUser.$save(vm.credentials, function(data) {
+		// 	// console.log(user.email); // users.js(server side)의 res.json(user)
+		//
+		// 	authentication
+		// 		.saveToken(data.token) // save a token of a user
+		// 		.error(function(err) {
+		// 			alert(err);
+		// 		})
+		// 		.then(function() {
+		// 			$location.path('secretpage');
+		// 			// $location.url('/api/users/secretpage');
+		// 		});
+		// });
 	};
 
 	$scope.logout = function() {
@@ -210,7 +213,7 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource',
 app.run(['$rootScope', '$location', 'authentication',
 	function($rootScope, $location, authentication) {
 	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-	  if ($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
+	  if($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
 	  	$location.path('/');
     }
   });
