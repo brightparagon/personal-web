@@ -9,7 +9,7 @@ var express = require('express'),
   passport = require('passport'); // passport authentication
 
 require('./lib/connection'); // Mongodb connection
-require('./config/passport');
+require('./config/passport'); // Passport for authentication
 
 // bring in the routes for the API
 var routesApi = require('./routes/index');

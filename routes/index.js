@@ -13,7 +13,7 @@ var auth = jwt({
 var ctrlUser = require('./users');
 
 router.post('/signup', ctrlUser.signup);
-router.post('/login', ctrlUser.login);
+router.get('/login', ctrlUser.login);
 router.get('/secretpage', auth, ctrlUser.profileRead);
 
 module.exports = router;

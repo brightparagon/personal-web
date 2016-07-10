@@ -40,7 +40,7 @@ app.directive('navigation', function navigation() {
 	};
 });
 
-app.service('authentication', ['$http', '$window', function($http, $window) {
+app.service('authentication', ['$window', function($window) {
 	var saveToken = function(token) {
 		$window.localStorage['user-token'] = token;
 	};
@@ -53,7 +53,10 @@ app.service('authentication', ['$http', '$window', function($http, $window) {
 		var token = getToken();
 		var payload;
 
+		console.log('authentication called');
 		if(token) {
+			console.log('token : ' + token);
+
 			payload = token.split('.')[1];
 			payload = $window.atob(payload);
 			payload = JSON.parse(payload);
@@ -71,9 +74,10 @@ app.service('authentication', ['$http', '$window', function($http, $window) {
 			payload = $window.atob(payload);
 			payload = JSON.parse(payload);
 
-			return {
-				email : payload.email
-			};
+			// return {
+			// 	email : payload.email
+			// };
+			return payload;
 		}
 	};
 
@@ -99,7 +103,7 @@ app.factory('userService', ['$resource', function($resource) {
   });
 }]);
 
-// fix here
+// fix here !!!
 app.service('getData', ['$http', 'authentication', function($http, authentication) {
 	var getProfile = function() {
 		return $http.get('/api/secretpage', {
@@ -114,10 +118,14 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
-app.controller('navigationCtrl', ['$location', 'authentication', function($location, authentication) {
+app.controller('navigationCtrl', ['$location', 'authentication', '$window', function($location, authentication, $window) {
 		var vm = this;
 	  vm.isLoggedIn = authentication.isLoggedIn();
 	  vm.currentUser = authentication.currentUser();
+
+		vm.signOut = function() {
+			$window.localStorage.removeItem('user-token');
+		};
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
@@ -128,7 +136,7 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
       vm.user = data;
     })
     .error(function(err) {
-      alert(err);
+      alert('secretCtrl error occurs : ' +err);
     });
 }]);
 
@@ -202,12 +210,12 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource', 'authenticati
 		// });
 	};
 
-	$scope.logout = function() {
-		// mayby additional logic is needed
-		$window.localStorage.removeItem('mean-token');
-		// 주입된 authentication에 $window가 있으면 작동될 것이고
-		// 작동이 안되면 authentication service 로직에 logout 라우팅을 추가 해야된다
-	};
+	// $scope.logout = function() {
+	// 	// mayby additional logic is needed
+	// 	$window.localStorage.removeItem('mean-token');
+	// 	// 주입된 authentication에 $window가 있으면 작동될 것이고
+	// 	// 작동이 안되면 authentication service 로직에 logout 라우팅을 추가 해야된다
+	// };
 }]);
 
 app.run(['$rootScope', '$location', 'authentication',

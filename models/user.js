@@ -46,11 +46,12 @@ userSchema.methods.generateJwt = function() {
     _id: this._id, // ObjectId ?
     email: this.email,
     name: this.name,
-    exp: parseInt(expiry.getTime() / 1000), // expiry
+    exp: parseInt(expiry.getTime() / 1000) // expiry
   }, 'shhhhh');
 
   // 'shhhhh'는 임의의 secret key인가?(사용자가 정의?)
   // 서버에서 환경변수로 설정하는 방법은?(코드에 secret key를 넣지 말아야하므로)
 };
 
-module.exports = mongoose.model('User', userSchema, 'users');
+module.exports = mongoose.model('User', userSchema);
+// mongoose.model('User', userSchema, 'different schema name you want');
