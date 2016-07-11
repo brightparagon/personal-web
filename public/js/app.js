@@ -49,6 +49,10 @@ app.service('authentication', ['$window', function($window) {
 		return $window.localStorage['user-token'];
 	};
 
+	var signOut = function() {
+		$window.localStorage.removeItem('user-token');
+	};
+
 	var isLoggedIn = function() {
 		var token = getToken();
 		var payload;
@@ -69,26 +73,27 @@ app.service('authentication', ['$window', function($window) {
 
 	var currentUser = function() {
 		if(isLoggedIn()){
+			console.log('currentUser called');
+
 			var token = getToken();
 			var payload = token.split('.')[1];
 			payload = $window.atob(payload);
 			payload = JSON.parse(payload);
 
-			// return {
-			// 	email : payload.email
-			// };
 			return payload;
 		}
 	};
 
 	return {
     currentUser : currentUser,
+		signOut : signOut,
     saveToken : saveToken,
     getToken : getToken,
     isLoggedIn : isLoggedIn
   };
 }]);
 
+// modify it
 app.factory('userService', ['$resource', function($resource) {
   return $resource('/api', {}, { // url part maybe needs fixing
 		save: {
@@ -103,7 +108,9 @@ app.factory('userService', ['$resource', function($resource) {
   });
 }]);
 
-// fix here !!!
+// fix here !!! -> the problem
+// don't need at this time
+// understand how this workds with auth
 app.service('getData', ['$http', 'authentication', function($http, authentication) {
 	var getProfile = function() {
 		return $http.get('/api/secretpage', {
@@ -122,10 +129,7 @@ app.controller('navigationCtrl', ['$location', 'authentication', '$window', func
 		var vm = this;
 	  vm.isLoggedIn = authentication.isLoggedIn();
 	  vm.currentUser = authentication.currentUser();
-
-		vm.signOut = function() {
-			$window.localStorage.removeItem('user-token');
-		};
+		vm.signOut = authentication.signOut();
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
@@ -133,10 +137,13 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
   vm.user = {};
   getData.getProfile()
   	.success(function(data) {
+			console.log('getProfile successful');
+
       vm.user = data;
     })
     .error(function(err) {
       alert('secretCtrl error occurs : ' +err);
+			// fix here !!!
     });
 }]);
 
@@ -183,8 +190,6 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource', 'authenticati
 	vm.onSubmit = function() {
 		// need to check whether all forms are written
 
-		console.log('submit');
-
 		var User = $resource('/api/signup');
 		var newUser = new User(vm.credentials);
 
@@ -221,6 +226,10 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource', 'authenticati
 app.run(['$rootScope', '$location', 'authentication',
 	function($rootScope, $location, authentication) {
 	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+		console.log('routeChangeStart called');
+		// if it doesn't work -> make a new structure of app.js(self-invocative)
+		// even if it works -> do that later
+
 	  if($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
 	  	$location.path('/');
     }

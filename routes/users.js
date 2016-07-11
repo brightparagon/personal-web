@@ -13,10 +13,16 @@ module.exports.getUsers = function(req, res, next) {
 };
 
 // profile
+
+// fix here !!!
+
 module.exports.profileRead = function(req, res, next) {
   console.log('server secretpage');
 
+  // If no user ID exists in the JWT return a 401
   if (!req.payload._id) {
+    console.log('unauthorized');
+
     res.status(401).json({
       "message" : "UnauthorizedError: private profile"
     });
@@ -39,6 +45,9 @@ module.exports.profileRead = function(req, res, next) {
 };
 
 // log in
+
+// fix here !!!
+
 module.exports.login = function(req, res, next) {
   // User.findOne({
   //   email: req.body.email // find a user by email address(unique as now)
@@ -59,6 +68,7 @@ module.exports.login = function(req, res, next) {
     }
 
     // If a user is found
+    // this user casted by passport.js
     if(user){
       token = user.generateJwt();
       res.status(200);
