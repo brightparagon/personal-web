@@ -108,9 +108,8 @@ app.factory('userService', ['$resource', function($resource) {
   });
 }]);
 
-// fix here !!! -> the problem
-// don't need at this time
-// understand how this workds with auth
+// understand how $http.get part is authorized
+// & how this works with auth
 app.service('getData', ['$http', 'authentication', function($http, authentication) {
 	var getProfile = function() {
 		return $http.get('/api/secretpage', {
@@ -129,12 +128,18 @@ app.controller('navigationCtrl', ['$location', 'authentication', '$window', func
 		var vm = this;
 	  vm.isLoggedIn = authentication.isLoggedIn();
 	  vm.currentUser = authentication.currentUser();
-		vm.signOut = authentication.signOut();
+		vm.signOut = function() {
+			authentication.signOut();
+			$location.path('/');
+		};
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
 	var vm = this;
   vm.user = {};
+
+	// once getData.getProfile is calle, it will return the user object if the user exists
+	// but, how is it going to call or be linked to success or error function here?
   getData.getProfile()
   	.success(function(data) {
 			console.log('getProfile successful');
@@ -143,7 +148,6 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
     })
     .error(function(err) {
       alert('secretCtrl error occurs : ' +err);
-			// fix here !!!
     });
 }]);
 
@@ -174,6 +178,8 @@ app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userServic
 					$location.path('secretpage');
 					// how to move to /secretpage ? both html & route
 					// is it interrelated with $resource?
+					// answer : this is done by $location helper object
+					// see the functions like $location.url(), path() in the Node.js doc page
 				});
 		 });
 	 };
@@ -214,21 +220,15 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource', 'authenticati
 		// 		});
 		// });
 	};
-
-	// $scope.logout = function() {
-	// 	// mayby additional logic is needed
-	// 	$window.localStorage.removeItem('mean-token');
-	// 	// 주입된 authentication에 $window가 있으면 작동될 것이고
-	// 	// 작동이 안되면 authentication service 로직에 logout 라우팅을 추가 해야된다
-	// };
 }]);
 
+// make a new structure of app.js later(in a self-invocative way)
 app.run(['$rootScope', '$location', 'authentication',
 	function($rootScope, $location, authentication) {
 	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
 		console.log('routeChangeStart called');
-		// if it doesn't work -> make a new structure of app.js(self-invocative)
-		// even if it works -> do that later
+		// every move or change to any pages will be calling this $on(it is made to do that)
+		// even the first access to this web will call this method
 
 	  if($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
 	  	$location.path('/');
