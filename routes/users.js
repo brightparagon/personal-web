@@ -48,7 +48,7 @@ module.exports.profileRead = function(req, res, next) {
 
 // fix here !!!
 
-module.exports.login = function(req, res, next) {
+module.exports.signIn = function(req, res, next) {
   // User.findOne({
   //   email: req.body.email // find a user by email address(unique as now)
   // }, function(error, user) {
@@ -56,7 +56,7 @@ module.exports.login = function(req, res, next) {
   //   res.json(user);
   // });
 
-  console.log('server log in');
+  console.log('server sign in');
 
   passport.authenticate('local', function(error, user, info){
     var token;
@@ -84,7 +84,7 @@ module.exports.login = function(req, res, next) {
   // how this passport.authenticate() work? -> see api doc of passport module
 };
 
-module.exports.signup = function(req, res, next) {
+module.exports.signUp = function(req, res, next) {
   // var user = new User({ // previous way
   //   email: req.body.email,
   //   password: encryptPassword(req.body.password)

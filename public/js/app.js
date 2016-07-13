@@ -132,6 +132,9 @@ app.controller('navigationCtrl', ['$location', 'authentication', '$window', func
 			authentication.signOut();
 			$location.path('/');
 		};
+		vm.init = function() {
+			vm.isLoggedIn = authentication.isLoggedIn();
+		};
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {

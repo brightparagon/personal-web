@@ -12,8 +12,8 @@ var auth = jwt({
 
 var ctrlUser = require('./users');
 
-router.post('/signup', ctrlUser.signup);
-router.get('/login', ctrlUser.login);
+router.post('/signup', ctrlUser.signUp);
+router.get('/signin', ctrlUser.signIn);
 router.get('/secretpage', auth, ctrlUser.profileRead);
 
 module.exports = router;
