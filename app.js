@@ -1,15 +1,15 @@
-var express = require('express'),
-  path = require('path'),
-  favicon = require('serve-favicon'),
-  logger = require('morgan'), // leave log message
-  errorHandler = require('errorhandler'),
-  cookieParser = require('cookie-parser'),
-  bodyParser = require('body-parser'),
-  methodOverride = require('method-override'), // simulate delete & post method(?)
-  passport = require('passport'); // passport authentication
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan'); // leave log message
+var errorHandler = require('errorhandler');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override'); // simulate delete & post method(?)
+var passport = require('passport'); // passport authentication
 
-require('./lib/connection'); // Mongodb connection
-require('./config/passport'); // Passport for authentication
+require('./lib/connection'); // MongoDB connection
+require('./config/passport');
 
 // bring in the routes for the API
 var routesApi = require('./routes/index');

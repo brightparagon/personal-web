@@ -32,6 +32,19 @@ app.config(['$routeProvider', function($routeProvider) {
 		});
 }]);
 
+app.run(['$rootScope', '$location', 'authentication',
+	function($rootScope, $location, authentication) {
+	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+		console.log('routeChangeStart called');
+		// every move or change to any pages will be calling this $on(it is made to do that)
+		// even the first access to this web will call this method
+
+	  if($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
+	  	$location.path('/');
+    }
+  });
+}]);
+
 app.directive('navigation', function navigation() {
 	return {
 		restrict: 'EA',
@@ -124,17 +137,20 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
-app.controller('navigationCtrl', ['$location', 'authentication', '$window', function($location, authentication, $window) {
-		var vm = this;
-	  vm.isLoggedIn = authentication.isLoggedIn();
-	  vm.currentUser = authentication.currentUser();
-		vm.signOut = function() {
+app.controller('navigationCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
+		// var vm = this;
+	  // vm.isLoggedIn = authentication.isLoggedIn();
+	  // vm.currentUser = authentication.currentUser();
+		$scope.isLoggedIn = authentication.isLoggedIn();
+		$scope.currentUser = authentication.currentUser();
+		$scope.signOut = function() {
 			authentication.signOut();
 			$location.path('/');
 		};
-		vm.init = function() {
-			vm.isLoggedIn = authentication.isLoggedIn();
-		};
+		// vm.signOut = function() {
+		// 	authentication.signOut();
+		// 	$location.path('/');
+		// };
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
@@ -223,18 +239,4 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource', 'authenticati
 		// 		});
 		// });
 	};
-}]);
-
-// make a new structure of app.js later(in a self-invocative way)
-app.run(['$rootScope', '$location', 'authentication',
-	function($rootScope, $location, authentication) {
-	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-		console.log('routeChangeStart called');
-		// every move or change to any pages will be calling this $on(it is made to do that)
-		// even the first access to this web will call this method
-
-	  if($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
-	  	$location.path('/');
-    }
-  });
 }]);
