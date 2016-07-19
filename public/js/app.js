@@ -4,6 +4,7 @@ app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
 		.when('/', {
 			templateUrl: 'home.html',
+			controller: 'mainCtrl',
 			controllerAs: 'vm'
 			// this vm is used by angular.js as the object in html to controll data
 		})
@@ -49,7 +50,8 @@ app.directive('navigation', function navigation() {
 	return {
 		restrict: 'EA',
 		templateUrl: 'navigation.html',
-		controller: 'navigationCtrl as navvm'
+		controller: 'navigationCtrl',
+		controllerAs: 'navvm'
 	};
 });
 
@@ -137,20 +139,33 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
-app.controller('navigationCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
-		// var vm = this;
-	  // vm.isLoggedIn = authentication.isLoggedIn();
-	  // vm.currentUser = authentication.currentUser();
-		$scope.isLoggedIn = authentication.isLoggedIn();
-		$scope.currentUser = authentication.currentUser();
-		$scope.signOut = function() {
+app.controller('mainCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
+	var vm = this;
+}]);
+
+app.controller('navigationCtrl', ['$rootScope', '$location', 'authentication', function($rootScope, $location, authentication) {
+		var vm = this;
+	  vm.isLoggedIn = authentication.isLoggedIn();
+	  vm.currentUser = authentication.currentUser();
+
+		vm.signOut = function() {
 			authentication.signOut();
+			$rootScope.$broadcast('userLoggedOut'); // add an array of STRING to Config later
 			$location.path('/');
+			// $location.url('/');
 		};
-		// vm.signOut = function() {
-		// 	authentication.signOut();
-		// 	$location.path('/');
-		// };
+
+		$rootScope.$on('userLoggedIn', function() {
+			// refresh navigation when an user logs in
+			vm.isLoggedIn = authentication.isLoggedIn();
+		  vm.currentUser = authentication.currentUser();
+		});
+
+		$rootScope.$on('userLoggedOut', function() {
+			// refresh navigation when an user logs out
+			vm.isLoggedIn = authentication.isLoggedIn();
+		  vm.currentUser = authentication.currentUser();
+		});
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
@@ -204,7 +219,7 @@ app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userServic
 	 };
 }]);
 
-app.controller('signUpCtrl',  ['$scope', '$location', '$resource', 'authentication', function($scope, $location, $resource, authentication) {
+app.controller('signUpCtrl',  ['$rootScope', '$location', '$resource', 'authentication', function($rootScope, $location, $resource, authentication) {
 	var vm = this;
 	vm.credentials = {
 		name : "",
@@ -221,6 +236,7 @@ app.controller('signUpCtrl',  ['$scope', '$location', '$resource', 'authenticati
 		newUser.$save(function(data) {
 			authentication.saveToken(data.token);
 			$location.path('secretpage');
+			$rootScope.$broadcast('userLoggedIn');
 		});
 
 		// var newUser = new userService(vm.credentials);
