@@ -3,22 +3,24 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Brigtlaw's blog</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">  <!--role?-->
-    
+    <title>Brigtlaw's blog</title>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/flatly/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
   </head>
-  <body class="container">
+  <body>
     <header>
       <h2>Brigtlaw's blog</h2>
       <br>
-      <ul class="nav nav-pills">
+      <!-- <ul class="nav nav-pills">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="#/newpage">A New page</a></li>
-        <li><a href="#/signin" style="margin-left:55em; background:#f0e68c">Sign in</a></li>
+        <li><a href="#/secretpage">Authorized only</a></li>
+        <li><a href="#/signin" style="background:#f0e68c">Sign in</a></li>
+        <li><a href="#/signup" style="background:#f0e68c">Sign up</a></li>
       </ul>
-      <br>
+      <br> -->
+      <navigation></navigation>
     </header>
     <div ng-view></div>
     <footer style="text-align:center">
@@ -35,7 +37,9 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.js"></script>
     <script src="//code.angularjs.org/1.2.25/angular-route.js"></script>
     <script src="//code.angularjs.org/1.2.25/angular-resource.js"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-cookies.js"></script> -->
     <script src="js/app.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="js/jquery-2.2.2.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css"> -->
   </body>
 </html>

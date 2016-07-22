@@ -140,7 +140,7 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
 }]);
 
 app.controller('mainCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
-	var vm = this;
+
 }]);
 
 app.controller('navigationCtrl', ['$rootScope', '$location', 'authentication', function($rootScope, $location, authentication) {
@@ -172,7 +172,7 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
 	var vm = this;
   vm.user = {};
 
-	// once getData.getProfile is calle, it will return the user object if the user exists
+	// once getData.getProfile is called, it will return the user object if the user exists
 	// but, how is it going to call or be linked to success or error function here?
   getData.getProfile()
   	.success(function(data) {

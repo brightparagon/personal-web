@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override'); // simulate delete & post method(?)
 var passport = require('passport'); // passport authentication
 
-require('./lib/connection'); // MongoDB connection
+require('./mongodb/connection'); // MongoDB connection
 require('./config/passport');
 
 // bring in the routes for the API
@@ -28,12 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use(session({secret: 'individual'}));
 app.use(methodOverride());
-// app.use(require('stylus').middleware(path.join(__dirname, 'public')));
-// app.use(require('angular').middleware(__dirname + 'node_modules'));
-// 이 위에 미들웨어는 체크 해봐야 함
 app.use(express.static(path.join(__dirname, 'public'))); // use static files
-// app.use('/scripts', express.static(path.jsoin(__dirname, 'node_modules')));
-// it doesn't work
+app.use(express.static(path.join(__dirname, 'node_modules')));
+
 
 // passport middleware
 app.use(passport.initialize());
