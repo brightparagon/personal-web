@@ -29,8 +29,6 @@ app.use(cookieParser());
 // app.use(session({secret: 'individual'}));
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public'))); // use static files
-app.use(express.static(path.join(__dirname, 'node_modules')));
-
 
 // passport middleware
 app.use(passport.initialize());

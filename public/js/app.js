@@ -1,4 +1,4 @@
-var app = angular.module('blogapp', ['ngRoute', 'ngResource']);
+var app = angular.module('blogapp', ['ngRoute', 'ngResource', 'ngMaterial']);
 
 app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
