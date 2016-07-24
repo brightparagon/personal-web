@@ -33,6 +33,12 @@ app.config(['$routeProvider', function($routeProvider) {
 		});
 }]);
 
+app.config(['$mdThemingProvider', function($mdThemingProvider) {
+	$mdThemingProvider.theme('default')
+  	.primaryPalette('green')
+    .accentPalette('teal');
+}]);
+
 app.run(['$rootScope', '$location', 'authentication',
 	function($rootScope, $location, authentication) {
 	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {

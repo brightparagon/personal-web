@@ -1,32 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="blogapp">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">  <!--role?-->
 
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-    <link rel="stylesheet" href="/lib/angular-material/angular-material.css"/>
-    <link rel="stylesheet" href="/css/style.css"/>
-
-    <style type="text/css">
-        /**
-         * Hide when Angular is not yet loaded and initialized
-         */
-        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-          display: none !important;
-        }
-    </style>
+    <link rel="stylesheet" href="lib/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
 
     <title>Brigtlaw's blog</title>
   </head>
-  <body ng-app="blogapp" layout="column" ng-cloak>
-    <header>
-      <!-- <h2>Brigtlaw's blog</h2>
-      <br> -->
-      <navigation></navigation>
-    </header>
-    <div ng-view></div>
+  <body layout="column" ng-cloak>
+
+    <div flex layout="row">
+      <md-content class="md-padding">
+        <md-nav-bar nav-bar-aria-label="navigation links">
+          <md-nav-item md-nav-click="goto('page1')" name="home">Home</md-nav-item>
+          <md-nav-item ng-show="navvm.isLoggedIn"
+              md-nav-click="goto('page2')" name="profile">{{ navvm.currentUser.name }}</md-nav-item>
+          <md-nav-item md-nav-click="goto('page3')" name="signup">Sign up</md-nav-item>
+          <md-nav-item ng-hide="navvm.isLoggedIn"
+              md-nav-click="goto('page3')" name="signin">Sign in</md-nav-item>
+          <md-nav-item ng-show="navvm.isLoggedIn"
+              md-nav-click="navvm.signOut()" name="signout">Sign out</md-nav-item>
+        </md-nav-bar>
+      </md-content>
+    </div>
+
+    <div flex layout="row">
+      <md-content flex id="content">
+          <div ng-view></div>
+      </md-content>
+    </div>
+
+    <!-- make a footer.html later using angular material -->
     <footer style="text-align:center">
       <p>
         <h4>Personal Blog</h4>
@@ -38,13 +46,14 @@
         Github: <a href="http://github.com/brightlaw/personal-web">github.com/brightlaw/personal-web</a>
       </p>
     </footer>
-    <script type="text/javascript" src="/lib/jquery-2.2.2.js"></script>
-    <script type="text/javascript" src="/lib/angular/angular.js"></script>
-    <script type="text/javascript" src="/lib/angular-resource/angular-resource.js"></script>
-    <script type="text/javascript" src="/lib/angular-route/angular-route.js"></script>
-    <script type="text/javascript" src="/lib/angular-animate/angular-animate.js"></script>
-    <script type="text/javascript" src="/lib/angular-aria/angular-aria.js"></script>
-    <script type="text/javascript" src="/lib/angular-material/angular-material.js"></script>
-    <script type="text/javascript" src="/js/app.js"></script>
+
+    <script src="lib/jquery-2.2.2.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-resource/angular-resource.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-aria/angular-aria.js"></script>
+    <script src="lib/angular-material/angular-material.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
