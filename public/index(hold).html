@@ -7,6 +7,10 @@
     <title>Brigtlaw's blog</title>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/flatly/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+    <!-- <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="lib/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="css/style.css"/> -->
   </head>
   <body>
     <header>
@@ -22,6 +26,28 @@
       <br> -->
       <navigation></navigation>
     </header>
+
+    <div flex layout="row">
+      <md-content class="md-padding">
+        <md-nav-bar nav-bar-aria-label="navigation links">
+          <md-nav-item md-nav-click="goto('page1')" name="home">Home</md-nav-item>
+          <md-nav-item ng-show="navvm.isLoggedIn"
+              md-nav-click="goto('page2')" name="profile">{{ navvm.currentUser.name }}</md-nav-item>
+          <md-nav-item md-nav-click="goto('page3')" name="signup">Sign up</md-nav-item>
+          <md-nav-item ng-hide="navvm.isLoggedIn"
+              md-nav-click="goto('page3')" name="signin">Sign in</md-nav-item>
+          <md-nav-item ng-show="navvm.isLoggedIn"
+              md-nav-click="navvm.signOut()" name="signout">Sign out</md-nav-item>
+        </md-nav-bar>
+      </md-content>
+    </div>
+
+    <div flex layout="row">
+      <md-content flex id="content">
+          <div ng-view></div>
+      </md-content>
+    </div>
+
     <div ng-view></div>
     <footer style="text-align:center">
       <p>
@@ -41,5 +67,21 @@
     <script src="js/app.js"></script>
     <script src="js/jquery-2.2.2.js"></script>
     <!-- <link rel="stylesheet" type="text/css" href="/css/style.css"> -->
+
+    <!-- <script src="/lib/jquery-2.2.2.js"></script>
+    <script src="/lib/angular/angular.js"></script>
+    <script src="/lib/angular-resource/angular-resource.js"></script>
+    <script src="/lib/angular-route/angular-route.js"></script>
+    <script src="/lib/angular-animate/angular-animate.js"></script>
+    <script src="/lib/angular-aria/angular-aria.js"></script>
+    <script src="/lib/angular-material/angular-material.js"></script>
+    <script src="/js/app.js"></script> -->
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-aria.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.9/angular-material.min.js"></script> -->
   </body>
 </html>

@@ -1,43 +1,8 @@
-var app = angular.module('blogapp', ['ngRoute', 'ngResource', 'ngMaterial']);
+'use strict';
 
-app.config(['$routeProvider', function($routeProvider) {
-	$routeProvider
-		.when('/', {
-			templateUrl: 'home.html',
-			controller: 'mainCtrl',
-			controllerAs: 'vm'
-			// this vm is used by angular.js as the object in html to controll data
-		})
-		.when('/newpage', {
-			templateUrl: 'newpage.html',
-			controller: 'newpageCtrl',
-			controllerAs: 'vm'
-		})
-		.when('/signup', {
-			templateUrl: 'signup.html',
-			controller: 'signUpCtrl',
-			controllerAs: 'vm'
-		})
-		.when('/signin', {
-			templateUrl: 'signin.html',
-			controller: 'signInCtrl',
-			controllerAs: 'vm'
-		})
-		.when('/secretpage', {
-			templateUrl: 'secretpage.html',
-			controller: 'secretCtrl',
-			controllerAs: 'vm'
-		})
-		.otherwise({
-			redirectTo: '/'
-		});
-}]);
+// divide this file into several files on the basis of roles like controller, configuration, directive..
 
-app.config(['$mdThemingProvider', function($mdThemingProvider) {
-	$mdThemingProvider.theme('default')
-  	.primaryPalette('green')
-    .accentPalette('teal');
-}]);
+var app = angular.module('blogapp', ['ngResource', 'blog.configs']);
 
 app.run(['$rootScope', '$location', 'authentication',
 	function($rootScope, $location, authentication) {
@@ -145,7 +110,7 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
-app.controller('mainCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
+app.controller('homeCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
 
 }]);
 
