@@ -1,6 +1,6 @@
 'use strict';
 
-var configs = angular.module('blog.configs', ['ngRoute', 'ngMaterial']);
+var configs = angular.module('blog.configs', ['ngRoute', 'ngMaterial', 'ngMdIcons']);
 
 // custom constant
 configs.constant('AUTH_EVENTS', {
