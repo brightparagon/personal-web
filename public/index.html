@@ -16,39 +16,55 @@
     <link href="" rel="stylesheet">
   </head>
 
-  <body layout="row" ng-cloak>
+  <body layout="column">
 
     <!-- figure out how to arrange those divisions below appropriately -->
-    <div layout="column" layout-fill flex>
-      <md-whiteframe class="md-whiteframe-1dp" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center">
-        <span>Brightlaw's Universe</span>
+
+    <div layout="row">
+      <md-whiteframe flex-sm="45" flex-gt-sm="35" flex-gt-md="25">
+        <h3><span>Brightlaw's Universe</span></h3>
       </md-whiteframe>
     </div>
 
-    <div layout="column" layout-fill flex>
-      <md-toolbar>
-        <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" aria-label="menu">
-            <ng-md-icon icon="dehaze" style="fill: pink" size="30"></ng-md-icon>
-          </md-button>
-          <h2>
-            <span>Navigation Bar</span>
-          </h2>
-          <!-- this span(flex) makes a empty space btw buttons -->
-          <span flex></span>
-          <md-button class="md-raised" aria-label="Learn More">
-            Learn More
-          </md-button>
-          <md-button class="md-fab md-mini" aria-label="github">
-            <ng-md-icon icon="github-circle" style="fill: white" size="25"></ng-md-icon>
-          </md-button>
-        </div>
-      </md-toolbar>
+    <div layout="column">
+      <div ng-controller="navCtrl">
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="menu">
+              <ng-md-icon icon="dehaze" style="fill: pink" size="30"></ng-md-icon>
+            </md-button>
+            <h2>
+              <span>Menu</span>
+            </h2>
+            <md-content class="md-padding">
+              <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+                <md-nav-item md-nav-href="#" name="home">Home</md-nav-item>
+                <md-nav-item ng-show="navvm.isLoggedIn"
+                    md-nav-href="#/secretpage" name="profile">{{ navvm.currentUser.name }}</md-nav-item>
+                <md-nav-item md-nav-href="#/signup" name="signup">Sign up</md-nav-item>
+                <md-nav-item ng-hide="navvm.isLoggedIn"
+                    md-nav-href="#/signin" name="signin">Sign in</md-nav-item>
+                <md-nav-item ng-show="navvm.isLoggedIn"
+                    ng-click="navvm.signOut()" name="signout">Sign out</md-nav-item>
+              </md-nav-bar>
+            </md-content>
 
-      <md-content flex layout-padding>
-        <!-- this works now -->
-        <div ng-view></div>
-      </md-content>
+            <!-- this span(flex) makes a empty space btw buttons -->
+            <span flex></span>
+            <md-button class="md-raised" aria-label="Learn More">
+              Learn More
+            </md-button>
+            <md-button class="md-fab md-mini" aria-label="github">
+              <ng-md-icon icon="github-circle" style="fill: white" size="25"></ng-md-icon>
+            </md-button>
+          </div>
+        </md-toolbar>
+      </div>
+
+      <div flex>
+          <ng-view></ng-view>
+      </div>
+
     </div>
 
     <!-- javascript files -->

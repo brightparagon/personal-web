@@ -17,14 +17,14 @@ app.run(['$rootScope', '$location', 'authentication',
   });
 }]);
 
-app.directive('navigation', function navigation() {
-	return {
-		restrict: 'EA',
-		templateUrl: 'navigation.html',
-		controller: 'navigationCtrl',
-		controllerAs: 'navvm'
-	};
-});
+// app.directive('navigation', function navigation() {
+// 	return {
+// 		restrict: 'EA',
+// 		templateUrl: 'navigation.html',
+// 		controller: 'navigationCtrl',
+// 		controllerAs: 'navvm'
+// 	};
+// });
 
 app.service('authentication', ['$window', function($window) {
 	var saveToken = function(token) {
@@ -114,7 +114,7 @@ app.controller('homeCtrl', ['$scope', '$location', 'authentication', function($s
 
 }]);
 
-app.controller('navigationCtrl', ['$rootScope', '$location', 'authentication', function($rootScope, $location, authentication) {
+app.controller('navCtrl', ['$rootScope', '$location', 'authentication', function($rootScope, $location, authentication) {
 		var vm = this;
 	  vm.isLoggedIn = authentication.isLoggedIn();
 	  vm.currentUser = authentication.currentUser();
