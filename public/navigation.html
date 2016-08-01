@@ -1,14 +1,14 @@
 <div flex layout="row">
   <md-content class="md-padding">
     <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-      <md-nav-item md-nav-click="goto('page1')" name="home">Home</md-nav-item>
+      <md-nav-item md-nav-href="#" name="home">Home</md-nav-item>
       <md-nav-item ng-show="navvm.isLoggedIn"
-          md-nav-click="goto('page2')" name="profile">{{ navvm.currentUser.name }}</md-nav-item>
-      <md-nav-item md-nav-click="goto('page3')" name="signup">Sign up</md-nav-item>
+          md-nav-href="#/secretpage" name="profile">{{ navvm.currentUser.name }}</md-nav-item>
+      <md-nav-item md-nav-href="#/signup" name="signup">Sign up</md-nav-item>
       <md-nav-item ng-hide="navvm.isLoggedIn"
-          md-nav-click="goto('page3')" name="signin">Sign in</md-nav-item>
+          md-nav-href="#/signin" name="signin">Sign in</md-nav-item>
       <md-nav-item ng-show="navvm.isLoggedIn"
-          md-nav-click="navvm.signOut()" name="signout">Sign out</md-nav-item>
+          ng-click="navvm.signOut()" name="signout">Sign out</md-nav-item>
     </md-nav-bar>
   </md-content>
 </div>

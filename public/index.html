@@ -1,10 +1,10 @@
 <html lang="en" ng-app="blogapp">
-
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Brigtlaw's blog</title>
+
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic" rel="stylesheet">
     <link href="lib/angular-material/angular-material.min.css" rel="stylesheet">
@@ -12,13 +12,10 @@
     <link href="css/grid.css" rel="stylesheet">
 
     <!-- load more css later! -->
-
-    <link href="" rel="stylesheet">
+    <!-- <link href="" rel="stylesheet"> -->
   </head>
 
   <body layout="column">
-
-    <!-- figure out how to arrange those divisions below appropriately -->
 
     <div layout="row">
       <md-whiteframe flex-sm="45" flex-gt-sm="35" flex-gt-md="25">
@@ -28,29 +25,24 @@
 
     <div layout="column">
       <div ng-controller="navCtrl">
+        <!-- this part can be managed as a navigation directive  -->
         <md-toolbar>
           <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="menu">
               <ng-md-icon icon="dehaze" style="fill: pink" size="30"></ng-md-icon>
             </md-button>
             <h2>
-              <span>Menu</span>
+              <!-- <span>Menu</span> -->
+              <md-button ng-href="#/">Home</md-button>
             </h2>
-            <md-content class="md-padding">
-              <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-                <md-nav-item md-nav-href="#" name="home">Home</md-nav-item>
-                <md-nav-item ng-show="navvm.isLoggedIn"
-                    md-nav-href="#/secretpage" name="profile">{{ navvm.currentUser.name }}</md-nav-item>
-                <md-nav-item md-nav-href="#/signup" name="signup">Sign up</md-nav-item>
-                <md-nav-item ng-hide="navvm.isLoggedIn"
-                    md-nav-href="#/signin" name="signin">Sign in</md-nav-item>
-                <md-nav-item ng-show="navvm.isLoggedIn"
-                    ng-click="navvm.signOut()" name="signout">Sign out</md-nav-item>
-              </md-nav-bar>
-            </md-content>
+            <md-button ng-show="isLoggedIn" href="#/secretpage">Profile</md-button>
 
             <!-- this span(flex) makes a empty space btw buttons -->
             <span flex></span>
+
+            <md-button ng-hide="isLoggedIn" ng-href="#/signup">Sign up</md-button>
+            <md-button ng-hide="isLoggedIn" ng-href="#/signin">Sign in</md-button>
+            <md-button ng-show="isLoggedIn" ng-click="signOut()">Sign out</md-button>
             <md-button class="md-raised" aria-label="Learn More">
               Learn More
             </md-button>
@@ -64,7 +56,6 @@
       <div flex>
           <ng-view></ng-view>
       </div>
-
     </div>
 
     <!-- javascript files -->

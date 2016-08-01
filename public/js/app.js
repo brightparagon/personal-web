@@ -26,6 +26,9 @@ app.run(['$rootScope', '$location', 'authentication',
 // 	};
 // });
 
+// if I take this service module to the other js file and inject it to this app.js
+// angular.js throws an injection error.
+// refer to other mean projects!
 app.service('authentication', ['$window', function($window) {
 	var saveToken = function(token) {
 		$window.localStorage['user-token'] = token;
@@ -79,21 +82,6 @@ app.service('authentication', ['$window', function($window) {
   };
 }]);
 
-// modify it
-app.factory('userService', ['$resource', function($resource) {
-  return $resource('/api', {}, { // url part maybe needs fixing
-		save: {
-			method: 'POST'
-		},
-    update: {
-      method: 'PUT'
-    },
-		get: {
-			method: 'GET'
-		}
-  });
-}]);
-
 // understand how $http.get part is authorized
 // & how this works with auth
 app.service('getData', ['$http', 'authentication', function($http, authentication) {
@@ -110,32 +98,45 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
+// modify it
+app.factory('userService', ['$resource', function($resource) {
+  return $resource('/api', {}, { // url part maybe needs fixing
+		save: {
+			method: 'POST'
+		},
+    update: {
+      method: 'PUT'
+    },
+		get: {
+			method: 'GET'
+		}
+  });
+}]);
+
 app.controller('homeCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
 
 }]);
 
-app.controller('navCtrl', ['$rootScope', '$location', 'authentication', function($rootScope, $location, authentication) {
-		var vm = this;
-	  vm.isLoggedIn = authentication.isLoggedIn();
-	  vm.currentUser = authentication.currentUser();
+app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication', function($scope, $rootScope, $location, authentication) {
+	  $scope.isLoggedIn = authentication.isLoggedIn();
+	  $scope.currentUser = authentication.currentUser();
 
-		vm.signOut = function() {
+		$scope.signOut = function() {
 			authentication.signOut();
 			$rootScope.$broadcast('userLoggedOut'); // add an array of STRING to Config later
 			$location.path('/');
-			// $location.url('/');
 		};
 
 		$rootScope.$on('userLoggedIn', function() {
-			// refresh navigation when an user logs in
-			vm.isLoggedIn = authentication.isLoggedIn();
-		  vm.currentUser = authentication.currentUser();
+			// refresh navigation when an user is logged in
+			$scope.isLoggedIn = authentication.isLoggedIn();
+		  $scope.currentUser = authentication.currentUser();
 		});
 
 		$rootScope.$on('userLoggedOut', function() {
-			// refresh navigation when an user logs out
-			vm.isLoggedIn = authentication.isLoggedIn();
-		  vm.currentUser = authentication.currentUser();
+			// refresh navigation when an user is logged out
+			$scope.isLoggedIn = authentication.isLoggedIn();
+		  $scope.currentUser = authentication.currentUser();
 		});
 }]);
 
