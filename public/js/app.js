@@ -2,7 +2,7 @@
 
 // divide this file into several files on the basis of roles like controller, configuration, directive..
 
-var app = angular.module('blogapp', ['ngResource', 'blog.configs']);
+var app = angular.module('blogapp', ['ngResource', 'ngMessages', 'blog.configs']);
 
 app.run(['$rootScope', '$location', 'authentication',
 	function($rootScope, $location, authentication) {
@@ -99,19 +99,19 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
 }]);
 
 // modify it
-app.factory('userService', ['$resource', function($resource) {
-  return $resource('/api', {}, { // url part maybe needs fixing
-		save: {
-			method: 'POST'
-		},
-    update: {
-      method: 'PUT'
-    },
-		get: {
-			method: 'GET'
-		}
-  });
-}]);
+// app.factory('userService', ['$resource', function($resource) {
+//   return $resource('/api', {}, { // url part maybe needs fixing
+// 		save: {
+// 			method: 'POST'
+// 		},
+//     update: {
+//       method: 'PUT'
+//     },
+// 		get: {
+// 			method: 'GET'
+// 		}
+//   });
+// }]);
 
 app.controller('homeCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
 
@@ -127,6 +127,7 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 			$location.path('/');
 		};
 
+		// Where would be a good place to locate this $rootScope.$on()?
 		$rootScope.$on('userLoggedIn', function() {
 			// refresh navigation when an user is logged in
 			$scope.isLoggedIn = authentication.isLoggedIn();
@@ -138,6 +139,10 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 			$scope.isLoggedIn = authentication.isLoggedIn();
 		  $scope.currentUser = authentication.currentUser();
 		});
+}]);
+
+app.controller('uploadPostCtrl', ['$scope', '$location', function($scope, $location) {
+	
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
@@ -164,29 +169,18 @@ app.controller('newpageCtrl', function($scope) {
 	};
 });
 
-app.controller('signInCtrl', ['$scope', '$location', '$routeParams', 'userService', 'authentication', function($scope, $location, $routeParams, userService, authentication) {
+app.controller('signInCtrl', ['$scope', '$location', '$rootScope', '$resource', 'authentication', function($scope, $location, $rootScope, $resource, authentication) {
 	 var vm = this;
 	 vm.credentials = {
 		 email : "",
 		 password : ""
 	 };
 	 vm.onSubmit = function() {
-		 // need to check whether all forms are written
-
-		 // need modification after understanding how to connect with passport(server-side)
-		 userService.get(vm.credentials, function(data) {
-			 authentication
-			 	.saveToken(data.token)
-				.error(function(err) {
-					alert(err);
-				})
-				.then(function() {
-					$location.path('secretpage');
-					// how to move to /secretpage ? both html & route
-					// is it interrelated with $resource?
-					// answer : this is done by $location helper object
-					// see the functions like $location.url(), path() in the Node.js doc page
-				});
+		 var User = $resource('/api/signin');
+		 User.get(vm.credentials, function(data) { // this data is token passed from the server
+			 authentication.saveToken(data.token);
+			 $location.path('secretpage');
+			 $rootScope.$broadcast('userLoggedIn');
 		 });
 	 };
 }]);
@@ -200,8 +194,6 @@ app.controller('signUpCtrl',  ['$rootScope', '$location', '$resource', 'authenti
 	};
 
 	vm.onSubmit = function() {
-		// need to check whether all forms are written
-
 		var User = $resource('/api/signup');
 		var newUser = new User(vm.credentials);
 
@@ -210,21 +202,5 @@ app.controller('signUpCtrl',  ['$rootScope', '$location', '$resource', 'authenti
 			$location.path('secretpage');
 			$rootScope.$broadcast('userLoggedIn');
 		});
-
-		// var newUser = new userService(vm.credentials);
-		// var newUser = $resource('/api/signup');
-		// newUser.$save(vm.credentials, function(data) {
-		// 	// console.log(user.email); // users.js(server side)의 res.json(user)
-		//
-		// 	authentication
-		// 		.saveToken(data.token) // save a token of a user
-		// 		.error(function(err) {
-		// 			alert(err);
-		// 		})
-		// 		.then(function() {
-		// 			$location.path('secretpage');
-		// 			// $location.url('/api/users/secretpage');
-		// 		});
-		// });
 	};
 }]);

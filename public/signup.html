@@ -1,53 +1,51 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <h1>Sign up</h1>
-      <p class="lead">Already a member? Please <a href="/#/signin">log in</a> instead.</p>
-
-      <form ng-submit="vm.onSubmit()">
-        <div class="form-group">
-          <label for="name">Full name</label>
-          <input type="text" class="form-control" id="name" placeholder="Enter your name" ng-model="vm.credentials.name">
-        </div>
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="vm.credentials.email">
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Password" ng-model="vm.credentials.password">
-        </div>
-        <button type="submit" class="btn btn-default">Register!</button>
-      </form>
-
-    </div>
-  </div>
-</div>
-
 <div layout="column" ng-cloak class="md-inline-form">
-  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+
+  <md-content layout-gt-sm="row" layout-padding>
     <div>
-      <md-input-container>
-        <label>Title</label>
-        <input ng-model="user.title">
-      </md-input-container>
-      <md-input-container>
-        <label>Email</label>
-        <input ng-model="user.email" type="email">
-      </md-input-container>
+      <h1>Sign up</h1>
+      <p>Already a member? Please <a ng-href="/#/signin">log in</a> instead.</p>
     </div>
   </md-content>
-  <md-content layout-padding>
+  <form name="userForm" ng-submit="vm.onSubmit()">
+    <md-content layout-gt-sm="row" layout-padding>
+      <div>
+        <ng-md-icon icon="person" style="fill: blue" size="35"></ng-md-icon>
+        <md-input-container>
+          <label>Full Name</label>
+          <input required ng-model="vm.credentials.name">
+        </md-input-container>
+        <ng-md-icon icon="email" style="fill: green" size="35"></ng-md-icon>
+        <md-input-container>
+          <label>Email Adress</label>
+          <input required ng-model="vm.credentials.email" type="email">
+        </md-input-container>
+      </div>
+    </md-content>
+    <md-content layout-gt-sm="row" layout-padding>
+      <div>
+        <ng-md-icon icon="security" style="fill: red" size="35"></ng-md-icon>
+        <md-input-container>
+          <label>Password</label>
+          <input required ng-model="vm.credentials.password" type="password">
+        </md-input-container>
+      </div>
+    </md-content>
+    <md-button type="submit" class="md-raised md-primary">Register!</md-button>
+    <div ng-messages="userForm.vm.credentials.name.$error" role="alert">
+      <div ng-message="required" class="my-message">You must supply a full name.</div>
+    </div>
+    <div ng-messages="userForm.vm.credentials.email.$error" role="alert">
+      <div ng-message="required" class="my-message">You must supply a proper email address.</div>
+    </div>
+    <div ng-messages="userForm.vm.credentials.password.$error" role="alert">
+      <div ng-message="required" class="my-message">You must supply a password.</div>
+    </div>
+  </form>
+
+  <!-- <md-content layout-padding>
     <div>
       <form name="userForm">
-        <div layout-gt-xs="row">
-          <md-input-container class="md-block" flex-gt-xs>
-            <label>Company (Disabled)</label>
-            <input ng-model="user.company" disabled>
-          </md-input-container>
-          <md-datepicker ng-model="user.submissionDate" md-placeholder="Enter date">
-          </md-datepicker>
-        </div>
+
         <div layout-gt-sm="row">
           <md-input-container class="md-block" flex-gt-sm>
             <label>First name</label>
@@ -58,26 +56,8 @@
             <input ng-model="theMax">
           </md-input-container>
         </div>
-        <md-input-container class="md-block">
-          <label>Address</label>
-          <input ng-model="user.address">
-        </md-input-container>
-        <md-input-container md-no-float class="md-block">
-          <input ng-model="user.address2" placeholder="Address 2">
-        </md-input-container>
+
         <div layout-gt-sm="row">
-          <md-input-container class="md-block" flex-gt-sm>
-            <label>City</label>
-            <input ng-model="user.city">
-          </md-input-container>
-          <md-input-container class="md-block" flex-gt-sm>
-            <label>State</label>
-            <md-select ng-model="user.state">
-              <md-option ng-repeat="state in states" value="{{state.abbrev}}">
-                {{state.abbrev}}
-              </md-option>
-            </md-select>
-          </md-input-container>
           <md-input-container class="md-block" flex-gt-sm>
             <label>Postal Code</label>
             <input name="postalCode" ng-model="user.postalCode" placeholder="12345"
@@ -93,11 +73,9 @@
             </div>
           </md-input-container>
         </div>
-        <md-input-container class="md-block">
-          <label>Biography</label>
-          <textarea ng-model="user.biography" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-        </md-input-container>
+
       </form>
     </div>
-  </md-content>
+  </md-content> -->
+
 </div>

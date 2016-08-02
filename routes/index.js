@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('express-jwt');
 
-// used as a parameter to a function that needs authorization
+// use as a parameter to a function that needs authorization
 var auth = jwt({
   secret: 'shhhhh',
   userProperty: 'payload'

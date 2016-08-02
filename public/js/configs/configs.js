@@ -22,6 +22,11 @@ configs.config(['$routeProvider', function($routeProvider) {
 			controller: 'newpageCtrl',
 			controllerAs: 'vm'
 		})
+    .when('/post/upload', {
+			templateUrl: 'uploadPost.html',
+			controller: 'uploadPostCtrl',
+			controllerAs: 'vm'
+		})
 		.when('/signup', {
 			templateUrl: 'signup.html',
 			controller: 'signUpCtrl',
@@ -44,18 +49,21 @@ configs.config(['$routeProvider', function($routeProvider) {
 
 // angular material theme
 configs.config(function($mdThemingProvider) {
-  var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
+  var customBlueMap = $mdThemingProvider.extendPalette('light-blue', {
     'contrastDefaultColor': 'light',
     'contrastDarkColors': ['50'],
     '50': 'ffffff'
   });
   $mdThemingProvider.definePalette('customBlue', customBlueMap);
-  $mdThemingProvider.theme('default')
-    .primaryPalette('customBlue', {
-      'default': '500',
-      'hue-1': '50'
-    })
-    .accentPalette('pink');
-  $mdThemingProvider.theme('input', 'default')
-        .primaryPalette('grey')
+  // $mdThemingProvider.theme('default')
+  //   .primaryPalette('customBlue', {
+  //     'default': '500',
+  //     'hue-1': '50'
+  //   })
+  //   .accentPalette('pink');
+  // $mdThemingProvider.theme('input', 'default')
+  //   .primaryPalette('grey');
+  $mdThemingProvider.theme('docs-dark', 'default')
+    .primaryPalette('yellow')
+    .dark();
 });

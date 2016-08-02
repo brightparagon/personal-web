@@ -68,7 +68,7 @@ module.exports.signIn = function(req, res, next) {
     }
 
     // If a user is found
-    // this user casted by passport.js
+    // this user that is casted by passport.js
     if(user){
       token = user.generateJwt();
       res.status(200);
