@@ -11,13 +11,13 @@ I usally use facebook and evernote to store articles which I could refer to late
 
 * #####Development Environment
  - OS X El Capitan 10.11.4(64bit)
- - Sublime Text3
+ - Atom
  - Terminal
  - Browser to test with: Chrome
 
 * #####Development Stack
  - Server end: Node.js & Express.js
- - Front end: Angular.js
+ - Front end: Angular.js(for MVC pattern)
+ - Front design: Angular Material
  - Database: MongoDB with Mongoose
- - TDD: Mocha, Expect.js, superagent
- - View engine: Jade
+ - TDD: Mocha, Expect.js
