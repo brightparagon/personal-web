@@ -1,13 +1,68 @@
 <div layout="column" ng-cloak class="md-inline-form">
-  <md-content md-theme="docs-dark" layout-padding>
-    <div>
-      <md-input-container class="md-block" flex-gt-sm>
+
+  <div layout="row" flex>
+    <div flex="45" flex-offset="15">
+      <md-input-container class="md-block">
         <label>Title</label>
-        <input ng-model="user.title">
+        <input ng-model="post.title">
       </md-input-container>
     </div>
-  </md-content>
-  <md-content layout-padding>
+    <div flex="10"></div>
+    <div flex="25">
+      <fieldset class="standard">
+        <div layout="row" layout-wrap>
+          <div flex="50">
+            <md-checkbox ng-model="post.isPrivate" aria-label="Private">
+              Private {{ post.isPrivate }}
+            </md-checkbox>
+          </div>
+
+          <!-- fix here! -->
+          <div flex="50">
+            <md-menu>
+              <md-button aria-label="choose the kind of this note!" class="md-icon-button"
+                ng-click="vm.openMenu($mdOpenMenu, $event)">
+                <!-- <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon> -->
+                <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-click="vm.redial($event)">
+                    <!-- <md-icon md-svg-icon="call:dialpad" md-menu-align-target></md-icon> -->
+                    <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
+                    Redial
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button disabled="disabled" ng-click="vm.checkVoicemail()">
+                    <!-- <md-icon md-svg-icon="call:voicemail"></md-icon> -->
+                    <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
+                    Check voicemail
+                  </md-button>
+                </md-menu-item>
+                <!-- <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                  <md-button ng-click="ctrl.toggleNotifications()">
+                    <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
+                    {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+                  </md-button>
+                </md-menu-item> -->
+              </md-menu-content>
+            </md-menu>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div flex></div>
+  </div>
+
+  <!-- content
+  <md-input-container class="md-block" layout-padding flex>
+    <label>write here!</label>
+    <textarea ng-model="post.content" md-maxlength="3000" rows="50" md-select-on-focus></textarea>
+  </md-input-container> -->
+
+  <!-- <md-content layout-padding>
     <div>
       <form name="userForm">
         <div layout-gt-xs="row">
@@ -69,5 +124,6 @@
         </md-input-container>
       </form>
     </div>
-  </md-content>
+  </md-content> -->
+
 </div>

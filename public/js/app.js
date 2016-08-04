@@ -142,7 +142,7 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 }]);
 
 app.controller('uploadPostCtrl', ['$scope', '$location', function($scope, $location) {
-	
+	// add codes here for uploadPost.html !
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
