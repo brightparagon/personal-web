@@ -141,8 +141,29 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
-app.controller('uploadPostCtrl', ['$scope', '$location', function($scope, $location) {
-	// add codes here for uploadPost.html !
+app.controller('uploadPostCtrl', ['$scope', '$location', '$mdDialog', function($scope, $location, $mdDialog) {
+	var vm = this;
+	vm.readonly = false;
+  vm.tags = [];
+	// post schema here
+
+	var originatorEv;
+  vm.openMenu = function($mdOpenMenu, ev) {
+    originatorEv = ev;
+    $mdOpenMenu(ev);
+  };
+  vm.redial = function() {
+    $mdDialog.show(
+      $mdDialog.alert()
+        .targetEvent(originatorEv)
+        .clickOutsideToClose(true)
+        .parent('body')
+        .title('Suddenly, a redial')
+        .textContent('You just called a friend; who told you the most amazing story. Have a cookie!')
+        .ok('That was easy')
+    );
+    originatorEv = null;
+  };
 }]);
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
