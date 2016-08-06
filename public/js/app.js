@@ -141,11 +141,33 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
-app.controller('uploadPostCtrl', ['$scope', '$location', '$mdDialog', function($scope, $location, $mdDialog) {
+app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {
 	var vm = this;
 	vm.readonly = false;
-  vm.tags = [];
-	// post schema here
+	vm.post = {
+		postedBy : authentication.currentUser()._id, // this is important!
+		title : "",
+		isPrivate : "",
+		content : "",
+		// notekind : "",
+		tags : []
+	};
+
+	vm.cancel = function() {
+		$location.path('/');
+		// console.log(vm.post.postedBy);
+	};
+
+	vm.upload = function() {
+		var Post = $resource('/api/post/upload');
+		var newPost = new Post(vm.post);
+
+		newPost.$save(function(data) {
+			console.log(data.title); // it works
+			$location.path('/');
+			// $rootScope.$broadcast('userLoggedIn');
+		});
+	};
 
 	var originatorEv;
   vm.openMenu = function($mdOpenMenu, ev) {

@@ -6,15 +6,11 @@ var User = mongoose.model('User');
 module.exports.getUsers = function(req, res, next) {
   console.log('server get users');
 
-  User.find().sort('name').exec(function(error, results) {
+  User.find().sort('name').exec(function(error, result) {
     if(error) return next(error);
-    res.json(results);
+    res.json(result);
   });
 };
-
-// profile
-
-// fix here !!!
 
 module.exports.profileRead = function(req, res, next) {
   console.log('server secretpage');
@@ -43,10 +39,6 @@ module.exports.profileRead = function(req, res, next) {
     // });
   }
 };
-
-// log in
-
-// fix here !!!
 
 module.exports.signIn = function(req, res, next) {
   // User.findOne({

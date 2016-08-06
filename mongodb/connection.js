@@ -5,7 +5,7 @@ var dbUrl = 'mongodb://localhost/personalblog';
 
 mongoose.connect(dbUrl, { safe: true });
 
-// 컨트롤 + C를 누르면 몽구스 연결 종료
+// ctrl + c -> stop mongoose
 process.on('SIGINT', function() {
   mongoose.connection.close(function () {
     console.log('Mongoose default connection disconnected');
@@ -14,3 +14,4 @@ process.on('SIGINT', function() {
 });
 
 require('./models/user');
+require('./models/post');

@@ -11,9 +11,15 @@ var auth = jwt({
 // users.js -> divides functions into individual js files
 
 var ctrlUser = require('./users');
+var ctrlPost = require('./posts');
 
-router.post('/signup', ctrlUser.signUp);
+// for users
 router.get('/signin', ctrlUser.signIn);
 router.get('/secretpage', auth, ctrlUser.profileRead);
+router.post('/signup', ctrlUser.signUp);
+
+// for posts
+// router.get('/post', ctrlPost.signIn); // fix it
+router.post('/post/upload', ctrlPost.createPost);
 
 module.exports = router;
