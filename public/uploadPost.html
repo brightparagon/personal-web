@@ -18,6 +18,9 @@
             </md-checkbox>
           </div>
           <div flex="50">
+
+            <!-- add a new menu for notekind -->
+
             <md-menu>
               <md-button aria-label="choose the kind of this note!" class="md-icon-button"
                 ng-click="vm.openMenu($mdOpenMenu, $event)">
@@ -66,14 +69,13 @@
           rows="50" md-select-on-focus></textarea>
       </md-input-container>
     </div>
-    <!-- <div flex="15"></div> -->
   </div>
   <!-- tags -->
   <div layout="row">
     <div flex="grow">
       <md-content class="md-padding">
         <md-chips
-          ng-model="vm.tags"
+          ng-model="vm.post.tags"
           readonly="vm.readonly"
           placeholder="Enter a tag"
           delete-button-label="Remove Tag"
@@ -82,21 +84,19 @@
         </md-chips>
       </md-content>
     </div>
-    <!-- <div flex="15"></div> -->
+  </div>
+  </fieldset>
   </div>
   <!-- button for cancel & upload -->
   <div layout="row">
-    <div flex="15">
+    <div flex="15" flex-offset="15">
       <md-button class="md-raised md-primary"
         ng-click="vm.cancel()">Cancel</md-button>
     </div>
-    <div flex="70"></div>
+    <div flex="45"></div>
     <div flex="15">
       <md-button class="md-raised md-warn"
         ng-click="vm.upload()">Upload!</md-button>
     </div>
-  </div>
-  </fieldset>
-  <!-- <div flex="15"></div> -->
   </div>
 </div>
