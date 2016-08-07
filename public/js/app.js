@@ -141,6 +141,10 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
+app.controller('listPostCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
+
+}]);
+
 app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {
 	var vm = this;
 	vm.readonly = false;

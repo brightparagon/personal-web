@@ -22,6 +22,11 @@ configs.config(['$routeProvider', function($routeProvider) {
 			controller: 'newpageCtrl',
 			controllerAs: 'vm'
 		})
+    .when('/post/list', {
+			templateUrl: 'listPost.html',
+			controller: 'listPostCtrl',
+			controllerAs: 'vm'
+		})
     .when('/post/upload', {
 			templateUrl: 'uploadPost.html',
 			controller: 'uploadPostCtrl',
