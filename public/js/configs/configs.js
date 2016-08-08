@@ -60,15 +60,10 @@ configs.config(function($mdThemingProvider) {
     '50': 'ffffff'
   });
   $mdThemingProvider.definePalette('customBlue', customBlueMap);
-  // $mdThemingProvider.theme('default')
-  //   .primaryPalette('customBlue', {
-  //     'default': '500',
-  //     'hue-1': '50'
-  //   })
-  //   .accentPalette('pink');
-  // $mdThemingProvider.theme('input', 'default')
-  //   .primaryPalette('grey');
-  $mdThemingProvider.theme('docs-dark', 'default')
-    .primaryPalette('yellow')
-    .dark();
+  $mdThemingProvider.theme('default')
+    .primaryPalette('customBlue', {
+      'default': '500',
+      'hue-1': '50'
+    })
+    .accentPalette('pink');
 });

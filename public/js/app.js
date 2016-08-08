@@ -141,8 +141,13 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
-
+app.controller('listPostCtrl', ['$scope', '$location', '$resource', function($scope, $location, $resource) {
+	var vm = this;
+	var Post = $resource('/api/post/list');
+	Post.query(function(data) {
+		vm.posts = data;
+		console.log(vm.posts);
+	});
 }]);
 
 app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {
