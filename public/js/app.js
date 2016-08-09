@@ -48,7 +48,7 @@ app.service('authentication', ['$window', function($window) {
 
 		console.log('authentication called');
 		if(token) {
-			console.log('token : ' + token);
+			// console.log('token : ' + token);
 
 			payload = token.split('.')[1];
 			payload = $window.atob(payload);
@@ -62,7 +62,7 @@ app.service('authentication', ['$window', function($window) {
 
 	var currentUser = function() {
 		if(isLoggedIn()){
-			console.log('currentUser called');
+			// console.log('currentUser called');
 
 			var token = getToken();
 			var payload = token.split('.')[1];
@@ -146,7 +146,6 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', function($sc
 	var Post = $resource('/api/post/list');
 	Post.query(function(data) {
 		vm.posts = data;
-		console.log(vm.posts);
 	});
 }]);
 
@@ -164,7 +163,6 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 
 	vm.cancel = function() {
 		$location.path('/');
-		// console.log(vm.post.postedBy);
 	};
 
 	vm.upload = function() {
@@ -172,7 +170,6 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 		var newPost = new Post(vm.post);
 
 		newPost.$save(function(data) {
-			console.log(data.title); // it works
 			$location.path('/');
 			// $rootScope.$broadcast('userLoggedIn');
 		});
