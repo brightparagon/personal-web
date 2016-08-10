@@ -15,6 +15,7 @@ var ctrlPost = require('./posts');
 
 // for users
 router.get('/signin', ctrlUser.signIn);
+router.get('/user/:userId', ctrlUser.getUser);
 router.get('/secretpage', auth, ctrlUser.profileRead);
 router.post('/signup', ctrlUser.signUp);
 

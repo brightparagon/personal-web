@@ -4,11 +4,27 @@ var User = mongoose.model('User');
 
 // return all users
 module.exports.getUsers = function(req, res, next) {
-  console.log('server get users');
+  console.log('server getUsers');
 
   User.find().sort('name').exec(function(error, result) {
     if(error) return next(error);
     res.json(result);
+  });
+};
+
+// return an user
+module.exports.getUser = function(req, res, next) {
+  // mongoose.Types.ObjectId()
+
+  // write this part as a TIL : req.params.xx
+  // front end(Angular.js) sends as User.get({userId.xx});
+
+  console.log('server getUser : ' + req.params.userId);
+
+  // name doesn't appear on the front
+  User.findById(req.params.userId, function(error, user) {
+    if(error) return next(error);
+    res.status(200).json(user);
   });
 };
 

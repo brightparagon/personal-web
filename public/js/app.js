@@ -143,8 +143,19 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 
 app.controller('listPostCtrl', ['$scope', '$location', '$resource', function($scope, $location, $resource) {
 	var vm = this;
+	var User = $resource('/api/user/:userId');
 	var Post = $resource('/api/post/list');
+
+	// maybe there is a better way to relate the writer to every post
+	// like fixing post schema - adding writer property referring to User Schema
+
 	Post.query(function(data) {
+		for(var i = 0; i<data.length; i++) {
+
+			// name doesn't appear here
+
+			data[i].writer = User.get({userId:data[i].postedBy}).name;
+		}
 		vm.posts = data;
 	});
 }]);

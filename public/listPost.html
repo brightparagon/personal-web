@@ -1,9 +1,30 @@
 <div ng-cloak>
   <!-- layout="row" -->
   <md-content class="md-padding" layout-xs="column" layout="row">
-
     <!-- first div with layout="column" -->
     <div flex-xs flex-gt-xs="50" layout="column">
+
+      <md-card md-theme="default" md-theme-watch ng-repeat="post in vm.posts">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{ post.title }}</span>
+            <span class="md-subhead">Written by {{ post.writer }}</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-lg card-media"></div>
+          </md-card-title-media>
+        </md-card-title>
+
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="">READ</md-button>
+        </md-card-actions>
+      </md-card>
+
+    </div>
+
+    <!-- second div with layout="column" -->
+    <div flex-xs flex-gt-xs="50" layout="column">
+
       <md-card md-theme="default" md-theme-watch>
         <md-card-title>
           <md-card-title-text>
@@ -21,66 +42,6 @@
         </md-card-actions>
       </md-card>
 
-      <md-card md-theme="default" md-theme-watch>
-        <md-card-title>
-          <md-card-title-text>
-            
-            <!-- ng-repeat needed here! -->
-
-            <!-- <span class="md-headline">{{ vm.post1.title }}</span> -->
-            <span class="md-subhead">Extra Large</span>
-          </md-card-title-text>
-        </md-card-title>
-        <md-card-content layout="row" layout-align="space-between">
-          <div class="md-media-xl card-media"></div>
-          <md-card-actions layout="column">
-            <md-button class="md-icon-button" aria-label="Favorite">
-              <ng-md-icon icon="favorite" style="fill: pink" size="30"></ng-md-icon>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Settings">
-              <ng-md-icon icon="menu" style="fill: pink" size="30"></ng-md-icon>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Share">
-              <ng-md-icon icon="share" style="fill: pink" size="30"></ng-md-icon>
-            </md-button>
-          </md-card-actions>
-        </md-card-content>
-      </md-card>
-    </div>
-
-    <!-- second div with layout="column" -->
-    <div flex-xs flex-gt-xs="50" layout="column">
-      <md-card md-theme="default" md-theme-watch>
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Card 3</span>
-            <span class="md-subhead">Small</span>
-          </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-sm card-media"></div>
-          </md-card-title-media>
-        </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
-          <md-button>Action 1</md-button>
-          <md-button>Action 2</md-button>
-        </md-card-actions>
-      </md-card>
-
-      <md-card md-theme="default" md-theme-watch>
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Card 4</span>
-            <span class="md-subhead">Medium</span>
-          </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-md card-media"></div>
-          </md-card-title-media>
-        </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
-          <md-button>Action 1</md-button>
-          <md-button>Action 2</md-button>
-        </md-card-actions>
-      </md-card>
     </div>
   </md-content>
 </div>
