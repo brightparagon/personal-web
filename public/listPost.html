@@ -4,7 +4,7 @@
     <!-- first div with layout="column" -->
     <div flex-xs flex-gt-xs="50" layout="column">
 
-      <md-card md-theme="default" md-theme-watch ng-repeat="post in vm.posts">
+      <md-card md-theme="default" md-theme-watch ng-repeat="post in vm.leftPosts">
         <md-card-title>
           <md-card-title-text>
             <span class="md-headline">{{ post.title }}</span>
@@ -25,11 +25,11 @@
     <!-- second div with layout="column" -->
     <div flex-xs flex-gt-xs="50" layout="column">
 
-      <md-card md-theme="default" md-theme-watch>
+      <md-card md-theme="default" md-theme-watch ng-repeat="post in vm.rightPosts">
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">Card 1</span>
-            <span class="md-subhead">Large</span>
+            <span class="md-headline">{{ post.title }}</span>
+            <span class="md-subhead">Written by {{ post.writer }}</span>
           </md-card-title-text>
           <md-card-title-media>
             <div class="md-media-lg card-media"></div>
@@ -37,8 +37,7 @@
         </md-card-title>
 
         <md-card-actions layout="row" layout-align="end center">
-          <md-button>Action 1</md-button>
-          <md-button>Action 2</md-button>
+          <md-button ng-click="">READ</md-button>
         </md-card-actions>
       </md-card>
 

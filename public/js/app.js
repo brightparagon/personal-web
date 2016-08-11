@@ -149,14 +149,29 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', function($sc
 	// maybe there is a better way to relate the writer to every post
 	// like fixing post schema - adding writer property referring to User Schema
 
-	Post.query(function(data) {
-		for(var i = 0; i<data.length; i++) {
+	Post.query(function(posts) {
 
-			// name doesn't appear here
+		// make this part as a TIL - how to pass the parameter to a callback
 
-			data[i].writer = User.get({userId:data[i].postedBy}).name;
+		vm.leftPosts = [];
+		vm.rightPosts = [];
+		for(var i = 0; i<posts.length; i++) {
+			if(i%2 === 0) {
+				vm.leftPosts.push(posts[i]);
+				(function(post) {
+					User.get({userId:post.postedBy}, function(user) {
+						post.writer = user.name;
+					});
+	    	})(vm.leftPosts[i===0?0:i/2]);
+			} else {
+				vm.rightPosts.push(posts[i]);
+				(function(post) {
+					User.get({userId:post.postedBy}, function(user) {
+						post.writer = user.name;
+					});
+	    	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
+			}
 		}
-		vm.posts = data;
 	});
 }]);
 
