@@ -14,12 +14,11 @@ module.exports.getPosts = function(req, res, next) {
 // find one specific post
 module.exports.getPost = function(req, res, next) {
   console.log('server getPost');
-  Post
-    .findById(req.body._id)
-    .exec(function(error, post) {
-      if(error) return next(error);
-      res.status(200).json(post);
-    });
+
+  Post.findById(req.params.postId, function(error, post) {
+    if(error) return next(error);
+    res.status(200).json(post);
+  });
 };
 
 // create a post

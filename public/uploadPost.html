@@ -59,33 +59,33 @@
   </div>
   <!-- textarea -->
   <div layout="row">
-  <fieldset class="standard" flex="70" flex-offset="15">
-  <div layout="row">
-    <div flex="grow">
-      <md-input-container class="md-block" layout-padding>
-        <label>write here!</label>
-        <textarea ng-model="vm.post.content"
-           style="height: 30%" md-maxlength="3000"
-          rows="50" md-select-on-focus></textarea>
-      </md-input-container>
-    </div>
-  </div>
-  <!-- tags -->
-  <div layout="row">
-    <div flex="grow">
-      <md-content class="md-padding">
-        <md-chips
-          ng-model="vm.post.tags"
-          readonly="vm.readonly"
-          placeholder="Enter a tag"
-          delete-button-label="Remove Tag"
-          delete-hint="Press delete to remove tag"
-          secondary-placeholder="+Tag">
-        </md-chips>
-      </md-content>
-    </div>
-  </div>
-  </fieldset>
+    <fieldset class="standard" flex="70" flex-offset="15">
+      <div layout="row">
+        <div flex="grow">
+          <md-input-container class="md-block" layout-padding>
+            <label>write here!</label>
+            <textarea ng-model="vm.post.content"
+               style="height: 30%" md-maxlength="5000"
+              rows="50" md-select-on-focus></textarea>
+          </md-input-container>
+        </div>
+      </div>
+      <!-- tags -->
+      <div layout="row">
+        <div flex="grow">
+          <md-content class="md-padding">
+            <md-chips
+              ng-model="vm.post.tags"
+              readonly="vm.readonly"
+              placeholder="Enter a tag"
+              delete-button-label="Remove Tag"
+              delete-hint="Press delete to remove tag"
+              secondary-placeholder="+Tag">
+            </md-chips>
+          </md-content>
+        </div>
+      </div>
+    </fieldset>
   </div>
   <!-- button for cancel & upload -->
   <div layout="row">

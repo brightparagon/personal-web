@@ -175,6 +175,21 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', function($sc
 	});
 }]);
 
+app.controller('viewPostCtrl', ['$scope', '$resource', 'authentication', '$location', function($scope, $resource, authentication, $location) {
+	var vm = this;
+	vm.post = {
+		postedBy : authentication.currentUser()._id,
+		title : "",
+		isPrivate : "",
+		content : "",
+		tags : []
+	};
+
+	vm.goback = function() {
+		$location.path('/post/list');
+	};
+}]);
+
 app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {
 	var vm = this;
 	vm.readonly = false;
@@ -196,7 +211,9 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 		var newPost = new Post(vm.post);
 
 		newPost.$save(function(data) {
-			$location.path('/');
+
+			// $location.path -> synchronize immediately
+			$location.path('/post/list');
 			// $rootScope.$broadcast('userLoggedIn');
 		});
 	};

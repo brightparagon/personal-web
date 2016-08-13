@@ -21,7 +21,8 @@ router.post('/signup', ctrlUser.signUp);
 
 // for posts
 // router.get('/post', ctrlPost.signIn); // fix it
-router.post('/post/upload', ctrlPost.createPost);
+router.get('/post/view/:postId', ctrlPost.getPost);
 router.get('/post/list', ctrlPost.getPosts);
+router.post('/post/upload', ctrlPost.createPost);
 
 module.exports = router;
