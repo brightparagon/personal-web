@@ -173,21 +173,20 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', function($sc
 			}
 		}
 	});
+	vm.read = function(postId) {
+		$location.path('/post/view').search({postId:postId});
+	};
 }]);
 
 app.controller('viewPostCtrl', ['$scope', '$resource', 'authentication', '$location', function($scope, $resource, authentication, $location) {
 	var vm = this;
-	vm.post = {
-		postedBy : authentication.currentUser()._id,
-		title : "",
-		isPrivate : "",
-		content : "",
-		tags : []
-	};
-
-	vm.goback = function() {
-		$location.path('/post/list');
-	};
+	// var Post = $resource('/post/view/:postId');
+	// Post.get({postId:}, function(post) {
+	// 	vm.post = post;
+	// });
+	// vm.goback = function() {
+	// 	$location.path('/post/list');
+	// };
 }]);
 
 app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {
