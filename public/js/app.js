@@ -98,6 +98,26 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
+app.service('postService', ['$resource', function($resource) {
+	// var User = $resource('/api/user/:userId');
+	var Posts = $resource('/api/post/list');
+	// var Post = $resource('/post/view/:postId');
+	this.postsData = [];
+
+  this.getPosts = function() {
+		Posts.query(function(posts) {
+			 postsData = posts;
+		});
+  };
+
+  // this.getPost = function() {
+	// 	Post.get({postId:}, function(post) {
+	// 		vm.post = post;
+	// 	});
+  //   return this.userData.email;
+  // };
+}]);
+
 // modify it
 // app.factory('userService', ['$resource', function($resource) {
 //   return $resource('/api', {}, { // url part maybe needs fixing
@@ -141,15 +161,16 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$location', '$resource', function($scope, $location, $resource) {
+app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'postService', function($scope, $location, $resource, postService) {
 	var vm = this;
 	var User = $resource('/api/user/:userId');
-	var Post = $resource('/api/post/list');
+	// var Post = $resource('/api/post/list');
 
 	// maybe there is a better way to relate the writer to every post
 	// like fixing post schema - adding writer property referring to User Schema
 
-	Post.query(function(posts) {
+	// Post.query(function(posts) {
+	var posts = postService.getPosts();
 
 		// make this part as a TIL - how to pass the parameter to a callback
 
@@ -172,7 +193,9 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', function($sc
 	    	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
 			}
 		}
-	});
+	// });
+
+	// need to fix here with viewPostCtrl(parameter)
 	vm.read = function(postId) {
 		$location.path('/post/view').search({postId:postId});
 	};
