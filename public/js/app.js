@@ -103,12 +103,13 @@ app.service('postService', ['$resource', function($resource) {
 	var Posts = $resource('/api/post/list');
 	// var Post = $resource('/post/view/:postId');
 	this.postsData = [];
+	Posts.query(function(posts) {
+		
+		// console.log(this.postsData[0].title);
+	});
+	// this.getPosts =
 
-  this.getPosts = function() {
-		Posts.query(function(posts) {
-			 postsData = posts;
-		});
-  };
+	// console.log(postsData[0].title);
 
   // this.getPost = function() {
 	// 	Post.get({postId:}, function(post) {
@@ -165,17 +166,18 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'postService
 	var vm = this;
 	var User = $resource('/api/user/:userId');
 	// var Post = $resource('/api/post/list');
+	vm.leftPosts = [];
+	vm.rightPosts = [];
+	var posts = [];
 
 	// maybe there is a better way to relate the writer to every post
 	// like fixing post schema - adding writer property referring to User Schema
 
 	// Post.query(function(posts) {
-	var posts = postService.getPosts();
-
+	posts = postService.getPosts();
+	// console.log(posts[0].title);
 		// make this part as a TIL - how to pass the parameter to a callback
 
-		vm.leftPosts = [];
-		vm.rightPosts = [];
 		for(var i = 0; i<posts.length; i++) {
 			if(i%2 === 0) {
 				vm.leftPosts.push(posts[i]);

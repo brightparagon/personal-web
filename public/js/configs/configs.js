@@ -22,8 +22,13 @@ configs.config(['$routeProvider', function($routeProvider) {
 			controller: 'newpageCtrl',
 			controllerAs: 'vm'
 		})
-    .when('/post/view', {
+    .when('/post/view/:postId', {
 			templateUrl: 'viewPost.html',
+      resolve: {
+        // post: ["PostLoader", function(PostLoader) {
+        //   return PostLoader();
+        // }]
+      },
 			controller: 'viewPostCtrl',
 			controllerAs: 'vm'
 		})
