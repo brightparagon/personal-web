@@ -4,17 +4,22 @@
 
 var app = angular.module('blogapp', ['ngResource', 'ngMessages', 'blog.configs']);
 
-app.run(['$rootScope', '$location', 'authentication',
-	function($rootScope, $location, authentication) {
-	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-		console.log('routeChangeStart called');
-		// every move or change to any pages will be calling this $on(it is made to do that)
-		// even the first access to this web will call this method
+app.factory('Post', ['$resource', function($resource) {
+    return $resource('/posts/:id', { id: '@_id' }, { update: { method: 'PUT' } });
+}]);
 
-	  if($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
-	  	$location.path('/');
-    }
-  });
+app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
+    return function() {
+        var delay = $q.defer();
+        Post.get({id: $route.current.params.postId}, function(post) {
+            delay.resolve(post);
+        }, function() {
+            delay.reject('Unable to fetch post '  + $route.current.params.postId);
+        });
+        return delay.promise;
+
+				// fix '$route.current.params.postId' this part
+    };
 }]);
 
 // app.directive('navigation', function navigation() {
@@ -104,7 +109,7 @@ app.service('postService', ['$resource', function($resource) {
 	// var Post = $resource('/post/view/:postId');
 	this.postsData = [];
 	Posts.query(function(posts) {
-		
+
 		// console.log(this.postsData[0].title);
 	});
 	// this.getPosts =
@@ -276,6 +281,8 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
     .error(function(err) {
       alert('secretCtrl error occurs : ' +err);
     });
+		// the reason whay the result of getData.getProfile() can be linked to .success and .error
+		// is that getProfile() returns $http object which uses ajax call that has functions above
 }]);
 
 app.controller('newpageCtrl', function($scope) {
@@ -319,4 +326,17 @@ app.controller('signUpCtrl',  ['$rootScope', '$location', '$resource', 'authenti
 			$rootScope.$broadcast('userLoggedIn');
 		});
 	};
+}]);
+
+app.run(['$rootScope', '$location', 'authentication',
+	function($rootScope, $location, authentication) {
+	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+		console.log('routeChangeStart called');
+		// every move or change to any pages will be calling this $on(it is made to do that)
+		// even the first access to this web will call this method
+
+	  if($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
+	  	$location.path('/');
+    }
+  });
 }]);

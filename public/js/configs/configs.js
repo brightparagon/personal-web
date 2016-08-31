@@ -25,9 +25,9 @@ configs.config(['$routeProvider', function($routeProvider) {
     .when('/post/view/:postId', {
 			templateUrl: 'viewPost.html',
       resolve: {
-        // post: ["PostLoader", function(PostLoader) {
-        //   return PostLoader();
-        // }]
+        post: ["PostLoader", function(PostLoader) {
+          return PostLoader();
+        }]
       },
 			controller: 'viewPostCtrl',
 			controllerAs: 'vm'
