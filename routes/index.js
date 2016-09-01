@@ -20,9 +20,12 @@ router.get('/secretpage', auth, ctrlUser.profileRead);
 router.post('/signup', ctrlUser.signUp);
 
 // for posts
-// router.get('/post', ctrlPost.signIn); // fix it
-router.get('/post/view/:postId', ctrlPost.getPost);
-router.get('/post/list', ctrlPost.getPosts);
-router.post('/post/upload', ctrlPost.createPost);
+// router.get('/post/view/:postId', ctrlPost.getPost);
+// router.get('/post/list', ctrlPost.getPosts);
+// router.post('/post/upload', ctrlPost.createPost);
+router.get('/posts', ctrlPost.getPosts);
+router.get('/posts/:postId', ctrlPost.getPost);
+// router.post('/posts/:postId', ctrlPost.updatePost);
+router.post('/posts/upload', ctrlPost.createPost);
 
 module.exports = router;
