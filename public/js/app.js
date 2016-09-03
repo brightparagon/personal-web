@@ -12,7 +12,6 @@ app.factory('PostsLoader', ['Post', '$q', function(Post, $q) {
   return function() {
     var delay = $q.defer();
     Post.query(function(posts) {
-      console.log(posts[0].title);
       delay.resolve(posts);
     }, function() {
       delay.reject('Unable to fetch posts');
@@ -190,8 +189,10 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', fun
 // like fixing post schema - adding writer property referring to User Schema
 }]);
 
-app.controller('viewPostCtrl', ['$scope', '$resource', 'authentication', '$location', function($scope, $resource, authentication, $location) {
+app.controller('viewPostCtrl', ['$scope', 'Post', 'authentication', '$location', 'post', function($scope, Post, authentication, $location, post) {
 	var vm = this;
+  vm.post = post;
+  // console.log('viewPost title : ' + vm.post.title);
 	// var Post = $resource('/post/view/:postId');
 	// Post.get({postId:}, function(post) {
 	// 	vm.post = post;
