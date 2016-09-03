@@ -165,34 +165,29 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', fun
 	vm.leftPosts = [];
 	vm.rightPosts = [];
 
-  posts().then(function(result){ // this posts is the function provided by PostsLoader
-    // $scope.posts = $scope.posts.concat(result);
+  // $scope.posts = $scope.posts.concat(result);
 
-    // make this part as a TIL - how to pass the parameter to a callback
+  // make this part as a TIL - how to pass the parameter to a callback
 
-    for(var i = 0; i<result.length; i++) {
-  		if(i%2 === 0) {
-  			vm.leftPosts.push(result[i]);
-  			(function(post) {
-  				User.get({userId:post.postedBy}, function(user) {
-  					post.writer = user.name;
-  				});
-      	})(vm.leftPosts[i===0?0:i/2]);
-  		} else {
-  			vm.rightPosts.push(result[i]);
-  			(function(post) {
-  				User.get({userId:post.postedBy}, function(user) {
-  					post.writer = user.name;
-  				});
-      	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
-  		}
+  for(var i = 0; i<posts.length; i++) {
+  	if(i%2 === 0) {
+  		vm.leftPosts.push(posts[i]);
+  		(function(post) {
+  			User.get({userId:post.postedBy}, function(user) {
+  				post.writer = user.name;
+				});
+    	})(vm.leftPosts[i===0?0:i/2]);
+		} else {
+  		vm.rightPosts.push(posts[i]);
+  		(function(post) {
+  			User.get({userId:post.postedBy}, function(user) {
+  				post.writer = user.name;
+  			});
+    	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
   	}
-  },function(error){
-    alert('unable to resolve posts');
-  });
-
-  // maybe there is a better way to relate the writer to every post
-  // like fixing post schema - adding writer property referring to User Schema
+	}
+// maybe there is a better way to relate the writer to every post
+// like fixing post schema - adding writer property referring to User Schema
 }]);
 
 app.controller('viewPostCtrl', ['$scope', '$resource', 'authentication', '$location', function($scope, $resource, authentication, $location) {
