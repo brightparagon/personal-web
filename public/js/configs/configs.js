@@ -36,8 +36,9 @@ configs.config(['$routeProvider', function($routeProvider) {
     .when('/posts/list', {
 			templateUrl: 'listPost.html',
       resolve: {
-        posts: ["PostsLoader", function(MultiPostLoader) {
-          return function(params){return MultiPostLoader(params);}
+        posts: ["PostsLoader", function(PostsLoader) {
+          // return function(params){return PostsLoader(params);}
+          return PostsLoader();
         }]
       },
 			controller: 'listPostCtrl',

@@ -5,18 +5,14 @@
 var app = angular.module('blogapp', ['ngResource', 'ngMessages', 'blog.configs']);
 
 app.factory('Post', ['$resource', function($resource) {
-  return $resource('/posts/:id',
-    { id: '@_id' },
-    { update: { method: 'PUT' },
-      delete: { method: 'DELETE'}
-    }
-  );
+  return $resource('/api/posts/:postId', {}, { update: { method: 'PUT' }, delete: { method: 'DELETE'} });
 }]);
 
 app.factory('PostsLoader', ['Post', '$q', function(Post, $q) {
-  return function(params) {
+  return function() {
     var delay = $q.defer();
-    Post.query(params, function(posts) {
+    Post.query(function(posts) {
+      console.log(posts[0].title);
       delay.resolve(posts);
     }, function() {
       delay.reject('Unable to fetch posts');
@@ -28,8 +24,7 @@ app.factory('PostsLoader', ['Post', '$q', function(Post, $q) {
 app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
   return function() {
     var delay = $q.defer();
-    Post.get({id: $route.current.params.postId}, function(post) {
-      // id above is set as { id: '@_id' } in Post factory
+    Post.get({postId: $route.current.params.postId}, function(post) {
       delay.resolve(post);
     }, function() {
       delay.reject('Unable to fetch post '  + $route.current.params.postId);
@@ -164,38 +159,40 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'Post', function($scope, $location, $resource, Post) {
+app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', function($scope, $location, $resource, posts) {
 	var vm = this;
 	var User = $resource('/api/user/:userId');
 	vm.leftPosts = [];
 	vm.rightPosts = [];
-	var posts = [];
 
-	// maybe there is a better way to relate the writer to every post
-	// like fixing post schema - adding writer property referring to User Schema
+  posts().then(function(result){ // this posts is the function provided by PostsLoader
+    // $scope.posts = $scope.posts.concat(result);
 
-	Post.query(function(posts) {
+    // make this part as a TIL - how to pass the parameter to a callback
 
-		// make this part as a TIL - how to pass the parameter to a callback
+    for(var i = 0; i<result.length; i++) {
+  		if(i%2 === 0) {
+  			vm.leftPosts.push(result[i]);
+  			(function(post) {
+  				User.get({userId:post.postedBy}, function(user) {
+  					post.writer = user.name;
+  				});
+      	})(vm.leftPosts[i===0?0:i/2]);
+  		} else {
+  			vm.rightPosts.push(result[i]);
+  			(function(post) {
+  				User.get({userId:post.postedBy}, function(user) {
+  					post.writer = user.name;
+  				});
+      	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
+  		}
+  	}
+  },function(error){
+    alert('unable to resolve posts');
+  });
 
-		for(var i = 0; i<posts.length; i++) {
-			if(i%2 === 0) {
-				vm.leftPosts.push(posts[i]);
-				(function(post) {
-					User.get({userId:post.postedBy}, function(user) {
-						post.writer = user.name;
-					});
-	    	})(vm.leftPosts[i===0?0:i/2]);
-			} else {
-				vm.rightPosts.push(posts[i]);
-				(function(post) {
-					User.get({userId:post.postedBy}, function(user) {
-						post.writer = user.name;
-					});
-	    	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
-			}
-		}
-	});
+  // maybe there is a better way to relate the writer to every post
+  // like fixing post schema - adding writer property referring to User Schema
 }]);
 
 app.controller('viewPostCtrl', ['$scope', '$resource', 'authentication', '$location', function($scope, $resource, authentication, $location) {
@@ -269,7 +266,7 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
       vm.user = data;
     })
     .error(function(err) {
-      alert('secretCtrl error occurs : ' +err);
+      alert('secretCtrl error occurs : ' + err);
     });
 		// the reason whay the result of getData.getProfile() can be linked to .success and .error
 		// is that getProfile() returns $http object which uses ajax call that has functions above
