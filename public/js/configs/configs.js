@@ -3,6 +3,7 @@
 var configs = angular.module('blog.configs', ['ngRoute', 'ngMaterial', 'ngMdIcons']);
 
 // custom constant
+// not use yet
 configs.constant('AUTH_EVENTS', {
   	loginSuccess: 'auth-login-success',
   	loginFailed: 'auth-login-failed'
@@ -22,7 +23,7 @@ configs.config(['$routeProvider', function($routeProvider) {
 			controller: 'newpageCtrl',
 			controllerAs: 'vm'
 		})
-    .when('/post/view/:postId', {
+    .when('/posts/view/:postId', {
 			templateUrl: 'viewPost.html',
       resolve: {
         post: ["PostLoader", function(PostLoader) {
@@ -32,12 +33,17 @@ configs.config(['$routeProvider', function($routeProvider) {
 			controller: 'viewPostCtrl',
 			controllerAs: 'vm'
 		})
-    .when('/post/list', {
+    .when('/posts/list', {
 			templateUrl: 'listPost.html',
+      resolve: {
+        posts: ["PostsLoader", function(MultiPostLoader) {
+          return function(params){return MultiPostLoader(params);}
+        }]
+      },
 			controller: 'listPostCtrl',
 			controllerAs: 'vm'
 		})
-    .when('/post/upload', {
+    .when('/posts/upload', {
 			templateUrl: 'uploadPost.html',
 			controller: 'uploadPostCtrl',
 			controllerAs: 'vm'

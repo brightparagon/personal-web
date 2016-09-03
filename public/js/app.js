@@ -5,25 +5,38 @@
 var app = angular.module('blogapp', ['ngResource', 'ngMessages', 'blog.configs']);
 
 app.factory('Post', ['$resource', function($resource) {
-    return $resource('/posts/:id',
-      { id: '@_id' },
-      { update: { method: 'PUT' },
-        delete: { method: 'DELETE'}
-      },
-    );
+  return $resource('/posts/:id',
+    { id: '@_id' },
+    { update: { method: 'PUT' },
+      delete: { method: 'DELETE'}
+    }
+  );
+}]);
+
+app.factory('PostsLoader', ['Post', '$q', function(Post, $q) {
+  return function(params) {
+    var delay = $q.defer();
+    Post.query(params, function(posts) {
+      delay.resolve(posts);
+    }, function() {
+      delay.reject('Unable to fetch posts');
+    });
+    return delay.promise;
+  };
 }]);
 
 app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
-    return function() {
-        var delay = $q.defer();
-        Post.get({id: $route.current.params.postId}, function(post) {
-            delay.resolve(post);
-        }, function() {
-            delay.reject('Unable to fetch post '  + $route.current.params.postId);
-        });
-        return delay.promise;
+  return function() {
+    var delay = $q.defer();
+    Post.get({id: $route.current.params.postId}, function(post) {
+      // id above is set as { id: '@_id' } in Post factory
+      delay.resolve(post);
+    }, function() {
+      delay.reject('Unable to fetch post '  + $route.current.params.postId);
+    });
+    return delay.promise;
 
-        // what is $route?
+    // what is $route?
     };
 }]);
 

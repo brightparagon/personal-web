@@ -37,7 +37,7 @@
               <md-button ng-href="#/">Home</md-button>
             </h2>
             <md-button ng-show="isLoggedIn" href="#/secretpage">Profile</md-button>
-            <md-button href="#/post/list{{}}">Postings</md-button>
+            <md-button href="#/posts/list">Postings</md-button>
 
             <!-- this span(flex) makes a empty space btw buttons -->
             <span flex></span>
@@ -45,7 +45,7 @@
             <md-button ng-hide="isLoggedIn" ng-href="#/signup">Sign up</md-button>
             <md-button ng-hide="isLoggedIn" ng-href="#/signin">Sign in</md-button>
             <md-button ng-show="isLoggedIn" ng-click="signOut()">Sign out</md-button>
-            <md-button ng-show="isLoggedIn" ng-href="#/post/upload" class="md-raised" aria-label="New Post">
+            <md-button ng-show="isLoggedIn" ng-href="#/posts/upload" class="md-raised" aria-label="New Post">
               New Posting!
             </md-button>
             <md-button class="md-fab md-mini" ng-href="http://github.com/brightlaw/personal-web"
