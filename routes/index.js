@@ -23,9 +23,11 @@ router.post('/signup', ctrlUser.signUp);
 // router.get('/post/view/:postId', ctrlPost.getPost);
 // router.get('/post/list', ctrlPost.getPosts);
 // router.post('/post/upload', ctrlPost.createPost);
+
 router.get('/posts', ctrlPost.getPosts);
 router.get('/posts/:postId', ctrlPost.getPost);
-// router.post('/posts/:postId', ctrlPost.updatePost);
-router.post('/posts/upload', ctrlPost.createPost);
+// router.put('/posts/:postId', ctrlPost.updatePost);
+// router.delete('/posts/:postId', ctrlPost.deletePost);
+router.post('/posts', ctrlPost.createPost);
 
 module.exports = router;

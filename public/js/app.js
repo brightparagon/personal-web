@@ -5,7 +5,12 @@
 var app = angular.module('blogapp', ['ngResource', 'ngMessages', 'blog.configs']);
 
 app.factory('Post', ['$resource', function($resource) {
-    return $resource('/posts/:id', { id: '@_id' }, { update: { method: 'PUT' } });
+    return $resource('/posts/:id',
+      { id: '@_id' },
+      { update: { method: 'PUT' },
+        delete: { method: 'DELETE'}
+      },
+    );
 }]);
 
 app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
@@ -18,7 +23,7 @@ app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
         });
         return delay.promise;
 
-				// fix '$route.current.params.postId' this part
+        // what is $route?
     };
 }]);
 
@@ -103,27 +108,6 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
-app.service('postService', ['$resource', function($resource) {
-	// var User = $resource('/api/user/:userId');
-	var Posts = $resource('/api/post/list');
-	// var Post = $resource('/post/view/:postId');
-	this.postsData = [];
-	Posts.query(function(posts) {
-
-		// console.log(this.postsData[0].title);
-	});
-	// this.getPosts =
-
-	// console.log(postsData[0].title);
-
-  // this.getPost = function() {
-	// 	Post.get({postId:}, function(post) {
-	// 		vm.post = post;
-	// 	});
-  //   return this.userData.email;
-  // };
-}]);
-
 // modify it
 // app.factory('userService', ['$resource', function($resource) {
 //   return $resource('/api', {}, { // url part maybe needs fixing
@@ -167,10 +151,9 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'postService', function($scope, $location, $resource, postService) {
+app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'Post', function($scope, $location, $resource, Post) {
 	var vm = this;
 	var User = $resource('/api/user/:userId');
-	// var Post = $resource('/api/post/list');
 	vm.leftPosts = [];
 	vm.rightPosts = [];
 	var posts = [];
@@ -178,9 +161,8 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'postService
 	// maybe there is a better way to relate the writer to every post
 	// like fixing post schema - adding writer property referring to User Schema
 
-	// Post.query(function(posts) {
-	posts = postService.getPosts();
-	// console.log(posts[0].title);
+	Post.query(function(posts) {
+
 		// make this part as a TIL - how to pass the parameter to a callback
 
 		for(var i = 0; i<posts.length; i++) {
@@ -200,12 +182,7 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'postService
 	    	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
 			}
 		}
-	// });
-
-	// need to fix here with viewPostCtrl(parameter)
-	vm.read = function(postId) {
-		$location.path('/post/view').search({postId:postId});
-	};
+	});
 }]);
 
 app.controller('viewPostCtrl', ['$scope', '$resource', 'authentication', '$location', function($scope, $resource, authentication, $location) {
