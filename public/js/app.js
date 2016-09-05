@@ -189,17 +189,9 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', fun
 // like fixing post schema - adding writer property referring to User Schema
 }]);
 
-app.controller('viewPostCtrl', ['$scope', 'Post', 'authentication', '$location', 'post', function($scope, Post, authentication, $location, post) {
+app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', function($scope, authentication, $location, post) {
 	var vm = this;
   vm.post = post;
-  // console.log('viewPost title : ' + vm.post.title);
-	// var Post = $resource('/post/view/:postId');
-	// Post.get({postId:}, function(post) {
-	// 	vm.post = post;
-	// });
-	// vm.goback = function() {
-	// 	$location.path('/post/list');
-	// };
 }]);
 
 app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {

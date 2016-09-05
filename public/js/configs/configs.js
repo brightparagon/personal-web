@@ -37,7 +37,6 @@ configs.config(['$routeProvider', function($routeProvider) {
 			templateUrl: 'listPost.html',
       resolve: {
         posts: ["PostsLoader", function(PostsLoader) {
-          // return function(params){return PostsLoader(params);}
           return PostsLoader();
         }]
       },
