@@ -33,6 +33,16 @@ configs.config(['$routeProvider', function($routeProvider) {
 			controller: 'viewPostCtrl',
 			controllerAs: 'vm'
 		})
+    .when('/posts/edit/:postId', {
+			templateUrl: 'editPost.html',
+      // resolve: {
+      //   post: ["PostLoader", function(PostLoader) {
+      //     return PostLoader();
+      //   }]
+      // },
+			controller: 'editPostCtrl',
+			controllerAs: 'vm'
+		})
     .when('/posts/list', {
 			templateUrl: 'listPost.html',
       resolve: {

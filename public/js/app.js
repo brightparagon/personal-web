@@ -189,9 +189,28 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', fun
 // like fixing post schema - adding writer property referring to User Schema
 }]);
 
-app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', function($scope, authentication, $location, post) {
+app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', function($scope, authentication, $location, post, Post) {
 	var vm = this;
   vm.post = post;
+
+  vm.delete = function(postId) {
+
+    // need to add an alert saying like 'are you sure to remove this post?'
+
+    Post.delete({postId:postId}, function(err) {
+      if(err) alert('delete error occurs');
+      $location.path('/post/list');
+    });
+  };
+}]);
+
+app.controller('editPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', function($scope, authentication, $location, post, Post) {
+	var vm = this;
+  vm.post = post;
+
+  vm.update = function(updatedPost) {
+    Post.update({postId:postId}, updatedPost);
+  };
 }]);
 
 app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {

@@ -25,12 +25,32 @@ module.exports.getPost = function(req, res, next) {
 module.exports.createPost = function(req, res, next) {
   console.log('server createPost');
 
-  var post = new Post(req.body); // if it doesn't work do below
+  var post = new Post(req.body);
+  // if it doesn't work do below
   // post.title = req.body.title;
 
   post.save(function(error, post) {
     if(error) return next(error);
+    res.status(200).json(post);
+  });
+};
+
+// update a post
+module.exports.updatePost = function(req, res, next) {
+  console.log('server updatePost');
+
+  // Post.findByIdAndUpdate(req.params.postId, { $set: { size: 'large' }}, { new: true }, function (err, post) {
+  //   if(error) return next(error);
+  //   res.status(200).json(post);
+  // });
+};
+
+// delete a post
+module.exports.deletePost = function(req, res, next) {
+  console.log('server deletePost');
+
+  Post.remove({_id:req.params.postId}, function(error) {
+    if(error) return next(error);
     res.status(200);
-    res.json(post);
   });
 };
