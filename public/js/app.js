@@ -208,8 +208,10 @@ app.controller('editPostCtrl', ['$scope', 'authentication', '$location', 'post',
 	var vm = this;
   vm.post = post;
 
-  vm.update = function(updatedPost) {
-    Post.update({postId:postId}, updatedPost);
+  vm.update = function(postToUpdate) {
+    Post.update({postId:postToUpdate.postId}, postToUpdate, function() {
+      $location.path('/post/view/' + postToUpdate.postId);
+    });
   };
 }]);
 
