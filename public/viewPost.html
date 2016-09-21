@@ -1,4 +1,4 @@
-<div layout="column" ng-cloak class="md-inline-form" layout-align="center center" layout-padding>
+<!-- <div layout="column" ng-cloak class="md-inline-form" layout-align="center center" layout-padding>
   <div layout='row' layout-padding>
     <md-content class="md-padding" font-size: style:bold>
       {{ vm.post.title }}
@@ -10,11 +10,38 @@
     </md-content>
   </div>
   <div layout="row" layout-padding layout-wrap>
-    <!-- change this button to  -->
     <md-button class="md-accent" ng-repeat="tag in vm.post.tags">{{ tag }}</md-button>
   </div>
   <div layout="row" layout-padding layout-wrap>
     <md-button class="md-raised md-primary" ng-href="/#/posts/edit/{{ post._id }}">Edit</md-button>
     <md-button class="md-raised md-primary" ng-click="vm.delete(vm.post._id)">Delete</md-button>
   </div>
-</div>
+</div> -->
+<md-dialog aria-label="Post">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{ vm.post.title }}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <!-- <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon> -->
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        {{ vm.post.content }}
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
+        More on Wikipedia
+      </md-button>
+      <span flex></span>
+      <md-button ng-click="">Edit</md-button>
+      <md-button ng-click="">Delete</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
