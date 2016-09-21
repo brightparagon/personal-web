@@ -47,23 +47,23 @@ app.use(function (err, req, res, next) {
 // development error handler
 // print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use(function(error, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
-      message: err.message,
-      error: err
+      message: error.message,
+      error: error
     });
   });
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+app.use(function(error, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: error.message,
+    error: {}
+  });
 });
 
 app.listen(app.get('port'), function() {

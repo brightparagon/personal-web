@@ -30,7 +30,7 @@ app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
     });
     return delay.promise;
 
-    // what is $route?
+    // what is $route? & hot to use it with params --> TIL
     };
 }]);
 
