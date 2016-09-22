@@ -1,4 +1,4 @@
-<div ng-cloak>
+<div id="popupContainer" ng-cloak>
   <!-- layout="row" -->
   <md-content class="md-padding" layout-xs="column" layout="row">
     <!-- first div with layout="column" -->
@@ -15,7 +15,10 @@
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
           <!-- <md-button ng-click="vm.read(post._id)">READ</md-button> -->
-          <md-button ng-href="/#/posts/view/{{ post._id }}">READ</md-button>
+          <!-- <md-button ng-href="/#/posts/view/{{ post._id }}">READ</md-button> -->
+          <md-button class="md-primary md-raised" ng-click="vm.showAdvanced($event)" >
+            Read
+          </md-button>
         </md-card-actions>
       </md-card>
     </div>
@@ -33,7 +36,10 @@
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
           <!-- <md-button ng-click="vm.read(post._id)">READ</md-button> -->
-          <md-button ng-href="/#/posts/view/{{ post._id }}">READ</md-button>
+          <!-- <md-button ng-href="/#/posts/view/{{ post._id }}">READ</md-button> -->
+          <md-button class="md-primary md-raised" ng-click="vm.showAdvanced($event)" >
+            Read
+          </md-button>
         </md-card-actions>
       </md-card>
     </div>

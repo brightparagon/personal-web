@@ -158,7 +158,7 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', function($scope, $location, $resource, posts) {
+app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', '$mdDialog', function($scope, $location, $resource, posts, $mdDialog) {
 	var vm = this;
 	var User = $resource('/api/user/:userId');
 	vm.leftPosts = [];
@@ -185,8 +185,37 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', fun
     	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
   	}
 	}
-// maybe there is a better way to relate the writer to every post
-// like fixing post schema - adding writer property referring to User Schema
+  // maybe there is a better way to relate the writer to every post
+  // like fixing post schema - adding writer property referring to User Schema
+
+  vm.showAdvanced = function(ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'viewPost.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose:true,
+    });
+    // .then(function(answer) {
+    //   $scope.status = 'You said the information was "' + answer + '".';
+    // }, function() {
+    //   $scope.status = 'You cancelled the dialog.';
+    // });
+  };
+
+  function DialogController(vm, $mdDialog) {
+    // vm.hide = function() {
+    //   $mdDialog.hide();
+    // };
+
+    vm.cancel = function() {
+      $mdDialog.cancel();
+    };
+
+    vm.answer = function(answer) {
+      $mdDialog.hide(answer);
+    };
+  }
 }]);
 
 app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', function($scope, authentication, $location, post, Post) {
