@@ -188,7 +188,10 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', '$m
   // maybe there is a better way to relate the writer to every post
   // like fixing post schema - adding writer property referring to User Schema
 
-  vm.showAdvanced = function(ev) {
+  vm.showAdvanced = function(ev, post) {
+    // find how to pass 'post' to be rendered in viewPost.html
+    // find how to manage viewPost.html -> new controller or as a function in this list controller?
+
     $mdDialog.show({
       controller: DialogController,
       templateUrl: 'viewPost.html',
@@ -203,10 +206,10 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', '$m
     // });
   };
 
-  function DialogController(vm, $mdDialog) {
-    // vm.hide = function() {
-    //   $mdDialog.hide();
-    // };
+  function DialogController($mdDialog) {
+    vm.hide = function() {
+      $mdDialog.hide();
+    };
 
     vm.cancel = function() {
       $mdDialog.cancel();
