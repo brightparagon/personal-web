@@ -158,7 +158,7 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 		});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', '$mdDialog', function($scope, $location, $resource, posts, $mdDialog) {
+app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Post', '$mdDialog', function($scope, $location, $resource, posts, Post, $mdDialog) {
 	var vm = this;
 	var User = $resource('/api/user/:userId');
 	vm.leftPosts = [];
@@ -188,13 +188,18 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', '$m
   // maybe there is a better way to relate the writer to every post
   // like fixing post schema - adding writer property referring to User Schema
 
-  vm.showAdvanced = function(ev, post) {
-    // find how to pass 'post' to be rendered in viewPost.html
-    // find how to manage viewPost.html -> new controller or as a function in this list controller?
+  vm.showAdvanced = function(ev, postId) {
+    // how to pass parameter(postId) to PostLoader?
 
     $mdDialog.show({
       controller: DialogController,
+      controllerAs: 'vm',
       templateUrl: 'viewPost.html',
+      resolve: {
+        post: ["PostLoader", function(PostLoader) {
+          return PostLoader(postId);
+        }]
+      },
       parent: angular.element(document.body),
       targetEvent: ev,
       clickOutsideToClose:true,
@@ -206,7 +211,17 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', '$m
     // });
   };
 
-  function DialogController($mdDialog) {
+  function DialogController($scope, $location, post, Post, $mdDialog) {
+    var vm = this;
+    vm.post = post;
+
+    vm.delete = function(postId) {
+      Post.delete({postId:postId}, function(err) {
+        if(err) alert('delete error occurs');
+        $location.path('/post/list');
+      });
+    };
+
     vm.hide = function() {
       $mdDialog.hide();
     };
@@ -221,7 +236,7 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', '$m
   }
 }]);
 
-app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', function($scope, authentication, $location, post, Post) {
+app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', '$mdDialog', function($scope, authentication, $location, post, Post, $mdDialog) {
 	var vm = this;
   vm.post = post;
 
