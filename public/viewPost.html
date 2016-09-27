@@ -21,17 +21,18 @@
   <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>{{ vm.post.title }}</h2>
+        <h2>{{ post.title }}</h2>
         <span flex></span>
-        <md-button class="md-icon-button" ng-click="vm.cancel()">
+        <md-button class="md-icon-button" ng-click="cancel()">
           <!-- <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon> -->
+          <ng-md-icon icon="cancel" style="fill: white" size="30"></ng-md-icon>
         </md-button>
       </div>
     </md-toolbar>
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        {{ vm.post.content }}
+        {{ post.content }}
       </div>
     </md-dialog-content>
 

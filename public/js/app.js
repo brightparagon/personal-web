@@ -190,19 +190,19 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
 
   vm.showAdvanced = function(ev, postId) {
     // how to pass parameter(postId) to PostLoader?
-
+    var post;
+    Post.get({postId:postId}, function(data) {
+      post = data;
+    });
     $mdDialog.show({
       controller: DialogController,
-      controllerAs: 'vm',
       templateUrl: 'viewPost.html',
-      resolve: {
-        post: ["PostLoader", function(PostLoader) {
-          return PostLoader(postId);
-        }]
+      locals: {
+        post: post
       },
       parent: angular.element(document.body),
       targetEvent: ev,
-      clickOutsideToClose:true,
+      clickOutsideToClose: true
     });
     // .then(function(answer) {
     //   $scope.status = 'You said the information was "' + answer + '".';
@@ -211,29 +211,28 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
     // });
   };
 
-  function DialogController($scope, $location, post, Post, $mdDialog) {
-    var vm = this;
-    vm.post = post;
+  function DialogController($scope, $mdDialog, post) {
+    $scope.post = post;
 
-    vm.delete = function(postId) {
-      Post.delete({postId:postId}, function(err) {
-        if(err) alert('delete error occurs');
-        $location.path('/post/list');
-      });
-    };
+    // $scope.delete = function(postId) {
+    //   Post.delete({postId:postId}, function(err) {
+    //     if(err) alert('delete error occurs');
+    //     $location.path('/post/list');
+    //   });
+    // };
 
-    vm.hide = function() {
+    $scope.hide = function() {
       $mdDialog.hide();
     };
 
-    vm.cancel = function() {
+    $scope.cancel = function() {
       $mdDialog.cancel();
     };
 
-    vm.answer = function(answer) {
+    $scope.answer = function(answer) {
       $mdDialog.hide(answer);
     };
-  }
+  };
 }]);
 
 app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', '$mdDialog', function($scope, authentication, $location, post, Post, $mdDialog) {
