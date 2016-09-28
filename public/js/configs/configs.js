@@ -23,16 +23,16 @@ configs.config(['$routeProvider', function($routeProvider) {
 			controller: 'newpageCtrl',
 			controllerAs: 'vm'
 		})
-    .when('/posts/view/:postId', {
-			templateUrl: 'viewPost.html',
-      resolve: {
-        post: ["PostLoader", function(PostLoader) {
-          return PostLoader();
-        }]
-      },
-			controller: 'viewPostCtrl',
-			controllerAs: 'vm'
-		})
+    // .when('/posts/view/:postId', {
+		// 	templateUrl: 'viewPost.html',
+    //   resolve: {
+    //     post: ['PostLoader', function(PostLoader) {
+    //       return PostLoader();
+    //     }]
+    //   },
+		// 	controller: 'viewPostCtrl',
+		// 	controllerAs: 'vm'
+		// })
     .when('/posts/edit/:postId', {
 			templateUrl: 'editPost.html',
       // resolve: {
@@ -46,7 +46,7 @@ configs.config(['$routeProvider', function($routeProvider) {
     .when('/posts/list', {
 			templateUrl: 'listPost.html',
       resolve: {
-        posts: ["PostsLoader", function(PostsLoader) {
+        posts: ['PostsLoader', function(PostsLoader) {
           return PostsLoader();
         }]
       },
