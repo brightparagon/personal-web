@@ -23,7 +23,7 @@
       <div class="md-toolbar-tools">
         <h2>{{ post.title }}</h2>
         <span flex></span>
-        <md-button class="md-icon-button" aria-label="cancel" ng-click="vm.cancel()">
+        <md-button class="md-icon-button" aria-label="cancel" ng-click="cancel()">
           <ng-md-icon icon="cancel" style="fill: white" size="30"></ng-md-icon>
         </md-button>
       </div>
@@ -42,7 +42,7 @@
       <span flex></span>
       <!-- fix here -->
       <md-button ng-click="">Edit</md-button>
-      <md-button ng-click="">Delete</md-button>
+      <md-button ng-click="delete(post._id)">Delete</md-button>
     </md-dialog-actions>
   </form>
 </md-dialog>

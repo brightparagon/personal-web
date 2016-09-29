@@ -31,7 +31,7 @@ app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
     return delay.promise;
 
     // what is $route? & hot to use it with params --> TIL
-    };
+  };
 }]);
 
 // app.directive('navigation', function navigation() {
@@ -161,16 +161,6 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', '$mdDialog', function($scope, authentication, $location, post, Post, $mdDialog) {
 	var vm = this;
   vm.post = post;
-
-  vm.delete = function(postId) {
-
-    // need to add an alert saying like 'are you sure to remove this post?'
-
-    Post.delete({postId:postId}, function(err) {
-      if(err) alert('delete error occurs');
-      $location.path('/post/list');
-    });
-  };
 }]);
 
 app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Post', '$mdDialog', function($scope, $location, $resource, posts, Post, $mdDialog) {
@@ -178,8 +168,6 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
 	var User = $resource('/api/user/:userId');
 	vm.leftPosts = [];
 	vm.rightPosts = [];
-
-  // $scope.posts = $scope.posts.concat(result);
 
   // make this part as a TIL - how to pass the parameter to a callback
 
@@ -204,25 +192,12 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
   // like fixing post schema - adding writer property referring to User Schema
 
   vm.showAdvanced = function(ev, postId) {
-    // how to pass parameter(postId) to PostLoader?
-
-    // var post;
-    // Post.get({postId:postId}, function(data) {
-    //   post = data;
-    // });
+    var post = Post.get({postId:postId});
     $mdDialog.show({
       controller: viewPostCtrl,
-
-      // relocate viewPostCtrl in this listPostCtrl
-      // or find another way to make a controller
       templateUrl: 'viewPost.html',
-      // locals: {
-      //   post: post
-      // },
-      resolve: {
-        post: ['PostLoader', function(PostLoader) {
-          return PostLoader();
-        }]
+      locals: {
+        post: post
       },
       parent: angular.element(document.body),
       targetEvent: ev,
@@ -235,15 +210,18 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
     // });
   };
 
-  function DialogController($scope, $mdDialog, post) {
+  function viewPostCtrl($scope, $mdDialog, post) {
     $scope.post = post;
 
-    // $scope.delete = function(postId) {
-    //   Post.delete({postId:postId}, function(err) {
-    //     if(err) alert('delete error occurs');
-    //     $location.path('/post/list');
-    //   });
-    // };
+    $scope.delete = function(postId) {
+
+      // need to add an alert saying like 'are you sure to remove this post?'
+
+      Post.delete({postId:postId}, function(err) {
+        if(err) alert('delete error occurs');
+        $location.path('/post/list');
+      });
+    };
 
     $scope.hide = function() {
       $mdDialog.hide();
@@ -251,10 +229,6 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
 
     $scope.cancel = function() {
       $mdDialog.cancel();
-    };
-
-    $scope.answer = function(answer) {
-      $mdDialog.hide(answer);
     };
   };
 }]);
