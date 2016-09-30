@@ -20,19 +20,19 @@ app.factory('PostsLoader', ['Post', '$q', function(Post, $q) {
   };
 }]);
 
-app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
-  return function() {
-    var delay = $q.defer();
-    Post.get({postId: $route.current.params.postId}, function(post) {
-      delay.resolve(post);
-    }, function() {
-      delay.reject('Unable to fetch post '  + $route.current.params.postId);
-    });
-    return delay.promise;
-
-    // what is $route? & hot to use it with params --> TIL
-  };
-}]);
+// app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
+//   return function() {
+//     var delay = $q.defer();
+//     Post.get({postId: $route.current.params.postId}, function(post) {
+//       delay.resolve(post);
+//     }, function() {
+//       delay.reject('Unable to fetch post '  + $route.current.params.postId);
+//     });
+//     return delay.promise;
+//
+//     // what is $route? & hot to use it with params --> TIL
+//   };
+// }]);
 
 // app.directive('navigation', function navigation() {
 // 	return {
@@ -210,7 +210,7 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
     // });
   };
 
-  function viewPostCtrl($scope, $mdDialog, post) {
+  function viewPostCtrl($scope, $mdDialog, post) { // $location, Post(to delete) injection needed
     $scope.post = post;
 
     $scope.delete = function(postId) {
@@ -219,16 +219,43 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
 
       Post.delete({postId:postId}, function(err) {
         if(err) alert('delete error occurs');
+
+        // find a way to move to list page refreshed -> see $location document
+        $mdDialog.cancel();
         $location.path('/post/list');
       });
     };
+    $scope.edit = function(ev) {
 
-    $scope.hide = function() {
-      $mdDialog.hide();
+      //  Edit dialog doesn't work -> fix here
+
+      $mdDialog.cacnel();
+      $mdDialog.show({
+        controller: editPostCtrl,
+        templateUrl: 'editPost.html',
+        locals: {
+          post: post
+        },
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true
+      });
     };
-
     $scope.cancel = function() {
       $mdDialog.cancel();
+    };
+    function editPostCtrl($scope, $mdDialog, post) {
+      $scope.post = post;
+      $scope.goEdit = function(postToUpdate) {
+        Post.update({postId:postToUpdate.postId}, postToUpdate, function() {
+          // $location.path('/post/view/' + postToUpdate.postId);
+          $mdDialog.cacnel();
+          $location.path('/post/list');
+        });
+      };
+      $scope.cancel = function() {
+        $mdDialog.cance();
+      };
     };
   };
 }]);
@@ -237,18 +264,14 @@ app.controller('editPostCtrl', ['$scope', 'authentication', '$location', 'post',
 	var vm = this;
   vm.post = post;
 
-  vm.update = function(postToUpdate) {
-    Post.update({postId:postToUpdate.postId}, postToUpdate, function() {
-      $location.path('/post/view/' + postToUpdate.postId);
-    });
-  };
+
 }]);
 
 app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {
 	var vm = this;
 	vm.readonly = false;
 	vm.post = {
-		postedBy : authentication.currentUser()._id, // this is important!
+		postedBy : authentication.currentUser()._id,
 		title : "",
 		isPrivate : "",
 		content : "",
@@ -261,11 +284,10 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 	};
 
 	vm.upload = function() {
-		var Post = $resource('/api/post/upload');
+		var Post = $resource('/api/posts/upload');
 		var newPost = new Post(vm.post);
 
 		newPost.$save(function(data) {
-
 			// $location.path -> synchronize immediately
 			$location.path('/post/list');
 			// $rootScope.$broadcast('userLoggedIn');
@@ -309,13 +331,6 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
 		// the reason whay the result of getData.getProfile() can be linked to .success and .error
 		// is that getProfile() returns $http object which uses ajax call that has functions above
 }]);
-
-app.controller('newpageCtrl', function($scope) {
-	$scope.x = 1;
-	$scope.test = function() {
-		$scope.x++;
-	};
-});
 
 app.controller('signInCtrl', ['$scope', '$location', '$rootScope', '$resource', 'authentication', function($scope, $location, $rootScope, $resource, authentication) {
 	 var vm = this;

@@ -15,24 +15,19 @@ configs.config(['$routeProvider', function($routeProvider) {
 		.when('/', {
 			templateUrl: 'home.html',
 			controller: 'homeCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
 			// this vm is used by angular.js as the object in html to controll data
 		})
-		.when('/newpage', {
-			templateUrl: 'newpage.html',
-			controller: 'newpageCtrl',
-			controllerAs: 'vm'
-		})
-    .when('/posts/view/:postId', {
-			templateUrl: 'viewPost.html',
-      resolve: {
-        post: ['PostLoader', function(PostLoader) {
-          return PostLoader();
-        }]
-      },
-			controller: 'viewPostCtrl',
-			controllerAs: 'vm'
-		})
+    // .when('/posts/view/:postId', {
+		// 	templateUrl: 'viewPost.html',
+    //   resolve: {
+    //     post: ['PostLoader', function(PostLoader) {
+    //       return PostLoader();
+    //     }]
+    //   },
+		// 	controller: 'viewPostCtrl',
+		// 	controllerAs: 'vm'
+		// })
     .when('/posts/edit/:postId', {
 			templateUrl: 'editPost.html',
       // resolve: {

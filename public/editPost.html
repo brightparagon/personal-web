@@ -4,7 +4,7 @@
     <div flex="45" flex-offset="15">
       <md-input-container class="md-block">
         <label>Title</label>
-        <input ng-model="vm.post.title">
+        <input ng-model="post.title">
       </md-input-container>
     </div>
     <div flex="10"></div>
@@ -12,7 +12,7 @@
       <!-- <fieldset class="standard"> -->
         <div layout="row" layout-wrap>
           <div flex="50">
-            <md-checkbox ng-model="vm.post.isPrivate" aria-label="Private">
+            <md-checkbox ng-model="post.isPrivate" aria-label="Private">
               Private?
               <!-- {{ post.isPrivate }} -->
             </md-checkbox>
@@ -23,18 +23,18 @@
 
             <md-menu>
               <md-button aria-label="choose the kind of this note!" class="md-icon-button"
-                ng-click="vm.openMenu($mdOpenMenu, $event)">
+                ng-click="openMenu($mdOpenMenu, $event)">
                 <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
               </md-button>
               <md-menu-content width="4">
                 <md-menu-item>
-                  <md-button ng-click="vm.redial($event)">
+                  <md-button ng-click="redial($event)">
                     <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
                     Redial
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                  <md-button disabled="disabled" ng-click="vm.checkVoicemail()">
+                  <md-button disabled="disabled" ng-click="checkVoicemail()">
                     <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
                     Check voicemail
                   </md-button>
@@ -61,7 +61,7 @@
         <div flex="grow">
           <md-input-container class="md-block" layout-padding>
             <label>write here!</label>
-            <textarea ng-model="vm.post.content"
+            <textarea ng-model="post.content"
                style="height: 30%" md-maxlength="5000"
               rows="50" md-select-on-focus></textarea>
           </md-input-container>
@@ -72,8 +72,8 @@
         <div flex="grow">
           <md-content class="md-padding">
             <md-chips
-              ng-model="vm.post.tags"
-              readonly="vm.readonly"
+              ng-model="post.tags"
+              readonly="readonly"
               placeholder="Enter a tag"
               delete-button-label="Remove Tag"
               delete-hint="Press delete to remove tag"
@@ -88,12 +88,12 @@
   <div layout="row">
     <div flex="15" flex-offset="15">
       <md-button class="md-raised md-primary"
-        ng-click="vm.cancel()">Cancel</md-button>
+        ng-click="cancel()">Cancel</md-button>
     </div>
     <div flex="45"></div>
     <div flex="15">
       <md-button class="md-raised md-warn"
-        ng-click="vm.upload()">Upload!</md-button>
+        ng-click="upload()">Upload!</md-button>
     </div>
   </div>
 </div>
