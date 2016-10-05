@@ -135,27 +135,27 @@ app.controller('homeCtrl', ['$scope', '$location', 'authentication', function($s
 }]);
 
 app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication', function($scope, $rootScope, $location, authentication) {
-	  $scope.isLoggedIn = authentication.isLoggedIn();
+	$scope.isLoggedIn = authentication.isLoggedIn();
+	$scope.currentUser = authentication.currentUser();
+
+	$scope.signOut = function() {
+		authentication.signOut();
+		$rootScope.$broadcast('userLoggedOut'); // add an array of STRING to Config later
+		$location.path('/');
+	};
+
+	// Where would be a good place to locate this $rootScope.$on()?
+	$rootScope.$on('userLoggedIn', function() {
+		// refresh navigation when an user is logged in
+		$scope.isLoggedIn = authentication.isLoggedIn();
 	  $scope.currentUser = authentication.currentUser();
+	});
 
-		$scope.signOut = function() {
-			authentication.signOut();
-			$rootScope.$broadcast('userLoggedOut'); // add an array of STRING to Config later
-			$location.path('/');
-		};
-
-		// Where would be a good place to locate this $rootScope.$on()?
-		$rootScope.$on('userLoggedIn', function() {
-			// refresh navigation when an user is logged in
-			$scope.isLoggedIn = authentication.isLoggedIn();
-		  $scope.currentUser = authentication.currentUser();
-		});
-
-		$rootScope.$on('userLoggedOut', function() {
-			// refresh navigation when an user is logged out
-			$scope.isLoggedIn = authentication.isLoggedIn();
-		  $scope.currentUser = authentication.currentUser();
-		});
+	$rootScope.$on('userLoggedOut', function() {
+		// refresh navigation when an user is logged out
+		$scope.isLoggedIn = authentication.isLoggedIn();
+	  $scope.currentUser = authentication.currentUser();
+	});
 }]);
 
 app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', '$mdDialog', function($scope, authentication, $location, post, Post, $mdDialog) {
