@@ -1,43 +1,47 @@
 <div layout="column" ng-cloak class="md-inline-form" layout-align="center center" style="background-color: #D8D8D8; height: 100%">
-  <md-content layout-gt-sm="row" layout-padding>
-    <div>
-      <h1>Sign up</h1>
-      <p>Already a member? Please <a ng-href="/#/signin">log in</a> instead.</p>
-    </div>
-  </md-content>
   <form name="userForm" ng-submit="vm.onSubmit()">
-    <md-content layout-gt-sm="row" layout-padding>
-      <div>
-        <ng-md-icon icon="person" style="fill: blue" size="35"></ng-md-icon>
-        <md-input-container>
-          <label>Full Name</label>
-          <input required ng-model="vm.credentials.name">
-        </md-input-container>
-        <ng-md-icon icon="email" style="fill: green" size="35"></ng-md-icon>
-        <md-input-container>
-          <label>Email Adress</label>
-          <input required ng-model="vm.credentials.email" type="email">
-        </md-input-container>
+    <md-content layout-padding>
+      <md-content layout-gt-sm="row" layout-padding>
+        <div>
+          <h1>Sign up</h1>
+          <p>Already a member? Please <a ng-href="/#/signin">sign in</a>.</p>
+        </div>
+      </md-content>
+      <md-content layout-gt-sm="row" layout-padding>
+        <div>
+          <ng-md-icon icon="person" style="fill: blue" size="35"></ng-md-icon>
+          <md-input-container>
+            <label>Full Name</label>
+            <input required ng-model="vm.credentials.name">
+          </md-input-container>
+          <ng-md-icon icon="email" style="fill: green" size="35"></ng-md-icon>
+          <md-input-container>
+            <label>Email Adress</label>
+            <input required ng-model="vm.credentials.email" type="email">
+          </md-input-container>
+        </div>
+      </md-content>
+      <md-content layout-gt-sm="row" layout-padding>
+        <div>
+          <ng-md-icon icon="security" style="fill: red" size="35"></ng-md-icon>
+          <md-input-container>
+            <label>Password</label>
+            <input required ng-model="vm.credentials.password" type="password">
+          </md-input-container>
+        </div>
+      </md-content>
+      <md-content layout-gt-sm="row" layout-align="center center" layout-padding>
+        <md-button type="submit" class="md-raised md-primary">Register</md-button>
+      </md-content>
+      <div ng-messages="userForm.vm.credentials.name.$error" role="alert">
+        <div ng-message="required" class="my-message">You must supply a full name.</div>
+      </div>
+      <div ng-messages="userForm.vm.credentials.email.$error" role="alert">
+        <div ng-message="required" class="my-message">You must supply a proper email address.</div>
+      </div>
+      <div ng-messages="userForm.vm.credentials.password.$error" role="alert">
+        <div ng-message="required" class="my-message">You must supply a password.</div>
       </div>
     </md-content>
-    <md-content layout-gt-sm="row" layout-padding>
-      <div>
-        <ng-md-icon icon="security" style="fill: red" size="35"></ng-md-icon>
-        <md-input-container>
-          <label>Password</label>
-          <input required ng-model="vm.credentials.password" type="password">
-        </md-input-container>
-      </div>
-    </md-content>
-    <md-button type="submit" class="md-raised md-primary">Register!</md-button>
-    <div ng-messages="userForm.vm.credentials.name.$error" role="alert">
-      <div ng-message="required" class="my-message">You must supply a full name.</div>
-    </div>
-    <div ng-messages="userForm.vm.credentials.email.$error" role="alert">
-      <div ng-message="required" class="my-message">You must supply a proper email address.</div>
-    </div>
-    <div ng-messages="userForm.vm.credentials.password.$error" role="alert">
-      <div ng-message="required" class="my-message">You must supply a password.</div>
-    </div>
   </form>
 </div>
