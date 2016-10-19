@@ -130,18 +130,39 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
 //   });
 // }]);
 
-app.controller('homeCtrl', ['$scope', '$location', 'authentication', function($scope, $location, authentication) {
-
+app.controller('homeCtrl', ['$scope', '$rootScope', '$location', 'authentication', function($scope, $rootScope, $location, authentication) {
+  $scope.isLoggedIn = authentication.isLoggedIn();
+  $rootScope.$on('userLoggedOut', function() {
+		$scope.isLoggedIn = authentication.isLoggedIn();
+	});
 }]);
 
-app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication', function($scope, $rootScope, $location, authentication) {
+app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication', '$mdDialog', function($scope, $rootScope, $location, authentication, $mdDialog) {
 	$scope.isLoggedIn = authentication.isLoggedIn();
 	$scope.currentUser = authentication.currentUser();
-
 	$scope.signOut = function() {
-		authentication.signOut();
-		$rootScope.$broadcast('userLoggedOut'); // add an array of STRING to Config later
-		$location.path('/');
+    var confirm = $mdDialog.confirm()
+          .title('Are you sure to sign out?')
+          .textContent('')
+          .ariaLabel('Sign Out Dialog')
+          .ok('Yes')
+          .cancel('Cancel');
+    $mdDialog.show(confirm).then(function() {
+      // ok
+      $mdDialog.show(
+        $mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title('You are signed out')
+          .textContent('')
+          .ariaLabel('Sign Out Completed Dialog')
+          .ok('Got it!')
+      );
+      authentication.signOut();
+  		$rootScope.$broadcast('userLoggedOut'); // add an array of STRING to Config later
+  		$location.path('/');
+    }, function() {
+      // cancel
+    });
 	};
 
 	// Where would be a good place to locate this $rootScope.$on()?
