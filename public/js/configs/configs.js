@@ -68,6 +68,11 @@ configs.config(['$routeProvider', function($routeProvider) {
 			controller: 'secretCtrl',
 			controllerAs: 'vm'
 		})
+    .when('/about', {
+			templateUrl: 'about.html',
+			controller: 'aboutCtrl',
+			controllerAs: 'vm'
+		})
 		.otherwise({
 			redirectTo: '/'
 		});

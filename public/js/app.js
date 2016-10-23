@@ -152,7 +152,7 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
       $mdDialog.show(
         $mdDialog.alert()
           .clickOutsideToClose(true)
-          .title('You are signed out')
+          .title('You are signed out.')
           .textContent('')
           .ariaLabel('Sign Out Completed Dialog')
           .ok('Got it!')
@@ -353,7 +353,7 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
 		// is that getProfile() returns $http object which uses ajax call that has functions above
 }]);
 
-app.controller('signInCtrl', ['$scope', '$location', '$rootScope', '$resource', 'authentication', function($scope, $location, $rootScope, $resource, authentication) {
+app.controller('signInCtrl', ['$scope', '$location', '$rootScope', '$resource', 'authentication', '$mdDialog', function($scope, $location, $rootScope, $resource, authentication, $mdDialog) {
 	 var vm = this;
 	 vm.credentials = {
 		 email : "",
@@ -365,6 +365,14 @@ app.controller('signInCtrl', ['$scope', '$location', '$rootScope', '$resource', 
 			 authentication.saveToken(data.token);
 			 $location.path('secretpage');
 			 $rootScope.$broadcast('userLoggedIn');
+       $mdDialog.show(
+         $mdDialog.alert()
+           .clickOutsideToClose(true)
+           .title('You are signed in now!')
+           .textContent('')
+           .ariaLabel('Sign In Dialog')
+           .ok('Got it!')
+       );
 		 });
 	 };
 }]);
