@@ -186,31 +186,17 @@ app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post',
 
 app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Post', '$mdDialog', function($scope, $location, $resource, posts, Post, $mdDialog) {
 	var vm = this;
+  vm.posts = [];
 	var User = $resource('/api/user/:userId');
-	vm.leftPosts = [];
-	vm.rightPosts = [];
-
-  // make this part as a TIL - how to pass the parameter to a callback
 
   for(var i = 0; i<posts.length; i++) {
-  	if(i%2 === 0) {
-  		vm.leftPosts.push(posts[i]);
-  		(function(post) {
-  			User.get({userId:post.postedBy}, function(user) {
-  				post.writer = user.name;
-				});
-    	})(vm.leftPosts[i===0?0:i/2]);
-		} else {
-  		vm.rightPosts.push(posts[i]);
-  		(function(post) {
-  			User.get({userId:post.postedBy}, function(user) {
-  				post.writer = user.name;
-  			});
-    	})(vm.rightPosts[i-1===0?0:(i-1)/2]);
-  	}
-	}
-  // maybe there is a better way to relate the writer to every post
-  // like fixing post schema - adding writer property referring to User Schema
+		vm.posts.push(posts[i]);
+		(function(post) {
+			User.get({userId:post.postedBy}, function(user) {
+				post.writer = user.name;
+			});
+  	})(vm.posts[i]);
+  }
 
   vm.showAdvanced = function(ev, postId) {
     var post = Post.get({postId:postId});
