@@ -190,12 +190,16 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
 	var User = $resource('/api/user/:userId');
 
   for(var i = 0; i<posts.length; i++) {
+    // to attach user name on each post
 		vm.posts.push(posts[i]);
 		(function(post) {
 			User.get({userId:post.postedBy}, function(user) {
 				post.writer = user.name;
 			});
   	})(vm.posts[i]);
+    console.log(vm.posts[i].date);
+    // vm.posts[i].date = posts[i].updated.getDate() + ' ' + posts[i].updated.getMonth() +
+    //   ' ' + posts[i].updated.getFullYear();
   }
 
   vm.showAdvanced = function(ev, postId) {
