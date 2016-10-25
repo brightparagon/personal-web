@@ -26,7 +26,7 @@ router.post('/signup', ctrlUser.signUp);
 
 router.get('/posts', ctrlPost.getPosts);
 router.get('/posts/:postId', ctrlPost.getPost);
-// router.put('/posts/:postId', ctrlPost.updatePost);
+router.put('/posts/:postId', ctrlPost.updatePost);
 router.delete('/posts/:postId', ctrlPost.deletePost);
 router.post('/posts', ctrlPost.createPost);
 

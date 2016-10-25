@@ -30,11 +30,11 @@ configs.config(['$routeProvider', function($routeProvider) {
 		// })
     .when('/posts/edit/:postId', {
 			templateUrl: 'editPost.html',
-      // resolve: {
-      //   post: ["PostLoader", function(PostLoader) {
-      //     return PostLoader();
-      //   }]
-      // },
+      resolve: {
+        post: ["PostLoader", function(PostLoader) {
+          return PostLoader();
+        }]
+      },
 			controller: 'editPostCtrl',
 			controllerAs: 'vm'
 		})

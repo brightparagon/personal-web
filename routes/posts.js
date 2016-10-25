@@ -5,19 +5,8 @@ var Post = mongoose.model('Post');
 module.exports.getPosts = function(req, res, next) {
   console.log('server getPosts');
 
-  var monthNames = [
-      'January', 'February', 'March',
-      'April', 'May', 'June', 'July',
-      'August', 'September', 'October',
-      'November', 'December'
-   ];
   Post.find().sort('updated').exec(function(error, result) {
     if(error) return next(error);
-    for(var i = 0; i<result.length; i++) {
-      result[i].date = '';
-      result[i].date = result[i].updated.getDate() + ' ' + monthNames[result[i].updated.getMonth() + 1] +
-        ' ' + result[i].updated.getFullYear();
-    }
     res.json(result);
   });
 };

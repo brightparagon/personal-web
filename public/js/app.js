@@ -20,19 +20,17 @@ app.factory('PostsLoader', ['Post', '$q', function(Post, $q) {
   };
 }]);
 
-// app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
-//   return function() {
-//     var delay = $q.defer();
-//     Post.get({postId: $route.current.params.postId}, function(post) {
-//       delay.resolve(post);
-//     }, function() {
-//       delay.reject('Unable to fetch post '  + $route.current.params.postId);
-//     });
-//     return delay.promise;
-//
-//     // what is $route? & hot to use it with params --> TIL
-//   };
-// }]);
+app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
+  return function() {
+    var delay = $q.defer();
+    Post.get({postId: $route.current.params.postId}, function(post) {
+      delay.resolve(post);
+    }, function() {
+      delay.reject('Unable to fetch post '  + $route.current.params.postId);
+    });
+    return delay.promise;
+  };
+}]);
 
 // app.directive('navigation', function navigation() {
 // 	return {
@@ -179,11 +177,6 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 	});
 }]);
 
-app.controller('viewPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', '$mdDialog', function($scope, authentication, $location, post, Post, $mdDialog) {
-	var vm = this;
-  vm.post = post;
-}]);
-
 app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Post', '$mdDialog', function($scope, $location, $resource, posts, Post, $mdDialog) {
 	var vm = this;
   vm.posts = [];
@@ -197,9 +190,6 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
 				post.writer = user.name;
 			});
   	})(vm.posts[i]);
-    console.log(vm.posts[i].date);
-    // vm.posts[i].date = posts[i].updated.getDate() + ' ' + posts[i].updated.getMonth() +
-    //   ' ' + posts[i].updated.getFullYear();
   }
 
   vm.showAdvanced = function(ev, postId) {
@@ -221,9 +211,12 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
     // });
   };
 
-  function viewPostCtrl($scope, $mdDialog, post) { // $location, Post(to delete) injection needed
+  function viewPostCtrl($scope, $location, post) { // $location, Post(to delete) injection needed
     $scope.post = post;
-
+    $scope.edit = function(postId) {
+      $mdDialog.cancel();
+      $location.path('/posts/edit/:' + postId);
+    };
     $scope.delete = function(postId) {
 
       // need to add an alert saying like 'are you sure to remove this post?'
@@ -233,40 +226,11 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
 
         // find a way to move to list page refreshed -> see $location document
         $mdDialog.cancel();
-        $location.path('/post/list');
-      });
-    };
-    $scope.edit = function(ev) {
-
-      //  Edit dialog doesn't work -> fix here
-
-      $mdDialog.cacnel();
-      $mdDialog.show({
-        controller: editPostCtrl,
-        templateUrl: 'editPost.html',
-        locals: {
-          post: post
-        },
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        clickOutsideToClose: true
+        $location.path('/posts/list');
       });
     };
     $scope.cancel = function() {
       $mdDialog.cancel();
-    };
-    function editPostCtrl($scope, $mdDialog, post) {
-      $scope.post = post;
-      $scope.goEdit = function(postToUpdate) {
-        Post.update({postId:postToUpdate.postId}, postToUpdate, function() {
-          // $location.path('/post/view/' + postToUpdate.postId);
-          $mdDialog.cacnel();
-          $location.path('/post/list');
-        });
-      };
-      $scope.cancel = function() {
-        $mdDialog.cance();
-      };
     };
   };
 }]);
@@ -274,8 +238,12 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
 app.controller('editPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', function($scope, authentication, $location, post, Post) {
 	var vm = this;
   vm.post = post;
-
-
+  vm.edit = function(postToUpdate) {
+    Post.update({postId:postToUpdate.postId}, postToUpdate, function() {
+      // $location.path('/post/view/' + postToUpdate.postId);
+      $location.path('/posts/list');
+    });
+  };
 }]);
 
 app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {
@@ -300,7 +268,7 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 
 		newPost.$save(function(data) {
 			// $location.path -> synchronize immediately
-			$location.path('/post/list');
+			$location.path('/posts/list');
 			// $rootScope.$broadcast('userLoggedIn');
 		});
 	};
