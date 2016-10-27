@@ -215,7 +215,7 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
     $scope.post = post;
     $scope.edit = function(postId) {
       $mdDialog.cancel();
-      $location.path('/posts/edit/:' + postId);
+      $location.path('/posts/edit/' + postId);
     };
     $scope.delete = function(postId) {
 
