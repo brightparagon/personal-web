@@ -39,10 +39,10 @@ module.exports.createPost = function(req, res, next) {
 module.exports.updatePost = function(req, res, next) {
   console.log('server updatePost');
 
-  // Post.findByIdAndUpdate(req.params.postId, { $set: { size: 'large' }}, { new: true }, function (err, post) {
-  //   if(error) return next(error);
-  //   res.status(200).json(post);
-  // });
+  Post.findByIdAndUpdate(req.params.postId, {$set:req.body}, {new:true}, function (error, post) {
+    if(error) return next(error);
+    res.status(200).json(post);
+  });
 };
 
 // delete a post

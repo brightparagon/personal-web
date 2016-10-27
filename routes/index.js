@@ -13,17 +13,13 @@ var auth = jwt({
 var ctrlUser = require('./users');
 var ctrlPost = require('./posts');
 
-// for users
+// for users -> modify it
 router.get('/signin', ctrlUser.signIn);
 router.get('/user/:userId', ctrlUser.getUser);
 router.get('/secretpage', auth, ctrlUser.profileRead);
 router.post('/signup', ctrlUser.signUp);
 
 // for posts
-// router.get('/post/view/:postId', ctrlPost.getPost);
-// router.get('/post/list', ctrlPost.getPosts);
-// router.post('/post/upload', ctrlPost.createPost);
-
 router.get('/posts', ctrlPost.getPosts);
 router.get('/posts/:postId', ctrlPost.getPost);
 router.put('/posts/:postId', ctrlPost.updatePost);

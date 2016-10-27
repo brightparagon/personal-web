@@ -140,11 +140,11 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 	$scope.currentUser = authentication.currentUser();
 	$scope.signOut = function() {
     var confirm = $mdDialog.confirm()
-          .title('Are you sure to sign out?')
-          .textContent('')
-          .ariaLabel('Sign Out Dialog')
-          .ok('Yes')
-          .cancel('Cancel');
+      .title('Are you sure to sign out?')
+      .textContent('')
+      .ariaLabel('Sign Out Dialog')
+      .ok('Yes')
+      .cancel('Cancel');
     $mdDialog.show(confirm).then(function() {
       // ok
       $mdDialog.show(
@@ -177,7 +177,7 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 	});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Post', '$mdDialog', function($scope, $location, $resource, posts, Post, $mdDialog) {
+app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource', 'posts', 'Post', '$mdDialog', function($scope, $rootScope, $location, $resource, posts, Post, $mdDialog) {
 	var vm = this;
   vm.posts = [];
 	var User = $resource('/api/user/:userId');
@@ -211,42 +211,86 @@ app.controller('listPostCtrl', ['$scope', '$location', '$resource', 'posts', 'Po
     // });
   };
 
-  function viewPostCtrl($scope, $location, post) { // $location, Post(to delete) injection needed
+  function viewPostCtrl($scope, $location, post) {
     $scope.post = post;
     $scope.edit = function(postId) {
       $mdDialog.cancel();
       $location.path('/posts/edit/' + postId);
     };
     $scope.delete = function(postId) {
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure to remove this post?')
+        .textContent('')
+        .ariaLabel('Delete Confirm Dialog')
+        .ok('Yes')
+        .cancel('Cancel');
+      $mdDialog.show(confirm).then(function() {
+        // ok
+        Post.delete({postId:postId}, function(error) {
+          if(error) {
+            $mdDialog.show(
+              $mdDialog.alert()
+                .clickOutsideToClose(true)
+                .title('An error occured while deleting your post.')
+                .textContent('')
+                .ariaLabel('Post Deletion Failed Dialog')
+                .ok('Got it')
+            );
+          } else {
 
-      // need to add an alert saying like 'are you sure to remove this post?'
+            // it doesn't come to this point
+            console.log('broadcast postDeleted');
+            $rootScope.$broadcast('postDeleted');
 
-      Post.delete({postId:postId}, function(err) {
-        if(err) alert('delete error occurs');
-
-        // find a way to move to list page refreshed -> see $location document
-        $mdDialog.cancel();
-        $location.path('/posts/list');
+          }
+        });
+      }, function() {
+        // cancel
       });
     };
     $scope.cancel = function() {
       $mdDialog.cancel();
     };
   };
+  $rootScope.$on('postDeleted', function() {
+    Post.query(function(posts) {
+      vm.posts = posts;
+      $mdDialog.show(
+        $mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title('Your post is deleted successfully.')
+          .textContent('')
+          .ariaLabel('Post Deletion Completed Dialog')
+          .ok('Got it')
+      );
+      $location.path('/posts/list');
+    });
+	});
 }]);
 
-app.controller('editPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', function($scope, authentication, $location, post, Post) {
+app.controller('editPostCtrl', ['$scope', 'authentication', '$location', 'post', 'Post', '$mdDialog', function($scope, authentication, $location, post, Post, $mdDialog) {
 	var vm = this;
   vm.post = post;
   vm.edit = function(postToUpdate) {
-    Post.update({postId:postToUpdate.postId}, postToUpdate, function() {
+    Post.update({postId:postToUpdate._id}, postToUpdate, function(updatedPost) {
       // $location.path('/post/view/' + postToUpdate.postId);
+      $mdDialog.show(
+        $mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title('Your post is updated successfully.')
+          .textContent('')
+          .ariaLabel('Post Update Completed Dialog')
+          .ok('Got it')
+      );
       $location.path('/posts/list');
     });
   };
+  vm.cancel = function() {
+    $location.path('/posts/list');
+  };
 }]);
 
-app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', '$mdDialog', function($scope, $resource, authentication, $location, $mdDialog) {
+app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$location', 'Post', '$mdDialog', function($scope, $resource, authentication, $location, Post, $mdDialog) {
 	var vm = this;
 	vm.readonly = false;
 	vm.post = {
@@ -263,13 +307,17 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 	};
 
 	vm.upload = function() {
-		var Post = $resource('/api/posts/upload');
 		var newPost = new Post(vm.post);
-
 		newPost.$save(function(data) {
-			// $location.path -> synchronize immediately
+      $mdDialog.show(
+        $mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title('Your post is uploaded successfully.')
+          .textContent('')
+          .ariaLabel('Post Upload Completed Dialog')
+          .ok('Got it')
+      );
 			$location.path('/posts/list');
-			// $rootScope.$broadcast('userLoggedIn');
 		});
 	};
 
