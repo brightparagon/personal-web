@@ -5,7 +5,7 @@
 var app = angular.module('blogapp', ['ngResource', 'ngMessages', 'blog.configs']);
 
 app.factory('Post', ['$resource', function($resource) {
-  return $resource('/api/posts/:postId', {}, { update: { method: 'PUT' }, delete: { method: 'DELETE'} });
+  return $resource('/api/posts/:postId', {}, { update: { method: 'PUT' } });
 }]);
 
 app.factory('PostsLoader', ['Post', '$q', function(Post, $q) {
@@ -226,23 +226,16 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource'
         .cancel('Cancel');
       $mdDialog.show(confirm).then(function() {
         // ok
-        Post.delete({postId:postId}, function(error) {
-          if(error) {
-            $mdDialog.show(
-              $mdDialog.alert()
-                .clickOutsideToClose(true)
-                .title('An error occured while deleting your post.')
-                .textContent('')
-                .ariaLabel('Post Deletion Failed Dialog')
-                .ok('Got it')
-            );
-          } else {
-
-            // it doesn't come to this point
-            console.log('broadcast postDeleted');
-            $rootScope.$broadcast('postDeleted');
-
-          }
+        Post.delete({postId:postId}, function(response) {
+          $rootScope.$broadcast('postDeleted');
+          $mdDialog.show(
+            $mdDialog.alert()
+              .clickOutsideToClose(true)
+              .title('An error occured while deleting your post.')
+              .textContent('')
+              .ariaLabel('Post Deletion Failed Dialog')
+              .ok('Got it')
+          );
         });
       }, function() {
         // cancel
@@ -255,15 +248,6 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource'
   $rootScope.$on('postDeleted', function() {
     Post.query(function(posts) {
       vm.posts = posts;
-      $mdDialog.show(
-        $mdDialog.alert()
-          .clickOutsideToClose(true)
-          .title('Your post is deleted successfully.')
-          .textContent('')
-          .ariaLabel('Post Deletion Completed Dialog')
-          .ok('Got it')
-      );
-      $location.path('/posts/list');
     });
 	});
 }]);

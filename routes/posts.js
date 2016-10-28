@@ -49,8 +49,17 @@ module.exports.updatePost = function(req, res, next) {
 module.exports.deletePost = function(req, res, next) {
   console.log('server deletePost');
 
-  Post.remove({_id:req.params.postId}, function(error) {
+  // Post.remove({_id:req.params.postId}, function(error) {
+  //   if(error) return next(error);
+  //   res.status(200);
+  // });
+
+  Post.findByIdAndRemove(req.params.postId, function (error, post) {
     if(error) return next(error);
-    res.status(200);
+    var response = {
+        message: "Todo successfully deleted",
+        id: post._id
+    };
+    res.send(response);
   });
 };
