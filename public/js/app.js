@@ -192,7 +192,7 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource'
   	})(vm.posts[i]);
   }
 
-  vm.showAdvanced = function(ev, postId) {
+  vm.showPost = function(ev, postId) {
     var post = Post.get({postId:postId});
     $mdDialog.show({
       controller: viewPostCtrl,
@@ -202,6 +202,7 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource'
       },
       parent: angular.element(document.body),
       targetEvent: ev,
+      fullscreen: true,
       clickOutsideToClose: true
     });
     // .then(function(answer) {

@@ -1,10 +1,10 @@
 <div id="popupContainer" ng-cloak>
   <md-content class="md-padding" layout-xs="column" layout="row" style="background-color: #D4D4D4" layout-fill>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div class="container" layout-padding>
+      <div class="row" layout-padding>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" layout-padding>
           <div class="post-preview" ng-repeat="post in vm.posts">
-            <md-button ng-click="vm.showAdvanced($event, post._id)">
+            <md-button ng-click="vm.showPost($event, post._id)">
                 <h2 class="post-title">
                     {{ post.title }}
                 </h2>
@@ -16,7 +16,7 @@
             <hr>
           </div>
           <!-- Pager -->
-          <ul class="pager">
+          <ul class="pager" layout-padding>
             <li class="next">
               <a href="#/">Older Posts &rarr;</a>
             </li>

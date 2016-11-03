@@ -1,23 +1,4 @@
-<!-- <div layout="column" ng-cloak class="md-inline-form" layout-align="center center" layout-padding>
-  <div layout='row' layout-padding>
-    <md-content class="md-padding" font-size: style:bold>
-      {{ vm.post.title }}
-    </md-content>
-  </div>
-  <div layout-padding>
-    <md-contet class="md-padding">
-      {{ vm.post.content }}
-    </md-content>
-  </div>
-  <div layout="row" layout-padding layout-wrap>
-    <md-button class="md-accent" ng-repeat="tag in vm.post.tags">{{ tag }}</md-button>
-  </div>
-  <div layout="row" layout-padding layout-wrap>
-    <md-button class="md-raised md-primary" ng-href="/#/posts/edit/{{ post._id }}">Edit</md-button>
-    <md-button class="md-raised md-primary" ng-click="vm.delete(vm.post._id)">Delete</md-button>
-  </div>
-</div> -->
-<md-dialog aria-label="Post">
+<md-dialog aria-label="Post" style="margin: auto; width: 100%">
   <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
