@@ -227,12 +227,12 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource'
         .cancel('Cancel');
       $mdDialog.show(confirm).then(function() {
         // ok
-        Post.delete({postId:postId}, function(response) {
+        Post.delete({postId: postId}, function(response) {
           $rootScope.$broadcast('postDeleted');
           $mdDialog.show(
             $mdDialog.alert()
               .clickOutsideToClose(true)
-              .title('An error occured while deleting your post.')
+              .title('Your post is deleted successfully.')
               .textContent('')
               .ariaLabel('Post Deletion Failed Dialog')
               .ok('Got it')
