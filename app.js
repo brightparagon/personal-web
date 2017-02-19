@@ -19,14 +19,11 @@ app.locals.appTitle = "personal-web";
 
 // All environments
 app.set('port', process.env.PORT || 3000);
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade'); // jade -> later
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-// app.use(session({secret: 'individual'}));
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public'))); // use static files
 
@@ -46,15 +43,15 @@ app.use(function (err, req, res, next) {
 
 // development error handler
 // print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(error, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: error.message,
-      error: error
-    });
-  });
-}
+// if (app.get('env') === 'development') {
+//   app.use(function(error, req, res, next) {
+//     res.status(err.status || 500);
+//     res.render('error', {
+//       message: error.message,
+//       error: error
+//     });
+//   });
+// }
 
 // production error handler
 // no stacktraces leaked to user
