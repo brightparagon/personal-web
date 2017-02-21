@@ -61,10 +61,7 @@ app.service('authentication', ['$window', function($window) {
 		var token = getToken();
 		var payload;
 
-		console.log('authentication called');
 		if(token) {
-			// console.log('token : ' + token);
-
 			payload = token.split('.')[1];
 			payload = $window.atob(payload);
 			payload = JSON.parse(payload);
@@ -77,8 +74,6 @@ app.service('authentication', ['$window', function($window) {
 
 	var currentUser = function() {
 		if(isLoggedIn()){
-			// console.log('currentUser called');
-
 			var token = getToken();
 			var payload = token.split('.')[1];
 			payload = $window.atob(payload);
@@ -333,8 +328,6 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
 	// but, how is it going to call or be linked to success or error function here?
   getData.getProfile()
   	.success(function(data) {
-			console.log('getProfile successful');
-
       vm.user = data;
     })
     .error(function(err) {
@@ -352,7 +345,7 @@ app.controller('signInCtrl', ['$scope', '$location', '$rootScope', '$resource', 
 	 };
 	 vm.onSubmit = function() {
 		 var User = $resource('/api/signin');
-		 User.get(vm.credentials, function(data) { // this data is token passed from the server
+		 User.get(vm.credentials, function(data) {
 			 authentication.saveToken(data.token);
 			 $location.path('secretpage');
 			 $rootScope.$broadcast('userLoggedIn');
@@ -364,7 +357,15 @@ app.controller('signInCtrl', ['$scope', '$location', '$rootScope', '$resource', 
            .ariaLabel('Sign In Dialog')
            .ok('Got it!')
        );
-		 });
+		 }, function(err) {
+       $mdDialog.show(
+         $mdDialog.alert()
+           .clickOutsideToClose(true)
+           .title("Couldn't Sign In: " + err.data.message)
+           .ariaLabel('Sign In Failed')
+           .ok('Got it!')
+       );
+     });
 	 };
 }]);
 
@@ -391,7 +392,6 @@ app.controller('signUpCtrl',  ['$rootScope', '$location', '$resource', 'authenti
 app.run(['$rootScope', '$location', 'authentication',
 	function($rootScope, $location, authentication) {
 	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-		console.log('routeChangeStart called');
 		// every move or change to any pages will be calling this $on(it is made to do that)
 		// even the first access to this web will call this method
 
