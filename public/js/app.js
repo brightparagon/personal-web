@@ -385,6 +385,13 @@ app.controller('signUpCtrl',  ['$rootScope', '$location', '$resource', 'authenti
 			authentication.saveToken(data.token);
 			$location.path('secretpage');
 			$rootScope.$broadcast('userLoggedIn');
+      $mdDialog.show(
+        $mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title('You are signed up successfully!')
+          .ariaLabel('Sign Up Dialog')
+          .ok('Got it!')
+      );
 		});
 	};
 }]);
