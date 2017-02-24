@@ -1,3 +1,14 @@
+<header class="intro-header" style="background-image: url('bootstrap/blog/img/upload-bg.jpg');">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="site-heading">
+          <h1>What do you think now?</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 <div layout="column" ng-cloak layout-fill>
   <md-content layout-padding style="margin-top: 5%">
     <div layout="column" flex="70" flex-offset="15" style="border-style: solid">
@@ -9,39 +20,14 @@
             <input ng-model="vm.post.title">
           </md-input-container>
         </div>
-        <div flex="10"></div>
+        <div flex="20"></div>
         <div flex="25">
           <div layout="row" layout-wrap>
             <div flex="50">
               <md-checkbox ng-model="vm.post.isPrivate" aria-label="Private">
-                Private?
+                Private
                 <!-- {{ post.isPrivate }} -->
               </md-checkbox>
-            </div>
-            <div flex="50">
-
-              <!-- add a new menu for notekind -->
-
-              <md-menu>
-                <md-button aria-label="choose the kind of this note!" class="md-icon-button"
-                  ng-click="vm.openMenu($mdOpenMenu, $event)">
-                  <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
-                </md-button>
-                <md-menu-content width="4">
-                  <md-menu-item>
-                    <md-button ng-click="vm.redial($event)">
-                      <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
-                      Redial
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button disabled="disabled" ng-click="vm.checkVoicemail()">
-                      <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
-                      Check voicemail
-                    </md-button>
-                  </md-menu-item>
-                </md-menu-content>
-              </md-menu>
             </div>
           </div>
         </div>
