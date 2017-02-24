@@ -11,10 +11,14 @@
     </div>
   </div>
 </header>
-<div class="container" style="background-image: url('bootstrap/blog/img/middle.jpg'); height:90%"
-  ng-hide="isLoggedIn">
+<div class="container" style="background-image: url('bootstrap/blog/img/middle.jpg'); height:90%">
   <div class="row">
-    <ul class="list-inline text-center">
+    <div layout="row" layout-align="space-around center" style="margin-top: 25%" ng-show="isLoggedIn">
+      <md-content layout-padding style="background-color: transparent; color:white">
+        <font size="6">Signed In!</font>
+      </md-content>
+    </div>
+    <ul class="list-inline text-center" ng-hide="isLoggedIn">
       <div layout="row" layout-align="space-around center" style="margin-top: 20%">
         <li>
           <md-button class="md-accent" ng-href="#/signup" style="height:100px; width:120px"

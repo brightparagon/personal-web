@@ -1,5 +1,16 @@
+<header class="intro-header" style="background-image: url('bootstrap/blog/img/postings-bg.jpg');">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="site-heading">
+          <h1>TRAVEL AROUND</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 <div id="popupContainer" ng-cloak>
-  <md-content class="md-padding" layout-xs="column" layout="row" style="background-color: #D4D4D4" layout-fill>
+  <md-content class="md-padding" layout-xs="column" layout="row" layout-fill>
     <div class="container" layout-padding>
       <div class="row" layout-padding>
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" layout-padding>
@@ -9,16 +20,23 @@
                     {{ post.title }}
                 </h2>
                 <h3 class="post-subtitle">
-                  <!-- {{ condensed contents of a post }} -->
                 </h3>
             </md-button>
-            <p class="post-meta">Posted by <a href="#">{{ post.writer }}</a> on {{ post.updated }}</p>
+            <p class="post-meta">Posted by <a href="#">{{ post.postedBy.name }}</a> on {{ post.updated }}</p>
             <hr>
           </div>
+          <div id="attachHere"></div>
+          <!-- Progressive Circle -->
+          <div layout="row" layout-sm="column" layout-align="space-around">
+            <md-progress-circular ng-disabled="!vm.activated" md-mode='indeterminate'
+              class="md-accent" md-diameter="100"></md-progress-circular>
+          </div>
           <!-- Pager -->
-          <ul class="pager" layout-padding>
+          <ul class="pager" layout-padding ng-hide="vm.isLast" layout-align="center center">
             <li class="next">
-              <a href="#/">Older Posts &rarr;</a>
+              <md-button class="md-raised md-primary"
+                ng-click="vm.nextPage()">Older Posts
+              </md-button>
             </li>
           </ul>
         </div>

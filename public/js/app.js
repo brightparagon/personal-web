@@ -1,18 +1,23 @@
 'use strict';
-
-// divide this file into several files on the basis of roles like controller, configuration, directive..
-
 var app = angular.module('blogapp', ['ngResource', 'ngMessages', 'blog.configs']);
 
 app.factory('Post', ['$resource', function($resource) {
-  return $resource('/api/posts/:postId', {}, { update: { method: 'PUT' } });
+  return $resource('/api/posts/:postId', {}, {update: {method: 'PUT'}});
 }]);
 
-app.factory('PostsLoader', ['Post', '$q', function(Post, $q) {
+app.factory('PostsPaged', ['$resource', function($resource) {
+  return $resource('/api/posts/:page');
+}]);
+
+app.factory('GetNumOfPosts', ['$resource', function($resource) {
+  return $resource('/api/posts');
+}]);
+
+app.factory('PostsLoader', ['PostsPaged', '$q', function(PostsPaged, $q) {
   return function() {
     var delay = $q.defer();
-    Post.query(function(posts) {
-      delay.resolve(posts);
+    PostsPaged.query({page: 1}, function(firstPosts) {
+      delay.resolve(firstPosts);
     }, function() {
       delay.reject('Unable to fetch posts');
     });
@@ -26,7 +31,7 @@ app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
     Post.get({postId: $route.current.params.postId}, function(post) {
       delay.resolve(post);
     }, function() {
-      delay.reject('Unable to fetch post '  + $route.current.params.postId);
+      delay.reject('Unable to fetch post ' + $route.current.params.postId);
     });
     return delay.promise;
   };
@@ -41,9 +46,6 @@ app.factory('PostLoader', ['Post', '$route', '$q', function(Post, $route, $q) {
 // 	};
 // });
 
-// if I take this service module to the other js file and inject it to this app.js
-// angular.js throws an injection error.
-// refer to other mean projects!
 app.service('authentication', ['$window', function($window) {
 	var saveToken = function(token) {
 		$window.localStorage['user-token'] = token;
@@ -108,29 +110,17 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
-// modify it
-// app.factory('userService', ['$resource', function($resource) {
-//   return $resource('/api', {}, { // url part maybe needs fixing
-// 		save: {
-// 			method: 'POST'
-// 		},
-//     update: {
-//       method: 'PUT'
-//     },
-// 		get: {
-// 			method: 'GET'
-// 		}
-//   });
-// }]);
-
-app.controller('homeCtrl', ['$scope', '$rootScope', '$location', 'authentication', function($scope, $rootScope, $location, authentication) {
+app.controller('homeCtrl', ['$scope', '$rootScope', '$location',
+  'authentication', function($scope, $rootScope, $location, authentication) {
   $scope.isLoggedIn = authentication.isLoggedIn();
   $rootScope.$on('userLoggedOut', function() {
 		$scope.isLoggedIn = authentication.isLoggedIn();
 	});
 }]);
 
-app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication', '$mdDialog', function($scope, $rootScope, $location, authentication, $mdDialog) {
+app.controller('navCtrl', ['$scope', '$rootScope', '$location',
+  'authentication', '$mdDialog', function($scope, $rootScope,
+    $location, authentication, $mdDialog) {
 	$scope.isLoggedIn = authentication.isLoggedIn();
 	$scope.currentUser = authentication.currentUser();
 	$scope.signOut = function() {
@@ -151,14 +141,13 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
           .ok('Got it!')
       );
       authentication.signOut();
-  		$rootScope.$broadcast('userLoggedOut'); // add an array of STRING to Config later
+  		$rootScope.$broadcast('userLoggedOut');
   		$location.path('/');
     }, function() {
       // cancel
     });
 	};
 
-	// Where would be a good place to locate this $rootScope.$on()?
 	$rootScope.$on('userLoggedIn', function() {
 		// refresh navigation when an user is logged in
 		$scope.isLoggedIn = authentication.isLoggedIn();
@@ -172,20 +161,26 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location', 'authentication'
 	});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource', 'posts', 'Post', '$mdDialog', function($scope, $rootScope, $location, $resource, posts, Post, $mdDialog) {
+app.controller('listPostCtrl', ['$scope', '$rootScope', '$interval', '$location',
+  '$resource', 'posts', 'Post', 'PostsPaged', 'GetNumOfPosts', '$mdDialog',
+    function($scope, $rootScope, $interval, $location, $resource, posts,
+      Post, PostsPaged, GetNumOfPosts, $mdDialog) {
+  var User = $resource('/api/user/:userId');
 	var vm = this;
-  vm.posts = [];
-	var User = $resource('/api/user/:userId');
-
-  for(var i = 0; i<posts.length; i++) {
-    // to attach user name on each post
-		vm.posts.push(posts[i]);
-		(function(post) {
-			User.get({userId:post.postedBy}, function(user) {
-				post.writer = user.name;
-			});
-  	})(vm.posts[i]);
-  }
+  vm.posts = posts;
+  vm.currentPage = 1;
+  GetNumOfPosts.get(function(result) {
+    vm.lastPage = Math.ceil(result.result/5);
+  });
+  vm.isLast = false;
+  vm.activated = false;
+  vm.determinateValue = 30;
+  $interval(function() {
+    vm.determinateValue += 1;
+    if (vm.determinateValue > 100) {
+      vm.determinateValue = 30;
+    }
+  }, 100);
 
   vm.showPost = function(ev, postId) {
     var post = Post.get({postId:postId});
@@ -241,6 +236,16 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource'
       $mdDialog.cancel();
     };
   };
+
+  vm.nextPage = function() {
+    PostsPaged.query({page: ++vm.currentPage}, function(postsToAttatch) {
+      vm.posts = vm.posts.concat(postsToAttatch);
+      vm.isLast = vm.currentPage === vm.lastPage ? true : false;
+      // Angular Progressive Circle doesn't work
+      vm.activated = true;
+    });
+	};
+
   $rootScope.$on('postDeleted', function() {
     Post.query(function(posts) {
       vm.posts = posts;
@@ -278,7 +283,6 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 		title : "",
 		isPrivate : "",
 		content : "",
-		// notekind : "",
 		tags : []
 	};
 
@@ -323,9 +327,6 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
 	var vm = this;
   vm.user = {};
-
-	// once getData.getProfile is called, it will return the user object if the user exists
-	// but, how is it going to call or be linked to success or error function here?
   getData.getProfile()
   	.success(function(data) {
       vm.user = data;
@@ -333,8 +334,6 @@ app.controller('secretCtrl', ['$location', 'getData', function($location, getDat
     .error(function(err) {
       alert('secretCtrl error occurs : ' + err);
     });
-		// the reason whay the result of getData.getProfile() can be linked to .success and .error
-		// is that getProfile() returns $http object which uses ajax call that has functions above
 }]);
 
 app.controller('signInCtrl', ['$scope', '$location', '$rootScope', '$resource', 'authentication', '$mdDialog', function($scope, $location, $rootScope, $resource, authentication, $mdDialog) {
@@ -401,7 +400,6 @@ app.run(['$rootScope', '$location', 'authentication',
 	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
 		// every move or change to any pages will be calling this $on(it is made to do that)
 		// even the first access to this web will call this method
-
 	  if($location.path() === '/secretpage' && !authentication.isLoggedIn()) {
 	  	$location.path('/');
     }

@@ -1,11 +1,22 @@
 var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
 
-// find all posts
+// get the number of all posts
 module.exports.getPosts = function(req, res, next) {
-  console.log('server getPosts');
+  Post.count(function(error, result) {
+    if(error) return next(error);
+    res.json({result : result});
+  });
+};
 
-  Post.find().sort('updated').exec(function(error, result) {
+// find paged posts
+module.exports.getPostsPaged = function(req, res, next) {
+  var page = req.params.page;
+  if(page === null) page = 1;
+  var skip = (page - 1) * 5;
+  var limit = 5;
+  Post.find().populate('postedBy').skip(skip)
+    .limit(limit).exec(function(error, result) {
     if(error) return next(error);
     res.json(result);
   });
@@ -13,9 +24,7 @@ module.exports.getPosts = function(req, res, next) {
 
 // find one specific post
 module.exports.getPost = function(req, res, next) {
-  console.log('server getPost');
-
-  Post.findById(req.params.postId, function(error, post) {
+  Post.findById(req.params.postId).populate('postedBy').exec(function(error, post) {
     if(error) return next(error);
     res.status(200).json(post);
   });
@@ -23,12 +32,7 @@ module.exports.getPost = function(req, res, next) {
 
 // create a post
 module.exports.createPost = function(req, res, next) {
-  console.log('server createPost');
-
   var post = new Post(req.body);
-  // if it doesn't work do below
-  // post.title = req.body.title;
-
   post.save(function(error, post) {
     if(error) return next(error);
     res.status(200).json(post);
@@ -37,8 +41,6 @@ module.exports.createPost = function(req, res, next) {
 
 // update a post
 module.exports.updatePost = function(req, res, next) {
-  console.log('server updatePost');
-
   Post.findByIdAndUpdate(req.params.postId, {$set:req.body}, {new:true}, function (error, post) {
     if(error) return next(error);
     res.status(200).json(post);
@@ -47,13 +49,6 @@ module.exports.updatePost = function(req, res, next) {
 
 // delete a post
 module.exports.deletePost = function(req, res, next) {
-  console.log('server deletePost');
-
-  // Post.remove({_id:req.params.postId}, function(error) {
-  //   if(error) return next(error);
-  //   res.status(200);
-  // });
-
   Post.findByIdAndRemove(req.params.postId, function (error, post) {
     if(error) return next(error);
     var response = {

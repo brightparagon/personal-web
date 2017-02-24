@@ -18,10 +18,6 @@ var postSchema = new Schema({
     type: String,
     required: true
   },
-  // notekind: {
-  //   type: String,
-  //   required: true
-  // },
   updated: {
     type: Date,
     default: Date.now

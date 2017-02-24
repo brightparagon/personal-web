@@ -1,5 +1,4 @@
 'use strict';
-
 var configs = angular.module('blog.configs', ['ngRoute', 'ngMaterial', 'ngMdIcons']);
 
 // custom constant
@@ -16,7 +15,6 @@ configs.config(['$routeProvider', function($routeProvider) {
 			templateUrl: 'home.html',
 			controller: 'homeCtrl',
 			controllerAs: 'vm',
-			// this vm is used by angular.js as the object in html to controll data
 		})
     // .when('/posts/view/:postId', {
 		// 	templateUrl: 'viewPost.html',
