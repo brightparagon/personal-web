@@ -6,7 +6,7 @@ app.factory('Post', ['$resource', function($resource) {
 }]);
 
 app.factory('PostsPaged', ['$resource', function($resource) {
-  return $resource('/api/posts/:page');
+  return $resource('/api/posts/paged/:page');
 }]);
 
 app.factory('GetNumOfPosts', ['$resource', function($resource) {

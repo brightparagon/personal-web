@@ -19,7 +19,7 @@ router.post('/signup', ctrlUser.signUp);
 
 // for posts
 router.get('/posts', ctrlPost.getPosts)
-router.get('/posts/:page', ctrlPost.getPostsPaged);
+router.get('/posts/paged/:page', ctrlPost.getPostsPaged);
 router.get('/posts/:postId', ctrlPost.getPost);
 router.put('/posts/:postId', ctrlPost.updatePost);
 router.delete('/posts/:postId', ctrlPost.deletePost);
