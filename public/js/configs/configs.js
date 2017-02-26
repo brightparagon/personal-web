@@ -90,4 +90,5 @@ configs.config(function($mdThemingProvider) {
       'hue-1': '50'
     })
     .accentPalette('pink');
+  $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
 });

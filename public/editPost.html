@@ -15,40 +15,7 @@
             <div flex="50">
               <md-checkbox ng-model="vm.post.isPrivate" aria-label="Private">
                 Private?
-                <!-- {{ post.isPrivate }} -->
               </md-checkbox>
-            </div>
-            <div flex="50">
-
-              <!-- add a new menu for notekind -->
-
-              <md-menu>
-                <md-button aria-label="choose the kind of this note!" class="md-icon-button"
-                  ng-click="vm.openMenu($mdOpenMenu, $event)">
-                  <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
-                </md-button>
-                <md-menu-content width="4">
-                  <md-menu-item>
-                    <md-button ng-click="vm.redial($event)">
-                      <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
-                      Redial
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button disabled="disabled" ng-click="vm.checkVoicemail()">
-                      <ng-md-icon icon="note_add" style="fill: black" size="30"></ng-md-icon>
-                      Check voicemail
-                    </md-button>
-                  </md-menu-item>
-                  <!-- <md-menu-divider></md-menu-divider>
-                  <md-menu-item>
-                    <md-button ng-click="ctrl.toggleNotifications()">
-                      <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
-                      {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
-                    </md-button>
-                  </md-menu-item> -->
-                </md-menu-content>
-              </md-menu>
             </div>
           </div>
         </div>

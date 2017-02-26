@@ -326,6 +326,7 @@ app.controller('uploadPostCtrl', ['$scope', '$resource', 'authentication', '$loc
 
 app.controller('secretCtrl', ['$location', 'getData', function($location, getData) {
 	var vm = this;
+  vm.theme = 'dark-blue';
   vm.user = {};
   getData.getProfile()
   	.success(function(data) {
