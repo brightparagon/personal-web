@@ -68,7 +68,6 @@ configs.config(['$routeProvider', function($routeProvider) {
 		})
     .when('/about', {
 			templateUrl: 'about.html',
-			controller: 'aboutCtrl',
 			controllerAs: 'vm'
 		})
 		.otherwise({
