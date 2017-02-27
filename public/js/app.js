@@ -110,14 +110,6 @@ app.service('getData', ['$http', 'authentication', function($http, authenticatio
   };
 }]);
 
-app.controller('homeCtrl', ['$scope', '$rootScope', '$location',
-  'authentication', function($scope, $rootScope, $location, authentication) {
-  $scope.isLoggedIn = authentication.isLoggedIn();
-  $rootScope.$on('userLoggedOut', function() {
-		$scope.isLoggedIn = authentication.isLoggedIn();
-	});
-}]);
-
 app.controller('navCtrl', ['$scope', '$rootScope', '$location',
   'authentication', '$mdDialog', function($scope, $rootScope,
     $location, authentication, $mdDialog) {
@@ -158,6 +150,18 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location',
 		// refresh navigation when an user is logged out
 		$scope.isLoggedIn = authentication.isLoggedIn();
 	  $scope.currentUser = authentication.currentUser();
+	});
+}]);
+
+app.controller('footerCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.imagePath = "bootstrap/blog/img/footer-bg.jpg";
+}]);
+
+app.controller('homeCtrl', ['$scope', '$rootScope', '$location',
+  'authentication', function($scope, $rootScope, $location, authentication) {
+  $scope.isLoggedIn = authentication.isLoggedIn();
+  $rootScope.$on('userLoggedOut', function() {
+		$scope.isLoggedIn = authentication.isLoggedIn();
 	});
 }]);
 

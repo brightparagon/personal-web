@@ -4,25 +4,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Brigtparagon</title>
-
-    <!-- javascript files -->
-    <script src="lib/angular/angular.min.js"></script>
-    <script src="lib/angular-resource/angular-resource.min.js"></script>
-    <script src="lib/angular-route/angular-route.min.js"></script>
-    <script src="lib/angular-animate/angular-animate.min.js"></script>
-    <script src="lib/angular-aria/angular-aria.min.js"></script>
-    <script src="lib/angular-material/angular-material.min.js"></script>
-    <script src="lib/angular-messages/angular-messages.min.js"></script>
-    <script src="lib/angular-material-icons/angular-material-icons.min.js"></script>
-    <script src="js/configs/configs.js"></script>
-    <script src="js/app.js"></script>
-    <!-- Bootstrap -->
-    <script src="bootstrap/vendor/jquery/jquery.min.js"></script>
-    <script src="bootstrap/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="bootstrap/blog/js/jqBootstrapValidation.js"></script>
-    <script src="bootstrap/blog/js/contact_me.js"></script>
-    <script src="bootstrap/blog/js/blog.min.js"></script>
-
     <link rel="shortcut icon" href="fav.png">
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic" rel="stylesheet">
@@ -37,10 +18,10 @@
     <link href="bootstrap/blog/css/blog.min.css" rel="stylesheet">
   </head>
 
-  <body ng-app="blogapp" class="no-js" ng-cloak layout="column">
-    <div layout="column" flex>
+  <body ng-app="blogapp" class="no-js" layout="column">
+    <div layout="column" flex ng-cloak>
       <!-- Navigation fixed on the top -->
-      <div ng-controller="navCtrl">
+      <div ng-controller="navCtrl" ng-cloak>
         <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
           <div class="container-fluid">
             <div class="navbar-header page-scroll">
@@ -72,12 +53,13 @@
           </div>
         </nav>
       </div>
+
       <!-- ngRoute -->
       <ng-view></ng-view>
 
       <!-- Footer fixed on the bottom -->
-      <div layout="column" flex>
-        <footer style="background-image: url('bootstrap/blog/img/footer-bg.jpg');">
+      <div ng-controller="footerCtrl" layout="column" flex ng-cloak>
+        <footer style="background-image: url({{imagePath}})">
           <div class="row">
               <ul class="list-inline text-center">
                 <li>
@@ -104,5 +86,23 @@
         </footer>
       </div>
     </div>
+
+    <!-- javascript files -->
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-resource/angular-resource.min.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
+    <script src="lib/angular-animate/angular-animate.min.js"></script>
+    <script src="lib/angular-aria/angular-aria.min.js"></script>
+    <script src="lib/angular-material/angular-material.min.js"></script>
+    <script src="lib/angular-messages/angular-messages.min.js"></script>
+    <script src="lib/angular-material-icons/angular-material-icons.min.js"></script>
+    <script src="js/configs/configs.js"></script>
+    <script src="js/app.js"></script>
+    <!-- Bootstrap -->
+    <script src="bootstrap/vendor/jquery/jquery.min.js"></script>
+    <script src="bootstrap/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/blog/js/jqBootstrapValidation.js"></script>
+    <script src="bootstrap/blog/js/contact_me.js"></script>
+    <script src="bootstrap/blog/js/blog.min.js"></script>
   </body>
 </html>
