@@ -173,10 +173,14 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$interval', '$location'
 	var vm = this;
   vm.posts = posts;
   vm.currentPage = 1;
+  vm.lastPage = 0;
+  vm.isLast = false;
+
   GetNumOfPosts.get(function(result) {
     vm.lastPage = Math.ceil(result.result/5);
+    vm.isLast = vm.currentPage === vm.lastPage ? true : false;
   });
-  vm.isLast = false;
+
   vm.activated = false;
   vm.determinateValue = 30;
   $interval(function() {
