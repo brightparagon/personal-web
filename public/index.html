@@ -1,4 +1,4 @@
-<html lang="en" ng-app="blogapp" class="no-js">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@
     <link href="bootstrap/blog/css/blog.min.css" rel="stylesheet">
   </head>
 
-  <body layout="column">
+  <body ng-app="blogapp" class="no-js" ng-cloak layout="column">
     <div layout="column" flex>
       <!-- Navigation fixed on the top -->
       <div ng-controller="navCtrl">

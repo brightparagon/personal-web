@@ -1,2 +1,6 @@
 # log file
 *.log
+
+# Node and related ecosystem
+node_modules/
+Makefile
