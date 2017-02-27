@@ -154,7 +154,7 @@ app.controller('navCtrl', ['$scope', '$rootScope', '$location',
 }]);
 
 app.controller('footerCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
-  $rootScope.imagePath = "bootstrap/blog/img/home-bg.jpg";
+  $rootScope.imagePath = "bootstrap/blog/img/bottom-bg.png";
 }]);
 
 app.controller('homeCtrl', ['$scope', '$rootScope', '$location',
