@@ -17,20 +17,15 @@
           <div class="post-preview" ng-repeat="post in vm.posts">
             <md-button ng-click="vm.showPost($event, post._id)">
                 <h2 class="post-title">
-                    {{ post.title }}
+                    {{post.title}}
                 </h2>
                 <h3 class="post-subtitle">
                 </h3>
             </md-button>
-            <p class="post-meta">Posted by <a href="#">{{ post.postedBy.name }}</a> on {{ post.updated }}</p>
+            <p class="post-meta">Posted by <a href="#">{{post.postedBy.name}}</a> on {{post.updated}}</p>
             <hr>
           </div>
           <div id="attachHere"></div>
-          <!-- Progressive Circle -->
-          <div layout="row" layout-sm="column" layout-align="space-around">
-            <md-progress-circular ng-disabled="!vm.activated" md-mode='indeterminate'
-              class="md-accent" md-diameter="100"></md-progress-circular>
-          </div>
           <!-- Pager -->
           <ul class="pager" layout-padding ng-hide="vm.isLast" layout-align="center center">
             <li class="next">

@@ -51,4 +51,4 @@ node app.js
 ```
 
 ####Questions
-If you have any questions, please send emails to (kyeongmo2@gmail.com). And feel free to make issues about this project.
+If you have any questions, please send emails to kyeongmo2@gmail.com. And feel free to make issues about this project.

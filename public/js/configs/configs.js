@@ -90,4 +90,6 @@ configs.config(function($mdThemingProvider) {
     })
     .accentPalette('pink');
   $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
+  $mdThemingProvider.theme('red').primaryPalette('red');
+  $mdThemingProvider.theme('blue').primaryPalette('blue');
 });

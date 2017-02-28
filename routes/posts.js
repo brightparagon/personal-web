@@ -26,7 +26,6 @@ module.exports.getPostsPaged = function(req, res, next) {
 module.exports.getPost = function(req, res, next) {
   Post.findById(req.params.postId).populate('postedBy').exec(function(error, post) {
     if(error) return next(error);
-    console.log('ddd');
     res.status(200).json(post);
   });
 };

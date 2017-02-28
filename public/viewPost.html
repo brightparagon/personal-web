@@ -1,8 +1,8 @@
-<md-dialog aria-label="Post" style="margin: auto; width: 60%" ng-cloak>
-  <form>
+<md-dialog md-theme="{{theme}}" aria-label="Post" style="margin: auto; width: 60%" ng-cloak>
+  <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>{{ post.title }}</h2>
+        <h2>{{post.title}}</h2>
         <span flex></span>
         <md-button class="md-icon-button" aria-label="cancel" ng-click="cancel()">
           <ng-md-icon icon="cancel" style="fill: white" size="30"></ng-md-icon>
@@ -12,18 +12,21 @@
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        {{ post.content }}
+        <p>
+          {{post.content}}
+        </p>
       </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
-      <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
+      <md-button href="http://en.wikipedia.org/wiki/{{post.title}}" target="_blank" md-autofocus>
         More on Wikipedia
       </md-button>
       <span flex></span>
-      <!-- fix here -->
-      <md-button ng-click="edit(post._id)">Edit</md-button>
-      <md-button ng-click="delete(post._id)">Delete</md-button>
+      <div ng-show="isOwned">
+        <md-button class="md-raised" ng-click="edit(post._id)">Edit</md-button>
+        <md-button class="md-raised md-warn" ng-click="delete(post._id)">Delete</md-button>
+      </div>
     </md-dialog-actions>
   </form>
 </md-dialog>

@@ -82,7 +82,9 @@ app.service('authentication', ['$window', function($window) {
 			payload = JSON.parse(payload);
 
 			return payload;
-		}
+		} else {
+      return {};
+    }
 	};
 
 	return {
@@ -165,13 +167,14 @@ app.controller('homeCtrl', ['$scope', '$rootScope', '$location',
 	});
 }]);
 
-app.controller('listPostCtrl', ['$scope', '$rootScope', '$interval', '$location',
-  '$resource', 'posts', 'Post', 'PostsPaged', 'GetNumOfPosts', '$mdDialog',
-    function($scope, $rootScope, $interval, $location, $resource, posts,
-      Post, PostsPaged, GetNumOfPosts, $mdDialog) {
+app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource',
+  'posts', 'Post', 'PostsPaged', 'GetNumOfPosts', '$mdDialog', 'authentication',
+  function($scope, $rootScope, $location, $resource, posts,
+      Post, PostsPaged, GetNumOfPosts, $mdDialog, authentication) {
   var User = $resource('/api/user/:userId');
 	var vm = this;
   vm.posts = posts;
+  vm.currentUser = authentication.currentUser();
   vm.currentPage = 1;
   vm.lastPage = 0;
   vm.isLast = false;
@@ -181,37 +184,31 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$interval', '$location'
     vm.isLast = vm.currentPage === vm.lastPage ? true : false;
   });
 
-  vm.activated = false;
-  vm.determinateValue = 30;
-  $interval(function() {
-    vm.determinateValue += 1;
-    if (vm.determinateValue > 100) {
-      vm.determinateValue = 30;
-    }
-  }, 100);
-
   vm.showPost = function(ev, postId) {
-    var post = Post.get({postId:postId});
-    $mdDialog.show({
-      controller: viewPostCtrl,
-      templateUrl: 'viewPost.html',
-      locals: {
-        post: post
-      },
-      parent: angular.element(document.body),
-      targetEvent: ev,
-      fullscreen: true,
-      clickOutsideToClose: true
+    Post.get({postId: postId}, function(post) {
+      $mdDialog.show({
+        controller: viewPostCtrl,
+        templateUrl: 'viewPost.html',
+        locals: {
+          post: post,
+        },
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        fullscreen: true,
+        clickOutsideToClose: true
+      });
+      // .then(function(answer) {
+      //   $scope.status = 'You said the information was "' + answer + '".';
+      // }, function() {
+      //   $scope.status = 'You cancelled the dialog.';
+      // });
     });
-    // .then(function(answer) {
-    //   $scope.status = 'You said the information was "' + answer + '".';
-    // }, function() {
-    //   $scope.status = 'You cancelled the dialog.';
-    // });
   };
 
   function viewPostCtrl($scope, $location, post) {
+    $scope.theme = 'red';
     $scope.post = post;
+    $scope.isOwned = $scope.post.postedBy._id === vm.currentUser._id ? true : false;
     $scope.edit = function(postId) {
       $mdDialog.cancel();
       $location.path('/posts/edit/' + postId);
