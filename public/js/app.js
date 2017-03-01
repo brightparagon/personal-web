@@ -229,7 +229,7 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource'
               .clickOutsideToClose(true)
               .title('Your post is deleted successfully.')
               .textContent('')
-              .ariaLabel('Post Deletion Failed Dialog')
+              .ariaLabel('Post Deletion Dialog')
               .ok('Got it')
           );
         });
@@ -246,13 +246,11 @@ app.controller('listPostCtrl', ['$scope', '$rootScope', '$location', '$resource'
     PostsPaged.query({page: ++vm.currentPage}, function(postsToAttatch) {
       vm.posts = vm.posts.concat(postsToAttatch);
       vm.isLast = vm.currentPage === vm.lastPage ? true : false;
-      // Angular Progressive Circle doesn't work
-      vm.activated = true;
     });
 	};
 
   $rootScope.$on('postDeleted', function() {
-    Post.query(function(posts) {
+    PostsPaged.query({page: 1}, function(posts) {
       vm.posts = posts;
     });
 	});
