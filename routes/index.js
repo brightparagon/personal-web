@@ -18,7 +18,7 @@ router.get('/secretpage', auth, ctrlUser.profileRead);
 router.post('/signup', ctrlUser.signUp);
 
 // for posts
-router.get('/posts', ctrlPost.getPosts)
+router.get('/posts', ctrlPost.getNumOfPosts);
 router.get('/posts/paged/:page', ctrlPost.getPostsPaged);
 router.get('/posts/:postId', ctrlPost.getPost);
 router.put('/posts/:postId', ctrlPost.updatePost);

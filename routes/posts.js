@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
 
 // get the number of all posts
-module.exports.getPosts = function(req, res, next) {
+module.exports.getNumOfPosts = function(req, res, next) {
   Post.count(function(error, result) {
     if(error) return next(error);
     res.json({result : result});
@@ -15,7 +15,7 @@ module.exports.getPostsPaged = function(req, res, next) {
   if(page === null) page = 1;
   var skip = (page - 1) * 5;
   var limit = 5;
-  Post.find().populate('postedBy').skip(skip)
+  Post.find().populate('postedBy').sort({updated: -1}).skip(skip)
     .limit(limit).exec(function(error, result) {
     if(error) return next(error);
     res.json(result);
@@ -52,7 +52,7 @@ module.exports.deletePost = function(req, res, next) {
   Post.findByIdAndRemove(req.params.postId, function (error, post) {
     if(error) return next(error);
     var response = {
-        message: "Todo successfully deleted",
+        message: "Post successfully deleted",
         id: post._id
     };
     res.send(response);

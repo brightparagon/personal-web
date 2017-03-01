@@ -42,14 +42,14 @@ module.exports.signIn = function(req, res, next) {
     var token;
 
     // If Passport throws/catches an error
-    if (err) {
+    if(err) {
       res.status(401).json(err);
       return;
     }
 
     // If a user is found
     // this user that is casted by passport.js
-    if(user){
+    if(user) {
       token = user.generateJwt();
       res.status(200);
       res.json({
@@ -74,7 +74,7 @@ module.exports.signUp = function(req, res, next) {
     token = user.generateJwt();
     res.status(200);
     res.json({
-      "token" : token
+      token : token
     });
   });
 };

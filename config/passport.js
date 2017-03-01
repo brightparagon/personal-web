@@ -8,7 +8,7 @@ passport.use(new LocalStrategy({
     passwordField: 'password',
   },
   function(username, password, done) {
-    User.findOne({ email: username }, function (err, user) {
+    User.findOne({email: username}, function (err, user) {
       if (err) { return done(err); }
       // Return if user not found in database
       if (!user) {
