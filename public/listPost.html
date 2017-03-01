@@ -14,7 +14,7 @@
     <div class="container" layout-padding>
       <div class="row" layout-padding>
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" layout-padding>
-          <div class="post-preview" ng-repeat="post in vm.posts">
+          <div class="post-preview" ng-repeat="post in vm.posts" ng-hide="post.isPrivate">
             <md-button ng-click="vm.showPost($event, post._id)">
                 <h2 class="post-title">
                     {{post.title}}
@@ -22,10 +22,10 @@
                 <h3 class="post-subtitle">
                 </h3>
             </md-button>
-            <p class="post-meta">Posted by <a href="#">{{post.postedBy.name}}</a> on {{post.updated}}</p>
+            <!-- <p class="post-meta">Posted by <a href="#/">{{post.postedBy.name}}</a> on {{post.updated}}</p> -->
+            <p class="post-meta">Posted by <strong>{{post.postedBy.name}}</strong> on {{post.updated}}</p>
             <hr>
           </div>
-          <div id="attachHere"></div>
           <!-- Pager -->
           <ul class="pager" layout-padding ng-hide="vm.isLast" layout-align="center center">
             <li class="next">
