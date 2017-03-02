@@ -17,6 +17,11 @@
         </p>
       </div>
     </md-dialog-content>
+    <md-dialog-content layout="row">
+      <div ng-repeat="tag in post.tags">
+        <md-button class="md-accent">#{{tag}}</md-button>
+      </div>
+    </md-dialog-content>
 
     <md-dialog-actions layout="row">
       <md-button href="http://en.wikipedia.org/wiki/{{post.title}}" target="_blank" md-autofocus>
