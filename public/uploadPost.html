@@ -9,69 +9,44 @@
     </div>
   </div>
 </header>
-<div layout="column" ng-cloak layout-fill>
-  <md-content layout-padding style="margin-top: 5%">
-    <div layout="column" flex="70" flex-offset="15" style="border-style: solid">
-      <!-- title & private & menu -->
-      <div layout="row">
-        <div flex="45" flex-offset="15">
-          <md-input-container class="md-block">
-            <label>Title</label>
-            <input ng-model="vm.post.title">
-          </md-input-container>
-        </div>
-        <div flex="20"></div>
-        <div flex="25">
-          <div layout="row" layout-wrap>
-            <div flex="50">
-              <md-checkbox ng-model="vm.post.isPrivate" aria-label="Private">
-                Private
-                <!-- {{ post.isPrivate }} -->
-              </md-checkbox>
-            </div>
-          </div>
-        </div>
-        <div flex></div>
-      </div>
-      <!-- textarea -->
-      <div layout="row">
-        <div flex="grow">
-          <md-input-container class="md-block" layout-padding>
-            <label>write here!</label>
-            <textarea ng-model="vm.post.content"
-               style="height: 30%" md-maxlength="5000"
-              rows="50" md-select-on-focus></textarea>
-          </md-input-container>
-        </div>
-      </div>
-      <!-- tags -->
-      <div layout="row">
-        <div flex="grow">
-          <md-content class="md-padding">
-            <md-chips
-              ng-model="vm.post.tags"
-              readonly="vm.readonly"
-              placeholder="Enter a tag"
-              delete-button-label="Remove Tag"
-              delete-hint="Press delete to remove tag"
-              secondary-placeholder="+Tag">
-            </md-chips>
-          </md-content>
-        </div>
-      </div>
-      <!-- button for cancel & upload -->
-      <div layout="row">
-        <div flex="15" flex-offset="15">
-          <md-button class="md-raised md-primary"
-            ng-click="vm.cancel()">Cancel</md-button>
-        </div>
-        <div flex="45"></div>
-        <div flex="15">
-          <md-button class="md-raised md-warn"
-            ng-click="vm.upload()">Upload</md-button>
-        </div>
-      </div>
+<div layout="column" ng-cloak class="md-inline-form"
+  style="margin-top: 5%; margin-bottom: 5%; margin-left: 10%; margin-right: 10%; border-style: solid">
+  <md-content md-theme="write" layout="row" layout-gt-sm="row" layout-padding layout-align="space-between center">
+    <md-input-container>
+      <label>Title</label>
+      <input ng-model="vm.post.title">
+    </md-input-container>
+    <md-input-container>
+      <md-checkbox ng-model="vm.post.isPrivate" aria-label="Private">
+        Private
+      </md-checkbox>
+    </md-input-container>
+  </md-content>
+  <md-content layout-padding>
+    <div layout-padding>
+      <md-input-container class="md-block">
+        <label>Write here!</label>
+        <textarea ng-model="vm.post.content" md-maxlength="1000" rows="30" md-select-on-focus></textarea>
+      </md-input-container>
     </div>
+  </md-content>
+  <md-content layout-padding>
+    <div flex="grow">
+      <md-chips
+        ng-model="vm.post.tags"
+        readonly="vm.readonly"
+        placeholder="Enter a tag"
+        delete-button-label="Remove Tag"
+        delete-hint="Press delete to remove tag"
+        secondary-placeholder="+Tag">
+      </md-chips>
+    </div>
+  </md-content>
+  <md-content layout-padding layout="row" layout-align="end center">
+    <md-button class="md-raised md-primary"
+      ng-click="vm.cancel()">Cancel</md-button>
+    <md-button class="md-raised md-warn"
+      ng-click="vm.upload()">Done!</md-button>
   </md-content>
 </div>
 <div ng-include="'footer.html'"></div>

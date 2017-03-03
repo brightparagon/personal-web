@@ -83,13 +83,9 @@ configs.config(function($mdThemingProvider) {
     '50': 'ffffff'
   });
   $mdThemingProvider.definePalette('customBlue', customBlueMap);
-  $mdThemingProvider.theme('default')
-    .primaryPalette('customBlue', {
-      'default': '500',
-      'hue-1': '50'
-    })
-    .accentPalette('pink');
   $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
   $mdThemingProvider.theme('red').primaryPalette('red');
   $mdThemingProvider.theme('blue').primaryPalette('blue');
+  $mdThemingProvider.theme('write').backgroundPalette('amber')
+    .primaryPalette('blue');
 });
