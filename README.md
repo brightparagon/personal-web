@@ -1,4 +1,4 @@
-# Blog on MEAN
+# Make a blog: web application using MEAN stack
 This is a simple blog application where anyone gets signed up, makes postings and shares with others. The front side is made with Angular.js, backend with Node.js, database with MongoDB. This project is currently on development with several features to be implemented like 'Search with tags', 'Make a memo'.
 
 ### Check the blog here
